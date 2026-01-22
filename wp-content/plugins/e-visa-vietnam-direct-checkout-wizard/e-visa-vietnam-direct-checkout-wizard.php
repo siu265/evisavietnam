@@ -120,91 +120,15 @@ class Visa_Wizard_V2_5 {
         wp_enqueue_style( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
         wp_enqueue_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'jquery' ), '4.0.13', true );
 
-        wp_add_inline_style( 'wp-block-library', '
-            /* Container – theme visa block style */
-            .visa-wizard-container { background: #fff; margin: 0 auto; max-width: 100%; font-family: inherit; position: relative; box-shadow: 0px 30px 70px rgba(0,0,0,0.1); border-radius: 15px; overflow: hidden; }
-            .visa-wizard-container .form-inner { padding: 0 40px 40px; }
-
-            /* Progress – thin bar on top (ref: image) */
-            .visa-progress-top { background: #222; padding: 16px 40px; position: relative; }
-            .visa-progress-track { height: 5px; background: rgba(255,255,255,0.2); border-radius: 5px; overflow: hidden; }
-            .visa-progress-fill { height: 100%; background: #ffaa17; border-radius: 5px; width: 0%; transition: width 0.4s ease; }
-
-            /* Header */
-            .visa-sticky-header { background: #F5F5F5; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e3e3e3; }
-            .visa-step-info { font-size: 14px; font-weight: 600; color: #6E6E6E; text-transform: uppercase; letter-spacing: 1px; }
-            .visa-step-info span { color: #222; }
-            .visa-total-price { font-size: 22px; color: #ffaa17; font-weight: 800; }
-            .visa-total-price bdi { display: inline-flex; align-items: center; }
-
-            /* Step content */
-            #visa_wizard .step-content { display: none !important; padding-top: 30px; }
-            #visa_wizard .step-content.active { display: block !important; animation: visaFadeIn 0.4s ease; }
-            @keyframes visaFadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
-
-            /* Form – theme contact-style inputs */
-            .visa-wizard-container .form-group { margin-bottom: 30px; }
-            .visa-wizard-container .form-group:last-child { margin-bottom: 0; }
-            .visa-wizard-container .phone-group { display: flex; gap: 12px; align-items: stretch; }
-            .visa-wizard-container .phone-code-wrap { flex: 0 0 160px; }
-            .visa-wizard-container .phone-number-wrap { flex: 1; min-width: 0; }
-            @media (max-width: 576px) { .visa-wizard-container .phone-group { flex-direction: column; } .visa-wizard-container .phone-code-wrap { flex: 1 1 auto; } .visa-wizard-container .form-inner, .visa-progress-top { padding-left: 20px; padding-right: 20px; } .visa-sticky-header { padding-left: 20px; padding-right: 20px; flex-wrap: wrap; gap: 10px; } .visa-actions { flex-wrap: wrap; } .visa-wizard-container .btn-1 { padding: 14px 32px; min-width: 140px; font-size: 14px; } }
-            .visa-wizard-container .form-label { display: block; font-weight: 600; margin-bottom: 10px; color: #222; font-size: 15px; }
-            .visa-wizard-container .form-control { display: block; width: 100%; height: 50px; padding: 12px 18px; font-size: 16px; color: #6E6E6E; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; box-shadow: none; }
-            .visa-wizard-container .form-control:focus { border-color: #ffaa17; outline: none; box-shadow: 0 0 0 3px rgba(255,170,23,0.15); }
-            .visa-wizard-container .form-control::placeholder { color: #aaa; }
-            .form-desc { font-size: 13px; color: #797979; margin-top: 8px; }
-            .visa-wizard-container .step-title { font-size: 20px; font-weight: 700; color: #222; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #ffaa17; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-            .visa-step-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-width: 32px; background: #222; color: #fff; font-size: 14px; font-weight: 700; border-radius: 4px; line-height: 1; }
-
-            /* Select2 – match form inputs */
-            .visa-wizard-container .select2-container { width: 100% !important; }
-            .visa-wizard-container .select2-container .select2-selection--single { height: 50px !important; background: #fff !important; border: 1px solid #e0e0e0 !important; border-radius: 8px !important; display: flex !important; align-items: center !important; padding: 0 18px; }
-            .visa-wizard-container .select2-container--default.select2-container--focus .select2-selection--single { border-color: #ffaa17 !important; box-shadow: 0 0 0 3px rgba(255,170,23,0.15); }
-            .visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__arrow { height: 50px !important; right: 12px; }
-            .visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__rendered { color: #6E6E6E !important; padding-left: 0 !important; font-size: 16px; }
-
-            /* File upload */
-            .file-upload-wrapper input[type=file] { padding: 12px 0; font-size: 14px; }
-            .upload-preview-box { margin-top: 12px; display: none; }
-            .upload-preview-box img { height: 100px; border-radius: 8px; border: 1px solid #e0e0e0; }
-
-            /* Review box */
-            .review-box { background: #F9F9F9; padding: 28px 32px; border-radius: 10px; border: 1px solid #eee; }
-            .review-item { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; padding-bottom: 10px; border-bottom: 1px dashed #e0e0e0; }
-            .review-item:last-of-type { border-bottom: none; }
-            .review-value { font-weight: 700; color: #222; text-align: right; }
-
-            /* Actions – ref: image – Back small left, primary OK-style right */
-            .visa-actions { margin-top: 36px; padding-top: 28px; border-top: 1px solid #e3e3e3; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-            .visa-wizard-container .btn-1 { padding: 16px 48px; min-width: 160px; font-weight: 700; text-transform: uppercase; color: #fff; background: #ffaa17; border: none; cursor: pointer; border-radius: 8px; font-size: 15px; transition: all 0.3s ease; text-align: center; }
-            .visa-wizard-container .btn-1:hover { background: #222; color: #fff; }
-            .visa-wizard-container .btn-back { padding: 10px 20px; min-width: auto; font-weight: 600; font-size: 13px; color: #555; background: transparent; border: 1px solid #ddd; }
-            .visa-wizard-container .btn-back:hover { background: #f0f0f0; border-color: #ccc; color: #222; }
-            .visa-actions .visa-btn-spacer { flex: 1; }
-
-            /* Error */
-            .error-message { background: #fff8e6; color: #856404; padding: 16px 20px; margin: 20px 0; border: 1px solid #ffeeba; border-radius: 8px; display: none; }
-            .input-error { border-color: #e8161b !important; }
-            .visa-wizard-container .select2-container .select2-selection.input-error { border-color: #e8161b !important; }
-
-            /* Modal */
-            .visa-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px); align-items: center; justify-content: center; }
-            .visa-modal-content { background: #fff; margin: 5% auto; padding: 30px; width: 90%; max-width: 700px; border-radius: 15px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; animation: visaSlideDown 0.3s ease; }
-            @keyframes visaSlideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-            .visa-close { position: absolute; right: 18px; top: 14px; color: #999; font-size: 28px; font-weight: bold; cursor: pointer; }
-            .visa-close:hover { color: #222; }
-            .visa-modal-body { max-height: 70vh; overflow-y: auto; margin-top: 12px; font-size: 15px; line-height: 1.65; color: #333; }
-            .visa-link { color: #ffaa17; text-decoration: underline; cursor: pointer; font-weight: 600; }
-
-            #billing_postcode_field, .billing_postcode_field { display: none !important; }
-            .wp-block-woocommerce-checkout-contact-information-block,
-            [data-block-name="woocommerce/checkout-contact-information-block"],
-            .wp-block-woocommerce-checkout-billing-address-block,
-            [data-block-name="woocommerce/checkout-billing-address-block"],
-            .wc-block-components-checkout-contact-information-block,
-            .wc-block-components-checkout-billing-address-block { display: none !important; }
-        ' );
+        $plugin_url = plugin_dir_url( __FILE__ );
+        $style_path = plugin_dir_path( __FILE__ ) . 'style.css';
+        $version    = file_exists( $style_path ) ? (string) filemtime( $style_path ) : '2.5';
+        wp_enqueue_style(
+            'e-visa-wizard-style',
+            $plugin_url . 'style.css',
+            array( 'select2' ),
+            $version
+        );
     }
 
     public function redirect_cart_page() {
@@ -291,28 +215,27 @@ class Visa_Wizard_V2_5 {
                     <input type="hidden" name="variation_id" id="variation_id">
                     
                     <div class="step-content active" data-step="1">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">1</span>Where are you from?</h3></div>
-                            <div class="col-lg-12 form-group">
-                                <label class="form-label">Nationality *</label>
-                                <select name="nationality" class="form-control required-field select2-enable">
-                                    <option value="">-- Select Country --</option>
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">1</span>Nationality</h3>
+                            <p class="visa-step-desc">Choose your nationality as shown on your passport to begin the application.</p>
+                            <div class="form-group">
+                                <select name="nationality" class="form-control required-field select2-enable" data-placeholder="Select your nationality">
+                                    <option value="">Select your nationality</option>
                                     <?php foreach($nationalities as $n): ?>
                                         <option value="<?php echo esc_attr($n); ?>" <?php selected($prefill['nationality'] ?? '', $n); ?>><?php echo esc_html($n); ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <p class="form-desc">Select the nationality on your passport.</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="2">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">2</span>Select Visa Type</h3></div>
-                            <div class="col-lg-12 form-group">
-                                <label class="form-label">Visa Type *</label>
-                                <select name="visa_type" class="form-control price-trigger required-field select2-enable" id="select_visa_type">
-                                    <option value="">-- Select Option --</option>
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">2</span>Visa Type</h3>
+                            <p class="visa-step-desc">Select the type of entry and validity duration suitable for your trip.</p>
+                            <div class="form-group">
+                                <select name="visa_type" class="form-control price-trigger required-field select2-enable" id="select_visa_type" data-placeholder="Select visa type">
+                                    <option value="">Select visa type</option>
                                     <?php if(isset($attributes[$slug_type])): foreach($attributes[$slug_type] as $term_slug): 
                                         $term_label = $this->get_attribute_label($term_slug, $slug_type); ?>
                                         <option value="<?php echo esc_attr($term_slug); ?>" data-label="<?php echo esc_attr($term_label); ?>"><?php echo esc_html($term_label); ?></option>
@@ -323,110 +246,101 @@ class Visa_Wizard_V2_5 {
                     </div>
 
                     <div class="step-content" data-step="3">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">3</span>Processing Time</h3></div>
-                            <div class="col-lg-12 form-group">
-                                <label class="form-label">Processing Time *</label>
-                                <select name="processing_time" class="form-control price-trigger required-field select2-enable" id="select_processing_time">
-                                    <option value="">-- Select Option --</option>
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">3</span>Processing Time</h3>
+                            <p class="visa-step-desc">Choose how quickly you need your visa processed based on your urgency.</p>
+                            <div class="form-group">
+                                <select name="processing_time" class="form-control price-trigger required-field select2-enable" id="select_processing_time" data-placeholder="Select processing time">
+                                    <option value="">Select processing time</option>
                                     <?php if(isset($attributes[$slug_time])): foreach($attributes[$slug_time] as $term_slug): 
                                         $term_label = $this->get_attribute_label($term_slug, $slug_time); ?>
                                         <option value="<?php echo esc_attr($term_slug); ?>" data-label="<?php echo esc_attr($term_label); ?>"><?php echo esc_html($term_label); ?></option>
                                     <?php endforeach; endif; ?>
                                 </select>
-                                <p class="form-desc" style="color:#ffaa17;">Note: Working hours <?php echo esc_html($work_start . ' - ' . $work_end . ' (' . $work_days_str . ')'); ?>.</p>
                             </div>
+                            <p class="visa-step-note">Working hours: <?php echo esc_html($work_start . ' – ' . $work_end . ' (' . $work_days_str . ')'); ?></p>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="4">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">4</span>Date of Arrival</h3></div>
-                            <div class="col-lg-12 form-group">
-                                <label class="form-label">Arrival Date *</label>
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">4</span>Arrival Date</h3>
+                            <p class="visa-step-desc">Specify your expected arrival date in Vietnam to determine visa validity start.</p>
+                            <div class="form-group">
                                 <input type="date" name="arrival_date" class="form-control required-field" value="<?php echo esc_attr($prefill['arrival_date'] ?? ''); ?>">
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="5">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">5</span>Documents Upload</h3></div>
-                            <div class="col-lg-6 col-md-6 form-group">
-                                <label class="form-label">Passport Photo *</label>
-                                <div class="file-upload-wrapper">
-                                    <input type="file" id="file_passport" accept="image/*" class="form-control">
-                                    <input type="hidden" name="passport_url" id="passport_url" class="required-field" value="<?php echo esc_attr($prefill['passport_url'] ?? ''); ?>">
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">5</span>Upload Documents</h3>
+                            <p class="visa-step-desc">Upload clear photos of your passport data page and a recent portrait.</p>
+                            <div class="visa-upload-grid">
+                                <div class="form-group">
+                                    <div class="file-upload-wrapper">
+                                        <input type="file" id="file_passport" accept="image/*" class="form-control">
+                                        <input type="hidden" name="passport_url" id="passport_url" class="required-field" value="<?php echo esc_attr($prefill['passport_url'] ?? ''); ?>">
+                                    </div>
+                                    <div id="stat_passport" class="upload-status"></div>
+                                    <div class="upload-preview-box" id="prev_passport"><?php if(!empty($prefill['passport_url'])) echo '<img src="'.$prefill['passport_url'].'">'; ?></div>
                                 </div>
-                                <div id="stat_passport" class="upload-status"></div>
-                                <div class="upload-preview-box" id="prev_passport"><?php if(!empty($prefill['passport_url'])) echo '<img src="'.$prefill['passport_url'].'">'; ?></div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 form-group">
-                                <label class="form-label">Portrait Photo *</label>
-                                <div class="file-upload-wrapper">
-                                    <input type="file" id="file_photo" accept="image/*" class="form-control">
-                                    <input type="hidden" name="photo_url" id="photo_url" class="required-field" value="<?php echo esc_attr($prefill['photo_url'] ?? ''); ?>">
+                                <div class="form-group">
+                                    <div class="file-upload-wrapper">
+                                        <input type="file" id="file_photo" accept="image/*" class="form-control">
+                                        <input type="hidden" name="photo_url" id="photo_url" class="required-field" value="<?php echo esc_attr($prefill['photo_url'] ?? ''); ?>">
+                                    </div>
+                                    <div id="stat_photo" class="upload-status"></div>
+                                    <div class="upload-preview-box" id="prev_photo"><?php if(!empty($prefill['photo_url'])) echo '<img src="'.$prefill['photo_url'].'">'; ?></div>
                                 </div>
-                                <div id="stat_photo" class="upload-status"></div>
-                                <div class="upload-preview-box" id="prev_photo"><?php if(!empty($prefill['photo_url'])) echo '<img src="'.$prefill['photo_url'].'">'; ?></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="6">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">6</span>Contact Details</h3></div>
-                            <div class="col-lg-6 col-md-6 form-group">
-                                <label class="form-label">Full Name *</label>
-                                <input type="text" name="fullname" class="form-control required-field" placeholder="Enter full name" value="<?php echo esc_attr($prefill['fullname'] ?? ''); ?>">
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">6</span>Contact Information</h3>
+                            <p class="visa-step-desc">Provide your full name, email, and phone number for application updates.</p>
+                            <div class="form-group">
+                                <input type="text" name="fullname" class="form-control required-field" placeholder="Full name" value="<?php echo esc_attr($prefill['fullname'] ?? ''); ?>">
                             </div>
-                            <div class="col-lg-6 col-md-6 form-group">
-                                <label class="form-label">Email Address *</label>
-                                <input type="email" name="email" class="form-control required-field" placeholder="name@example.com" value="<?php echo esc_attr($prefill['email'] ?? ''); ?>">
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control required-field" placeholder="Email address" value="<?php echo esc_attr($prefill['email'] ?? ''); ?>">
                             </div>
-                            <div class="col-lg-12 form-group">
-                                <label class="form-label">Phone Number *</label>
-                                <div class="phone-group">
-                                    <div class="phone-code-wrap">
-                                        <select name="phone_code" class="form-control select2-enable">
-                                            <?php foreach($phone_codes as $code => $label): ?>
-                                                <option value="<?php echo $code; ?>" <?php selected($prefill['phone_code'] ?? '+84', $code); ?>><?php echo $label; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <div class="phone-number-wrap">
-                                        <input type="tel" name="phone_number" class="form-control required-field" placeholder="Phone Number" value="<?php echo esc_attr($prefill['phone_number'] ?? ''); ?>">
-                                    </div>
+                            <div class="form-group phone-group">
+                                <div class="phone-code-wrap">
+                                    <select name="phone_code" class="form-control select2-enable">
+                                        <?php foreach($phone_codes as $code => $label): ?>
+                                            <option value="<?php echo $code; ?>" <?php selected($prefill['phone_code'] ?? '+84', $code); ?>><?php echo $label; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="phone-number-wrap">
+                                    <input type="tel" name="phone_number" class="form-control required-field" placeholder="Phone number" value="<?php echo esc_attr($prefill['phone_number'] ?? ''); ?>">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="7">
-                        <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">7</span>Review & Pay</h3></div>
-                            <div class="col-lg-12">
-                                <div class="review-box">
-                                    <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
-                                    <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
-                                    <div class="review-item"><span>Time:</span> <span class="review-value" id="rev_time">--</span></div>
-                                    <div class="review-item"><span>Arrival:</span> <span class="review-value" id="rev_date">--</span></div>
-                                    <div class="review-item"><span>Name:</span> <span class="review-value" id="rev_name">--</span></div>
-                                    <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
-                                    <div class="review-item" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
-                                        <span style="font-weight:bold; font-size:18px;">Total:</span> <span class="review-value" id="rev_price" style="color:#ffaa17; font-size:22px;">--</span>
-                                    </div>
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">7</span>Review & Payment</h3>
+                            <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
+                            <div class="review-box">
+                                <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
+                                <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
+                                <div class="review-item"><span>Time:</span> <span class="review-value" id="rev_time">--</span></div>
+                                <div class="review-item"><span>Arrival:</span> <span class="review-value" id="rev_date">--</span></div>
+                                <div class="review-item"><span>Name:</span> <span class="review-value" id="rev_name">--</span></div>
+                                <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
+                                <div class="review-item review-total">
+                                    <span>Total:</span> <span class="review-value" id="rev_price">--</span>
                                 </div>
                             </div>
-                            <div class="col-lg-12 form-group" style="margin-top: 25px;">
-                                <label style="cursor:pointer; display: flex; align-items: start;">
-                                    <input type="checkbox" id="agree_terms" style="width:20px; height:20px; margin-right:10px; margin-top:3px;"> 
-                                    <span style="font-size: 14px; color: #555;">
-                                        I acknowledge that I have read and accept the 
-                                        <span class="visa-link" data-target="modal_terms">Terms of Service</span>, 
-                                        <span class="visa-link" data-target="modal_privacy">Privacy Policy</span>, and 
-                                        <span class="visa-link" data-target="modal_refund">Refund Policy</span>.
-                                    </span>
+                            <div class="form-group visa-terms-wrap">
+                                <label class="visa-terms-label">
+                                    <input type="checkbox" id="agree_terms">
+                                    <span>I acknowledge that I have read and accept the <span class="visa-link" data-target="modal_terms">Terms of Service</span>, <span class="visa-link" data-target="modal_privacy">Privacy Policy</span>, and <span class="visa-link" data-target="modal_refund">Refund Policy</span>.</span>
                                 </label>
                             </div>
                         </div>
@@ -445,7 +359,10 @@ class Visa_Wizard_V2_5 {
         <script>
         jQuery(document).ready(function($){
             let currentStep = 1; const totalSteps = 7;
-            $(".select2-enable").select2({ width: "100%" });
+            $(".select2-enable").each(function(){
+                var ph = $(this).data("placeholder");
+                $(this).select2({ width: "100%", placeholder: ph || "Select..." });
+            });
 
             // Restore Values (Prefill)
             <?php if(!empty($prefill['visa_type'])): ?>
