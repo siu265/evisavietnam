@@ -516,6 +516,15 @@ function immigro_debug_after_order_review() {
 	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
 }
 
+// Force sử dụng Classic Checkout (Template) thay vì Block Checkout
+add_filter( 'woocommerce_blocks_is_feature_enabled', function( $is_enabled, $feature ) {
+	if ( 'cart-checkout-blocks' === $feature && is_checkout() ) {
+		// Tắt Block checkout, force dùng Classic template
+		return false;
+	}
+	return $is_enabled;
+}, 10, 2 );
+
 // DEBUG: Kiểm tra xem có đang dùng Block checkout không
 add_action( 'wp', 'immigro_check_checkout_type' );
 function immigro_check_checkout_type() {
@@ -529,6 +538,8 @@ function immigro_check_checkout_type() {
 	// Kiểm tra xem có block checkout không
 	if ( function_exists( 'has_block' ) && has_block( 'woocommerce/checkout' ) ) {
 		$log_msg .= "⚠️ Đang dùng BLOCK CHECKOUT (WooCommerce Blocks)\n";
+		$log_msg .= "⚠️ LƯU Ý: Đã thêm filter để force Classic checkout, nhưng trang vẫn có Block\n";
+		$log_msg .= "⚠️ Cần vào WordPress Admin > Pages > Checkout và xóa Block, thay bằng shortcode [woocommerce_checkout]\n";
 	} else {
 		$log_msg .= "✓ Đang dùng CLASSIC CHECKOUT (Template)\n";
 	}
