@@ -454,14 +454,12 @@ class Visa_Wizard_V2_5 {
                 if(step === totalSteps) { 
                     $("#btn_next").hide(); 
                     $("#btn_submit").hide(); 
-                    // Populate review data khi đến step 7
                     populateReview();
-                    // Load checkout form khi đến step 7
                     if(!$("#visa_checkout_wrapper").html().trim()) {
                         loadCheckoutForm();
                     }
                 } else { 
-                    $("#btn_next").show(); 
+                    $("#btn_next").show().prop("disabled", false).text("Next →"); 
                     $("#btn_submit").hide(); 
                 }
             }
@@ -577,6 +575,7 @@ class Visa_Wizard_V2_5 {
                                 redirectUrl = response.redirect;
                             }
                             if (redirectUrl) {
+                                clearVisaForm();
                                 window.location.href = redirectUrl;
                                 return;
                             }
@@ -606,10 +605,12 @@ class Visa_Wizard_V2_5 {
                             try {
                                 var jsonResponse = JSON.parse(responseText);
                                 if (jsonResponse && jsonResponse.result === 'success' && jsonResponse.redirect) {
+                                    clearVisaForm();
                                     window.location.href = jsonResponse.redirect;
                                     return;
                                 }
                                 if (jsonResponse && jsonResponse.success && jsonResponse.data && jsonResponse.data.redirect) {
+                                    clearVisaForm();
                                     window.location.href = jsonResponse.data.redirect;
                                     return;
                                 }
@@ -623,6 +624,7 @@ class Visa_Wizard_V2_5 {
                             } catch(e) {}
                             var redirectMatch = responseText.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
                             if(redirectMatch && redirectMatch[1]) {
+                                clearVisaForm();
                                 window.location.href = redirectMatch[1];
                                 return;
                             }
@@ -850,6 +852,22 @@ class Visa_Wizard_V2_5 {
                 $("#rev_price").html(priceHtml);
             }
 
+            function clearVisaForm() {
+                var $f = $("#visa_form");
+                if ($f.length) $f[0].reset();
+                $("#passport_url").val("");
+                $("#photo_url").val("");
+                $("#variation_id").val("");
+                $("#agree_terms").prop("checked", false);
+                $("#rev_nation, #rev_type, #rev_time, #rev_date, #rev_name, #rev_email, #rev_phone, #rev_passport, #rev_photo").text("--");
+                $("#rev_price").html("--");
+                $("#prev_passport, #prev_photo").empty().hide();
+                $("#stat_passport, #stat_photo").text("");
+                if ($(".select2-enable").length && typeof $().select2 === "function") {
+                    $(".select2-enable").val(null).trigger("change");
+                }
+            }
+
             // Event handler sẽ được bind trong loadCheckoutForm() sau khi form được load
         });
         </script>
@@ -1069,6 +1087,7 @@ class Visa_Wizard_V2_5 {
             
             if ( $redirect_url ) {
                 $this->visa_log( 'SUCCESS redirect: ' . $redirect_url );
+                $this->clear_visa_session();
                 wp_send_json_success( array( 'redirect' => $redirect_url ) );
             }
             if ( $order_id ) {
@@ -1076,6 +1095,7 @@ class Visa_Wizard_V2_5 {
                 if ( $order ) {
                     $redirect_url = $order->get_checkout_order_received_url();
                     $this->visa_log( 'SUCCESS order redirect: ' . $redirect_url );
+                    $this->clear_visa_session();
                     wp_send_json_success( array( 'redirect' => $redirect_url ) );
                 }
                 $this->visa_log( 'ERROR: order_id exists but order object null' );
@@ -1089,6 +1109,7 @@ class Visa_Wizard_V2_5 {
                 if ( $order ) {
                     $redirect_url = $order->get_checkout_order_received_url();
                     $this->visa_log( 'SUCCESS fallback redirect: ' . $redirect_url );
+                    $this->clear_visa_session();
                     wp_send_json_success( array( 'redirect' => $redirect_url ) );
                 }
             }
@@ -1102,6 +1123,19 @@ class Visa_Wizard_V2_5 {
             $this->visa_log( 'Stack: ' . $e->getTraceAsString() );
             wp_send_json_error( array( 'messages' => $e->getMessage() ) );
         }
+    }
+
+    /** Clear tất cả session data liên quan đến visa form */
+    private function clear_visa_session() {
+        if ( WC()->session ) {
+            WC()->session->__unset( 'visa_draft_data' );
+            WC()->session->__unset( 'checkout' );
+            WC()->session->__unset( 'order_awaiting_payment' );
+        }
+        if ( WC()->cart && ! WC()->cart->is_empty() ) {
+            WC()->cart->empty_cart();
+        }
+        $this->visa_log( 'Session cleared: visa_draft_data, checkout, order_awaiting_payment, cart emptied' );
     }
 
     public function save_order_meta($item, $key, $values, $order) {
