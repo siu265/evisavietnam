@@ -165,6 +165,16 @@ class Visa_Wizard_V2_5 {
 
             /* FIX: POSTCODE HIDE FORCEFULLY (CSS FALLBACK) */
             #billing_postcode_field, .billing_postcode_field { display: none !important; }
+
+            /* HIDE CONTACT INFORMATION & BILLING ADDRESS ON CHECKOUT */
+            .wp-block-woocommerce-checkout-contact-information-block,
+            [data-block-name="woocommerce/checkout-contact-information-block"],
+            .wp-block-woocommerce-checkout-billing-address-block,
+            [data-block-name="woocommerce/checkout-billing-address-block"],
+            .wc-block-components-checkout-contact-information-block,
+            .wc-block-components-checkout-billing-address-block {
+                display: none !important;
+            }
         ' );
     }
 
@@ -621,7 +631,7 @@ class Visa_Wizard_V2_5 {
         if(WC()->cart->add_to_cart( $form['product_id'], 1, $form['variation_id'], [], $custom_data )) {
             $c = WC()->customer;
             $c->set_billing_first_name($form['fullname']); $c->set_billing_email($form['email']); $c->set_billing_phone($full_phone);
-            $c->set_billing_country('VN'); $c->set_billing_address_1('Online App'); $c->set_billing_city('Hanoi'); $c->set_billing_postcode('10000');
+            $c->set_billing_country('VN'); $c->set_billing_address_1('Online App'); $c->set_billing_city('Hanoi'); $c->set_billing_postcode('');
             $c->save();
             wp_send_json_success(['redirect' => wc_get_checkout_url()]);
         } else wp_send_json_error(['message' => 'Error adding to cart. Please try again.']);

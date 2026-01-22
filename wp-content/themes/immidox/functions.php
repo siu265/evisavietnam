@@ -305,7 +305,10 @@ function immigro_enqueue_scripts() {
 	wp_enqueue_style( 'immigro-main', get_stylesheet_uri() );
 	wp_enqueue_style( 'immigro-style', get_template_directory_uri() . '/assets/css/style.css' );
 	wp_enqueue_style( 'immigro-style-2', get_template_directory_uri() . '/assets/css/style-2.css' );
-	wp_enqueue_style( 'immigro-responsive', get_template_directory_uri() . '/assets/css/responsive.css' );	
+	wp_enqueue_style( 'immigro-responsive', get_template_directory_uri() . '/assets/css/responsive.css' );
+	
+	// Custom CSS
+	wp_enqueue_style( 'immigro-custom', get_template_directory_uri() . '/custom.css', array(), '1.0.0' );	
 	wp_enqueue_style( 'immigro-error', get_template_directory_uri() . '/assets/css/theme/error.css' );
 	wp_enqueue_style( 'immigro-comment', get_template_directory_uri() . '/assets/css/theme/comment.css' );
 	wp_enqueue_style( 'immigro-fixing', get_template_directory_uri() . '/assets/css/theme/fixing.css' );
