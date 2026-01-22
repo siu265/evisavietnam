@@ -31,6 +31,9 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'wp_ajax_visa_checkout', array( $this, 'ajax_checkout' ) );
         add_action( 'wp_ajax_nopriv_visa_checkout', array( $this, 'ajax_checkout' ) );
+        
+        add_action( 'wp_ajax_visa_load_checkout', array( $this, 'ajax_load_checkout' ) );
+        add_action( 'wp_ajax_nopriv_visa_load_checkout', array( $this, 'ajax_load_checkout' ) );
 
         // Woo Hooks (Postcode Removal Logic)
         add_filter( 'woocommerce_checkout_fields', array( $this, 'clean_checkout_fields' ), 9999 );
@@ -320,6 +323,12 @@ class Visa_Wizard_V2_5 {
                                     <input type="tel" name="phone_number" class="form-control required-field" placeholder="Phone number" value="<?php echo esc_attr($prefill['phone_number'] ?? ''); ?>">
                                 </div>
                             </div>
+                            <div class="form-group visa-terms-wrap">
+                                <label class="visa-terms-label">
+                                    <input type="checkbox" id="agree_terms" class="required-field">
+                                    <span>I acknowledge that I have read and accept the <span class="visa-link" data-target="modal_terms">Terms of Service</span>, <span class="visa-link" data-target="modal_privacy">Privacy Policy</span>, and <span class="visa-link" data-target="modal_refund">Refund Policy</span>.</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -327,23 +336,8 @@ class Visa_Wizard_V2_5 {
                         <div class="visa-step-inner">
                             <h3 class="step-title"><span class="visa-step-badge">7</span>Review & Payment</h3>
                             <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
-                            <div class="review-box">
-                                <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
-                                <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
-                                <div class="review-item"><span>Time:</span> <span class="review-value" id="rev_time">--</span></div>
-                                <div class="review-item"><span>Arrival:</span> <span class="review-value" id="rev_date">--</span></div>
-                                <div class="review-item"><span>Name:</span> <span class="review-value" id="rev_name">--</span></div>
-                                <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
-                                <div class="review-item"><span>Phone:</span> <span class="review-value" id="rev_phone">--</span></div>
-                                <div class="review-item review-total">
-                                    <span>Total:</span> <span class="review-value" id="rev_price">--</span>
-                                </div>
-                            </div>
-                            <div class="form-group visa-terms-wrap">
-                                <label class="visa-terms-label">
-                                    <input type="checkbox" id="agree_terms">
-                                    <span>I acknowledge that I have read and accept the <span class="visa-link" data-target="modal_terms">Terms of Service</span>, <span class="visa-link" data-target="modal_privacy">Privacy Policy</span>, and <span class="visa-link" data-target="modal_refund">Refund Policy</span>.</span>
-                                </label>
+                            <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
+                                <!-- Checkout form sẽ được load vào đây -->
                             </div>
                         </div>
                     </div>
@@ -407,14 +401,51 @@ class Visa_Wizard_V2_5 {
                 $("#current_step_num").text(step);
                 $("#progress_bar").css("width", (step/totalSteps)*100 + "%");
                 if(step === 1) $("#btn_back").hide(); else $("#btn_back").show();
-                if(step === totalSteps) { $("#btn_next").hide(); $("#btn_submit").show(); populateReview(); }
-                else { $("#btn_next").show(); $("#btn_submit").hide(); }
+                if(step === totalSteps) { 
+                    $("#btn_next").hide(); 
+                    $("#btn_submit").hide(); 
+                    // Load checkout form khi đến step 7
+                    if(!$("#visa_checkout_wrapper").html().trim()) {
+                        loadCheckoutForm();
+                    }
+                } else { 
+                    $("#btn_next").show(); 
+                    $("#btn_submit").hide(); 
+                }
+            }
+            
+            function loadCheckoutForm() {
+                $("#visa_checkout_wrapper").html('<div style="text-align:center;padding:20px;">Loading checkout form...</div>');
+                $.post("<?php echo admin_url('admin-ajax.php'); ?>", {
+                    action: "visa_load_checkout"
+                }, function(res){
+                    if(res.success) {
+                        $("#visa_checkout_wrapper").html(res.data.html);
+                        // Trigger WooCommerce checkout scripts
+                        if(typeof jQuery !== 'undefined' && jQuery.fn.checkout) {
+                            jQuery('body').trigger('update_checkout');
+                        }
+                    } else {
+                        $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
+                    }
+                });
             }
 
             function validateStep(step) {
                 let isValid = true;
                 let currentPanel = $(".step-content[data-step=\""+step+"\"]");
                 currentPanel.find(".required-field").filter(":input, select").each(function(){
+                    // Kiểm tra checkbox
+                    if($(this).is(":checkbox")) {
+                        if(!$(this).is(":checked")) {
+                            isValid = false; 
+                            $(this).closest("label").addClass("input-error");
+                        } else {
+                            $(this).closest("label").removeClass("input-error");
+                        }
+                        return;
+                    }
+                    
                     if(!$(this).val() || $(this).val() === "") {
                         isValid = false; $(this).addClass("input-error");
                         if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").addClass("input-error"); }
@@ -436,6 +467,15 @@ class Visa_Wizard_V2_5 {
             }
 
             $(document).on("change", ".required-field", function() {
+                // Xử lý checkbox
+                if($(this).is(":checkbox")) {
+                    if($(this).is(":checked")) {
+                        $(this).closest("label").removeClass("input-error");
+                        $("#global_error").hide();
+                    }
+                    return;
+                }
+                
                 if($(this).val()) { 
                     $(this).removeClass("input-error"); 
                     if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").removeClass("input-error"); }
@@ -459,7 +499,44 @@ class Visa_Wizard_V2_5 {
                 return /^[0-9]{7,15}$/.test(phone);
             }
 
-            $("#btn_next").click(function(e){ e.preventDefault(); if(validateStep(currentStep)) { currentStep++; showStep(currentStep); } });
+            $("#btn_next").click(function(e){ 
+                e.preventDefault(); 
+                if(validateStep(currentStep)) { 
+                    // Nếu đang ở step 6, cần thêm vào cart trước khi chuyển sang step 7
+                    if(currentStep === 6) {
+                        // Kiểm tra terms checkbox
+                        if(!$("#agree_terms").is(":checked")) { 
+                            alert("Please accept terms."); 
+                            return; 
+                        }
+                        
+                        if(!$("#variation_id").val()) {
+                            alert("Please re-select Visa Type or Processing Time (Price not calculated).");
+                            return;
+                        }
+                        
+                        let btn = $(this); 
+                        btn.text("Processing...").prop("disabled", true);
+                        $.post("<?php echo admin_url('admin-ajax.php'); ?>", { 
+                            action: "visa_checkout", 
+                            data: $("#visa_form").serialize() 
+                        }, function(res){
+                            if(res.success) {
+                                // Thêm vào cart thành công, chuyển sang step 7 và load checkout
+                                currentStep++; 
+                                showStep(currentStep);
+                                loadCheckoutForm();
+                            } else { 
+                                alert(res.data.message); 
+                                btn.text("Next →").prop("disabled", false); 
+                            }
+                        });
+                    } else {
+                        currentStep++; 
+                        showStep(currentStep);
+                    }
+                } 
+            });
             $("#btn_back").click(function(e){ e.preventDefault(); currentStep--; showStep(currentStep); });
 
             // SMART PRICE CALCULATION
@@ -513,23 +590,14 @@ class Visa_Wizard_V2_5 {
                 $("#rev_date").text($("input[name=\"arrival_date\"]").val());
                 $("#rev_name").text($("input[name=\"fullname\"]").val());
                 $("#rev_email").text($("input[name=\"email\"]").val());
+                $("#rev_phone").text($("input[name=\"phone_number\"]").val());
                 $("#rev_price").html($("#header_price_display").html());
             }
 
-            $("#btn_submit").click(function(e){
-                e.preventDefault();
-                if(!$("#agree_terms").is(":checked")) { alert("Please accept terms."); return; }
-                
-                if(!$("#variation_id").val()) {
-                    alert("Please re-select Visa Type or Processing Time (Price not calculated).");
-                    return;
-                }
-
-                let btn = $(this); btn.text("Processing...").prop("disabled", true);
-                $.post("<?php echo admin_url('admin-ajax.php'); ?>", { action: "visa_checkout", data: $("#visa_form").serialize() }, function(res){
-                    if(res.success) window.location.href = res.data.redirect;
-                    else { alert(res.data.message); btn.text("PAY NOW").prop("disabled", false); }
-                });
+            // Submit checkout form từ step 7
+            $(document).on("submit", "#visa_checkout_wrapper form.checkout", function(e){
+                // Form sẽ được submit bình thường bởi WooCommerce
+                // Không cần preventDefault vì WooCommerce sẽ xử lý
             });
         });
         </script>
@@ -608,8 +676,71 @@ class Visa_Wizard_V2_5 {
             $c->set_billing_first_name($form['fullname']); $c->set_billing_email($form['email']); $c->set_billing_phone($full_phone);
             $c->set_billing_country('VN'); $c->set_billing_address_1('Online App'); $c->set_billing_city('Hanoi'); $c->set_billing_postcode('');
             $c->save();
-            wp_send_json_success(['redirect' => wc_get_checkout_url()]);
+            // Không redirect nữa, chỉ trả về success để load checkout form trong step 7
+            wp_send_json_success(['message' => 'Added to cart successfully']);
         } else wp_send_json_error(['message' => 'Error adding to cart. Please try again.']);
+    }
+    
+    public function ajax_load_checkout() {
+        // Kiểm tra cart có sản phẩm không
+        if ( WC()->cart->is_empty() ) {
+            wp_send_json_error(['message' => 'Cart is empty']);
+        }
+        
+        // Render checkout form
+        ob_start();
+        
+        // Set checkout nonce
+        if ( WC()->session ) {
+            WC()->session->set( 'checkout', true );
+        }
+        
+        // Output checkout form bằng cách sử dụng WooCommerce template
+        echo '<div class="visa-checkout-form">';
+        
+        // Tạo checkout object
+        $checkout = WC()->checkout();
+        
+        // Output checkout form - sử dụng template
+        do_action( 'woocommerce_before_checkout_form', $checkout );
+        
+        // If checkout registration is disabled and not logged in, the user cannot checkout.
+        if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
+            echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
+        } else {
+            echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="' . esc_url( wc_get_checkout_url() ) . '" enctype="multipart/form-data">';
+            
+            if ( $checkout->get_checkout_fields() ) {
+                do_action( 'woocommerce_checkout_before_customer_details' );
+                echo '<div class="col2-set" id="customer_details">';
+                echo '<div class="col-1">';
+                do_action( 'woocommerce_checkout_billing' );
+                echo '</div>';
+                echo '<div class="col-2">';
+                do_action( 'woocommerce_checkout_shipping' );
+                echo '</div>';
+                echo '</div>';
+                do_action( 'woocommerce_checkout_after_customer_details' );
+            }
+            
+            do_action( 'woocommerce_checkout_before_order_review_heading' );
+            echo '<h3 id="order_review_heading">' . esc_html__( 'Your order', 'woocommerce' ) . '</h3>';
+            do_action( 'woocommerce_checkout_before_order_review' );
+            echo '<div id="order_review" class="woocommerce-checkout-review-order">';
+            do_action( 'woocommerce_checkout_order_review' );
+            echo '</div>';
+            do_action( 'woocommerce_checkout_after_order_review' );
+            
+            echo '</form>';
+        }
+        
+        do_action( 'woocommerce_after_checkout_form', $checkout );
+        
+        echo '</div>';
+        
+        $html = ob_get_clean();
+        
+        wp_send_json_success(['html' => $html]);
     }
 
     public function save_order_meta($item, $key, $values, $order) {

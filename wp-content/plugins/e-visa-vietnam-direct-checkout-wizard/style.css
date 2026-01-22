@@ -357,6 +357,7 @@
 
 .input-error { border-color: #e8161b !important; border-bottom-color: #e8161b !important; }
 .visa-wizard-container .select2-container .select2-selection.input-error { border-bottom-color: #e8161b !important; }
+.visa-terms-label.input-error { border: 1px solid #e8161b !important; padding: 12px; border-radius: 8px; background: #fff8e6; }
 
 /* ========== Modal ========== */
 .visa-modal {
@@ -403,6 +404,209 @@
 [data-block-name="woocommerce/checkout-billing-address-block"],
 .wc-block-components-checkout-contact-information-block,
 .wc-block-components-checkout-billing-address-block { display: none !important; }
+
+/* ========== Checkout Form Styling trong Step 7 ========== */
+.visa-checkout-wrapper {
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.visa-checkout-form {
+    text-align: left;
+}
+
+/* Ẩn các phần không cần thiết trong checkout */
+.visa-checkout-form .woocommerce-billing-fields,
+.visa-checkout-form #billing_country_field,
+.visa-checkout-form #billing_address_1_field,
+.visa-checkout-form #billing_address_2_field,
+.visa-checkout-form #billing_city_field,
+.visa-checkout-form #billing_postcode_field,
+.visa-checkout-form #billing_state_field,
+.visa-checkout-form .woocommerce-shipping-fields,
+.visa-checkout-form #shipping_country_field,
+.visa-checkout-form #order_comments_field { 
+    display: none !important; 
+}
+
+/* Style cho payment methods */
+.visa-checkout-form .woocommerce-checkout-payment {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.visa-checkout-form .wc_payment_methods {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.visa-checkout-form .wc_payment_methods li {
+    margin-bottom: 16px;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.visa-checkout-form .wc_payment_methods .payment_box {
+    background: #F9F9F9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.visa-checkout-form .wc_payment_methods label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    padding: 12px 18px;
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    border-radius: 0;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.visa-checkout-form .wc_payment_methods label:hover {
+    border-bottom-color: #ffaa17;
+}
+
+.visa-checkout-form .wc_payment_methods input[type="radio"] {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.visa-checkout-form .wc_payment_methods input[type="radio"]:checked + label,
+.visa-checkout-form .wc_payment_methods li.wc_payment_method > input[type="radio"]:checked ~ label {
+    border-bottom-color: #ffaa17;
+    color: #ffaa17;
+}
+
+/* Style cho place order button */
+.visa-checkout-form .place-order {
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid #e3e3e3;
+}
+
+.visa-checkout-form #place_order {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: block;
+    padding: 16px 48px;
+    min-width: 160px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    background: #ffaa17;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.visa-checkout-form #place_order:hover,
+.visa-checkout-form #place_order:focus {
+    background: #041E42;
+    color: #fff;
+    outline: none;
+    box-shadow: none;
+}
+
+/* Style cho order review (nếu có) */
+.visa-checkout-form .woocommerce-checkout-review-order {
+    background: #F9F9F9;
+    padding: 28px 32px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    margin-bottom: 24px;
+}
+
+.visa-checkout-form .woocommerce-checkout-review-order-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.visa-checkout-form .woocommerce-checkout-review-order-table th,
+.visa-checkout-form .woocommerce-checkout-review-order-table td {
+    padding: 12px 0;
+    border-bottom: 1px dashed #e0e0e0;
+    text-align: left;
+}
+
+.visa-checkout-form .woocommerce-checkout-review-order-table tfoot th {
+    font-weight: 700;
+    color: #222;
+}
+
+.visa-checkout-form .woocommerce-checkout-review-order-table .order-total th,
+.visa-checkout-form .woocommerce-checkout-review-order-table .order-total td {
+    border-top: 1px solid #ddd;
+    padding-top: 14px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffaa17;
+}
+
+/* Style cho terms checkbox */
+.visa-checkout-form .woocommerce-terms-and-conditions-wrapper {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.visa-checkout-form .woocommerce-terms-and-conditions-wrapper label {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+    max-width: 420px;
+    margin: 0 auto;
+    border: none;
+    padding: 0;
+    background: transparent;
+}
+
+.visa-checkout-form .woocommerce-terms-and-conditions-wrapper label:hover {
+    border: none;
+}
+
+.visa-checkout-form .woocommerce-terms-and-conditions-wrapper input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .visa-checkout-form #place_order {
+        max-width: 100%;
+        padding: 14px 32px;
+        font-size: 14px;
+    }
+    
+    .visa-checkout-form .woocommerce-checkout-review-order {
+        padding: 20px 16px;
+    }
+}
 
 /* ========== Responsive ========== */
 @media (max-width: 576px) {
