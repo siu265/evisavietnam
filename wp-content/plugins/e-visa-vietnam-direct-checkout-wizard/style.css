@@ -292,6 +292,10 @@
     outline: none;
 }
 
+.visa-wizard-container .btn-1::before {
+    content: '' !important;
+}
+
 .visa-wizard-container .btn-1:hover,
 .visa-wizard-container .btn-1:focus {
     background: #222;
