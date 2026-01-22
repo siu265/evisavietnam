@@ -493,3 +493,54 @@ function immigro_debug_payment_section_render() {
 	
 	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
 }
+
+// DEBUG: Log các hook khác liên quan đến checkout
+add_action( 'woocommerce_before_checkout_form', 'immigro_debug_before_checkout_form', 5 );
+function immigro_debug_before_checkout_form() {
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_msg = "[HOOK] woocommerce_before_checkout_form được gọi - " . date( 'Y-m-d H:i:s' ) . "\n";
+	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
+}
+
+add_action( 'woocommerce_checkout_before_order_review', 'immigro_debug_before_order_review', 5 );
+function immigro_debug_before_order_review() {
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_msg = "[HOOK] woocommerce_checkout_before_order_review được gọi - " . date( 'Y-m-d H:i:s' ) . "\n";
+	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
+}
+
+add_action( 'woocommerce_checkout_after_order_review', 'immigro_debug_after_order_review', 5 );
+function immigro_debug_after_order_review() {
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_msg = "[HOOK] woocommerce_checkout_after_order_review được gọi - " . date( 'Y-m-d H:i:s' ) . "\n";
+	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
+}
+
+// DEBUG: Kiểm tra xem có đang dùng Block checkout không
+add_action( 'wp', 'immigro_check_checkout_type' );
+function immigro_check_checkout_type() {
+	if ( ! is_checkout() ) {
+		return;
+	}
+	
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_msg = "\n[CHECKOUT TYPE CHECK] " . date( 'Y-m-d H:i:s' ) . "\n";
+	
+	// Kiểm tra xem có block checkout không
+	if ( function_exists( 'has_block' ) && has_block( 'woocommerce/checkout' ) ) {
+		$log_msg .= "⚠️ Đang dùng BLOCK CHECKOUT (WooCommerce Blocks)\n";
+	} else {
+		$log_msg .= "✓ Đang dùng CLASSIC CHECKOUT (Template)\n";
+	}
+	
+	// Kiểm tra template được load
+	$template = get_page_template();
+	$log_msg .= "Page template: " . ( $template ? basename( $template ) : 'N/A' ) . "\n";
+	
+	// Kiểm tra xem có template override không
+	$template_path = wc_locate_template( 'checkout/form-checkout.php' );
+	$log_msg .= "Template path: " . $template_path . "\n";
+	
+	$log_msg .= "\n";
+	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
+}
