@@ -942,6 +942,12 @@ class Visa_Wizard_V2_5 {
             wp_send_json_error( array( 'messages' => __( 'Security check failed. Please refresh the page and try again.', 'woocommerce' ) ) );
         }
         
+        // Kiểm tra payment method được chọn
+        $payment_method = isset( $_POST['payment_method'] ) ? sanitize_text_field( $_POST['payment_method'] ) : '';
+        if ( empty( $payment_method ) ) {
+            wp_send_json_error( array( 'messages' => __( 'Please select a payment method.', 'woocommerce' ) ) );
+        }
+        
         // Đảm bảo có woocommerce_checkout_place_order
         $_POST['woocommerce_checkout_place_order'] = '1';
         
@@ -972,8 +978,26 @@ class Visa_Wizard_V2_5 {
             $checkout = WC()->checkout();
             $checkout->process_checkout();
             
-            // Clean output
-            ob_end_clean();
+            // Lấy output trước khi clean (có thể chứa redirect HTML)
+            $output = ob_get_clean();
+            
+            // Kiểm tra WooCommerce notices/errors sau khi process
+            $notices = wc_get_notices( 'error' );
+            if ( ! empty( $notices ) ) {
+                // Có lỗi từ WooCommerce
+                $error_messages = array();
+                foreach ( $notices as $notice ) {
+                    if ( is_array( $notice ) && isset( $notice['notice'] ) ) {
+                        $error_messages[] = strip_tags( $notice['notice'] );
+                    } elseif ( is_string( $notice ) ) {
+                        $error_messages[] = strip_tags( $notice );
+                    }
+                }
+                // Clear notices để tránh hiển thị lại
+                wc_clear_notices();
+                $error_msg = ! empty( $error_messages ) ? implode( ' ', $error_messages ) : __( 'Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.', 'woocommerce' );
+                wp_send_json_error( array( 'messages' => $error_msg ) );
+            }
             
             // Nếu có redirect URL, sử dụng nó
             if ( $redirect_url ) {
