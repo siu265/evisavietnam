@@ -156,6 +156,10 @@
 }
 
 /* ========== Form – no labels, inputs only ========== */
+.select2-container.select2-container--open .select2-dropdown--below {
+    border-top: 1px solid #dedede !important;
+}
+
 .visa-wizard-container .form-group {
     margin-bottom: 24px;
     text-align: left;
