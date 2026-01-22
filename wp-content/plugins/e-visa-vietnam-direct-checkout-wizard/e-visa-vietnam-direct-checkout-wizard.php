@@ -8,7 +8,7 @@ Author: DuyViet
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class Visa_Five_Step_Wizard {
+class Visa_Wizard_V2 {
 
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
@@ -32,55 +32,63 @@ class Visa_Five_Step_Wizard {
     public function enqueue_assets() {
         wp_enqueue_script( 'jquery' );
         wp_add_inline_style( 'wp-block-library', '
-            /* Container & Layout */
-            .visa-wizard-container { max-width: 800px; margin: 20px auto; background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); overflow: hidden; font-family: sans-serif; }
+            /* --- LAYOUT & CONTAINER --- */
+            .visa-wizard-container { max-width: 800px; margin: 30px auto; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; position: relative; }
             
-            /* Sticky Price Header */
-            .visa-sticky-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 2px solid #007cba; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 99; }
-            .visa-header-title { font-weight: bold; font-size: 16px; color: #333; }
-            .visa-total-price { font-size: 18px; color: #d63638; font-weight: 800; }
+            /* --- STICKY HEADER (PRICE) --- */
+            .visa-sticky-header { background: #fff; padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+            .visa-header-title { font-weight: 700; font-size: 18px; color: #2c3e50; }
+            .visa-total-price { font-size: 20px; color: #e74c3c; font-weight: 800; }
+            .visa-calculating { font-size: 14px; color: #95a5a6; font-weight: normal; }
 
-            /* Progress Bar */
-            .visa-progress { display: flex; background: #eee; height: 4px; width: 100%; }
-            .visa-progress-bar { background: #007cba; height: 100%; width: 20%; transition: width 0.3s ease; }
-            .visa-step-indicator { padding: 10px; text-align: center; font-size: 12px; color: #666; background: #fafafa; border-bottom: 1px solid #eee; }
+            /* --- PROGRESS BAR --- */
+            .visa-progress-container { background: #f0f2f5; height: 6px; width: 100%; }
+            .visa-progress-bar { background: #3498db; height: 100%; width: 14%; transition: width 0.4s ease; } /* 100% / 7 steps approx 14% */
+            .visa-step-info { padding: 10px 30px; font-size: 13px; color: #7f8c8d; font-weight: 600; background: #f9f9f9; border-bottom: 1px solid #eee; }
 
-            /* Steps Content */
-            .step-content { padding: 30px; display: none; animation: fadeIn 0.4s; }
-            .step-content.active { display: block; }
-            @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+            /* --- STEPS CONTENT --- */
+            .step-content { padding: 40px 30px; display: none; }
+            .step-content.active { display: block; animation: slideIn 0.3s ease-out; }
+            @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+            
+            h3.step-title { margin-top: 0; margin-bottom: 25px; color: #2c3e50; font-size: 22px; }
 
-            /* Form Elements */
-            .form-group { margin-bottom: 20px; }
-            .form-label { display: block; font-weight: 600; margin-bottom: 8px; color: #333; }
-            .form-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-            .form-desc { font-size: 0.85em; color: #888; margin-top: 5px; font-style: italic; }
+            /* --- FORM FIELDS --- */
+            .form-group { margin-bottom: 25px; }
+            .form-label { display: block; font-weight: 600; margin-bottom: 10px; color: #34495e; }
+            .form-control { width: 100%; padding: 14px; border: 1px solid #dfe6e9; border-radius: 6px; box-sizing: border-box; font-size: 16px; transition: border 0.3s; }
+            .form-control:focus { border-color: #3498db; outline: none; }
+            .form-desc { font-size: 0.9em; color: #95a5a6; margin-top: 8px; font-style: italic; }
 
-            /* Radio Selection Style (Better UX) */
-            .radio-group { display: flex; flex-direction: column; gap: 10px; }
-            .radio-option { border: 1px solid #ddd; padding: 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
-            .radio-option:hover { background: #f0f7fb; border-color: #007cba; }
-            .radio-option input { margin-right: 10px; transform: scale(1.2); }
-            .radio-option.selected { background: #e6f2f9; border-color: #007cba; font-weight: bold; }
+            /* --- PHONE INPUT GROUP --- */
+            .phone-group { display: flex; gap: 10px; }
+            .phone-code { width: 35% !important; }
+            .phone-number { width: 65% !important; }
 
-            /* Review Box */
-            .review-box { background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 15px; border: 1px dashed #ccc; }
-            .review-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95em; }
-            .review-label { color: #666; }
-            .review-value { font-weight: 600; }
+            /* --- UPLOAD PREVIEW --- */
+            .upload-preview-box { margin-top: 15px; display: none; }
+            .upload-preview-box img { max-width: 150px; border-radius: 6px; border: 1px solid #ddd; padding: 3px; }
+            .upload-status { font-size: 0.9em; margin-top: 5px; font-weight: 600; }
 
-            /* Buttons */
+            /* --- REVIEW BOX --- */
+            .review-box { background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; }
+            .review-item { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 8px; }
+            .review-item:last-child { border-bottom: none; }
+            .review-label { color: #7f8c8d; }
+            .review-value { font-weight: 600; color: #2c3e50; text-align: right; }
+
+            /* --- BUTTONS --- */
             .visa-actions { padding: 20px 30px; border-top: 1px solid #eee; display: flex; justify-content: space-between; background: #fff; }
-            .btn-visa { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; font-size: 15px; font-weight: 600; transition: 0.2s; }
-            .btn-next { background: #007cba; color: white; }
-            .btn-next:hover { background: #005a87; }
-            .btn-back { background: #e9ecef; color: #333; }
-            .btn-back:hover { background: #dde2e6; }
-            .btn-checkout { background: #28a745; color: white; }
-            .btn-checkout:disabled { background: #ccc; cursor: not-allowed; }
-
-            .error-text { color: red; font-size: 0.9em; margin-top: 5px; display: none; }
-            .upload-status { font-size: 0.85em; margin-top: 5px; }
+            .btn-visa { padding: 14px 30px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.2s; }
+            .btn-next { background: #3498db; color: white; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); }
+            .btn-next:hover { background: #2980b9; transform: translateY(-1px); }
+            .btn-back { background: #ecf0f1; color: #7f8c8d; }
+            .btn-back:hover { background: #bdc3c7; }
+            .btn-checkout { background: #27ae60; color: white; box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3); }
+            .btn-checkout:hover { background: #219150; transform: translateY(-1px); }
+            
+            /* --- ERROR --- */
+            .error-message { color: #e74c3c; font-size: 14px; margin-top: 10px; display: none; background: #fce4e4; padding: 10px; border-radius: 4px; border-left: 3px solid #e74c3c; }
         ' );
     }
 
@@ -89,39 +97,40 @@ class Visa_Five_Step_Wizard {
         $pid = intval( $atts['product_id'] );
         $product = wc_get_product( $pid );
 
-        if ( ! $product || ! $product->is_type( 'variable' ) ) return '<p style="color:red; font-weight:bold;">LỖI: ID sản phẩm không hợp lệ hoặc không phải Variable Product.</p>';
+        if ( ! $product || ! $product->is_type( 'variable' ) ) return '<p style="color:red; font-weight:bold;">ERROR: Invalid Product ID.</p>';
 
-        // TỰ ĐỘNG DÒ TÌM SLUG (FIX LỖI KHÔNG HIỆN)
+        // AUTO-DETECT SLUGS
         $attributes = $product->get_variation_attributes();
         $attr_keys = array_keys( $attributes );
-        // Giả định: Attribute đầu tiên là Type, thứ 2 là Time (theo thứ tự tạo trong Woo)
-        // Hoặc tìm theo từ khóa 'visa', 'type', 'time'
-        $slug_type = ''; 
-        $slug_time = '';
-        
+        $slug_type = ''; $slug_time = '';
         foreach($attr_keys as $key) {
             if(strpos($key, 'type') !== false || strpos($key, 'loai') !== false) $slug_type = $key;
             if(strpos($key, 'time') !== false || strpos($key, 'tgian') !== false || strpos($key, 'processing') !== false) $slug_time = $key;
         }
-        // Fallback nếu không tìm thấy (lấy theo thứ tự)
         if(empty($slug_type) && isset($attr_keys[0])) $slug_type = $attr_keys[0];
         if(empty($slug_time) && isset($attr_keys[1])) $slug_time = $attr_keys[1];
 
+        // DATA ARRAYS
         $nationalities = ['Vietnam', 'United States', 'United Kingdom', 'Australia', 'Canada', 'France', 'Germany', 'Japan', 'South Korea', 'India', 'China'];
+        $phone_codes = [
+            '+84' => 'Vietnam (+84)', '+1' => 'USA/Canada (+1)', '+44' => 'UK (+44)', 
+            '+61' => 'Australia (+61)', '+33' => 'France (+33)', '+49' => 'Germany (+49)', 
+            '+81' => 'Japan (+81)', '+82' => 'South Korea (+82)'
+        ];
         
         ob_start();
         ?>
         <div class="visa-wizard-container" id="visa_wizard">
             
             <div class="visa-sticky-header">
-                <div class="visa-header-title">Vietnam E-Visa Application</div>
+                <div class="visa-header-title">Apply For Visa</div>
                 <div class="visa-total-price" id="header_price_display">--</div>
             </div>
 
-            <div class="visa-step-indicator">Step <span id="current_step_num">1</span> of 5</div>
-            <div class="visa-progress">
+            <div class="visa-progress-container">
                 <div class="visa-progress-bar" id="progress_bar"></div>
             </div>
+            <div class="visa-step-info">Step <span id="current_step_num">1</span> of 7</div>
 
             <form id="visa_form">
                 <input type="hidden" name="product_id" value="<?php echo $pid; ?>">
@@ -129,101 +138,121 @@ class Visa_Five_Step_Wizard {
                 <input type="hidden" name="attr_slug_type" value="<?php echo esc_attr($slug_type); ?>">
                 <input type="hidden" name="attr_slug_time" value="<?php echo esc_attr($slug_time); ?>">
 
+                <div id="global_error" class="error-message">Please fill in all required fields.</div>
+
                 <div class="step-content active" data-step="1">
-                    <h3>Step 1: Where are you from?</h3>
+                    <h3 class="step-title">Where are you from?</h3>
                     <div class="form-group">
-                        <label class="form-label">Select Nationality</label>
-                        <select name="nationality" class="form-control" required>
+                        <label class="form-label">Nationality *</label>
+                        <select name="nationality" class="form-control required-field">
                             <option value="">-- Select Country --</option>
                             <?php foreach($nationalities as $n) echo "<option value='$n'>$n</option>"; ?>
                         </select>
-                        <div class="form-desc">Select the nationality on your passport.</div>
+                        <div class="form-desc">A drop-down list of nationalities that we can accept bookings.</div>
                     </div>
                 </div>
 
                 <div class="step-content" data-step="2">
-                    <h3>Step 2: Select Visa Type</h3>
-                    <div class="radio-group">
-                        <?php if(isset($attributes[$slug_type])): ?>
-                            <?php foreach($attributes[$slug_type] as $term): ?>
-                                <label class="radio-option">
-                                    <input type="radio" name="visa_type" value="<?php echo esc_attr($term); ?>" class="price-trigger">
-                                    <span><?php echo esc_html($term); ?></span>
-                                </label>
-                            <?php endforeach; ?>
-                        <?php else: echo "<p style='color:red'>Không tìm thấy thuộc tính Visa Type. Hãy kiểm tra lại sản phẩm.</p>"; endif; ?>
+                    <h3 class="step-title">Select Visa Type</h3>
+                    <div class="form-group">
+                        <label class="form-label">Visa Type *</label>
+                        <select name="visa_type" class="form-control price-trigger required-field">
+                            <option value="">-- Select Option --</option>
+                            <?php if(isset($attributes[$slug_type])): foreach($attributes[$slug_type] as $term): ?>
+                                <option value="<?php echo esc_attr($term); ?>"><?php echo esc_html($term); ?></option>
+                            <?php endforeach; endif; ?>
+                        </select>
                     </div>
                 </div>
 
                 <div class="step-content" data-step="3">
-                    <h3>Step 3: Processing Time</h3>
-                    <div class="radio-group">
-                        <?php if(isset($attributes[$slug_time])): ?>
-                            <?php foreach($attributes[$slug_time] as $term): ?>
-                                <label class="radio-option">
-                                    <input type="radio" name="processing_time" value="<?php echo esc_attr($term); ?>" class="price-trigger">
-                                    <span><?php echo esc_html($term); ?></span>
-                                </label>
-                            <?php endforeach; ?>
-                        <?php else: echo "<p style='color:red'>Không tìm thấy thuộc tính Processing Time.</p>"; endif; ?>
+                    <h3 class="step-title">Processing Time</h3>
+                    <div class="form-group">
+                        <label class="form-label">Processing Time *</label>
+                        <select name="processing_time" class="form-control price-trigger required-field">
+                            <option value="">-- Select Option --</option>
+                            <?php if(isset($attributes[$slug_time])): foreach($attributes[$slug_time] as $term): ?>
+                                <option value="<?php echo esc_attr($term); ?>"><?php echo esc_html($term); ?></option>
+                            <?php endforeach; endif; ?>
+                        </select>
+                        <div class="form-desc" style="color:#e67e22;">Note: Processing time counts from the time the application is confirmed (8:30AM - 4:30PM Mon-Fri).</div>
                     </div>
-                    <div class="form-desc" style="margin-top:10px; color:#d63638;">Note: Working hours 8:30AM - 4:30PM (Mon-Fri).</div>
                 </div>
 
                 <div class="step-content" data-step="4">
-                    <h3>Step 4: Applicant Details</h3>
-                    
+                    <h3 class="step-title">Date of Arrival</h3>
                     <div class="form-group">
-                        <label class="form-label">Date of Arrival</label>
-                        <input type="date" name="arrival_date" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Upload Passport</label>
-                        <input type="file" id="file_passport" accept="image/*,.pdf" class="form-control">
-                        <input type="hidden" name="passport_url" id="passport_url">
-                        <div id="msg_passport" class="upload-status"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Upload Photo</label>
-                        <input type="file" id="file_photo" accept="image/*" class="form-control">
-                        <input type="hidden" name="photo_url" id="photo_url">
-                        <div id="msg_photo" class="upload-status"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <input type="text" name="fullname" class="form-control" placeholder="As shown on passport">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" name="email" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="tel" name="phone" class="form-control">
+                        <label class="form-label">Arrival Date *</label>
+                        <input type="date" name="arrival_date" class="form-control required-field">
                     </div>
                 </div>
 
                 <div class="step-content" data-step="5">
-                    <h3>Step 5: Review & Checkout</h3>
+                    <h3 class="step-title">Documents</h3>
                     
-                    <div class="review-box">
-                        <div class="review-item"><span class="review-label">Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
-                        <div class="review-item"><span class="review-label">Type:</span> <span class="review-value" id="rev_type">--</span></div>
-                        <div class="review-item"><span class="review-label">Time:</span> <span class="review-value" id="rev_time">--</span></div>
-                        <div class="review-item"><span class="review-label">Name:</span> <span class="review-value" id="rev_name">--</span></div>
-                        <hr style="border:0; border-top:1px dashed #ccc; margin:10px 0;">
-                        <div class="review-item"><span class="review-label">Total Price:</span> <span class="review-value" id="rev_price" style="color:#d63638; font-size:1.2em;">--</span></div>
+                    <div class="form-group">
+                        <label class="form-label">Passport Photo *</label>
+                        <input type="file" id="file_passport" accept="image/*" class="form-control">
+                        <input type="hidden" name="passport_url" id="passport_url" class="required-field">
+                        <div id="stat_passport" class="upload-status"></div>
+                        <div class="upload-preview-box" id="prev_passport"></div>
                     </div>
 
-                    <div class="form-group" style="background:#f0f0f0; padding:10px; font-size:0.9em;">
-                        <strong>Terms of Service:</strong><br>
-                        1. Application fees are non-refundable.<br>
-                        2. Processing time is estimated during working hours.<br>
-                        <label style="display:block; margin-top:10px; cursor:pointer;">
-                            <input type="checkbox" id="agree_terms"> I agree to the Terms & Privacy Policy.
+                    <div class="form-group">
+                        <label class="form-label">Portrait Photo *</label>
+                        <input type="file" id="file_photo" accept="image/*" class="form-control">
+                        <input type="hidden" name="photo_url" id="photo_url" class="required-field">
+                        <div id="stat_photo" class="upload-status"></div>
+                        <div class="upload-preview-box" id="prev_photo"></div>
+                    </div>
+                </div>
+
+                <div class="step-content" data-step="6">
+                    <h3 class="step-title">Contact Details</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" name="fullname" class="form-control required-field" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" name="email" class="form-control required-field" placeholder="name@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number *</label>
+                        <div class="phone-group">
+                            <select name="phone_code" class="form-control phone-code">
+                                <?php foreach($phone_codes as $code => $label) echo "<option value='$code'>$label</option>"; ?>
+                            </select>
+                            <input type="tel" name="phone_number" class="form-control phone-number required-field" placeholder="123 456 789">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-content" data-step="7">
+                    <h3 class="step-title">Review & Pay</h3>
+                    
+                    <div class="review-box">
+                        <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
+                        <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
+                        <div class="review-item"><span>Time:</span> <span class="review-value" id="rev_time">--</span></div>
+                        <div class="review-item"><span>Arrival:</span> <span class="review-value" id="rev_date">--</span></div>
+                        <div class="review-item"><span>Name:</span> <span class="review-value" id="rev_name">--</span></div>
+                        <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
+                        <div class="review-item" style="border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px;">
+                            <span style="font-weight:bold;">Total:</span> 
+                            <span class="review-value" id="rev_price" style="color:#e74c3c; font-size:1.2em;">--</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label style="cursor:pointer; display: flex; gap: 10px; align-items: flex-start;">
+                            <input type="checkbox" id="agree_terms" style="margin-top: 4px;"> 
+                            <span style="font-size: 0.9em; color: #555;">
+                                By submitting payment, I acknowledge that I have read and accept the EVISAS VIETNAM Terms of Service, Privacy Policy, and Refund Policy.
+                            </span>
                         </label>
                     </div>
                 </div>
@@ -240,17 +269,11 @@ class Visa_Five_Step_Wizard {
         <script>
         jQuery(document).ready(function($){
             let currentStep = 1;
-            const totalSteps = 5;
+            const totalSteps = 7;
 
-            // Highlight radio selection
-            $('.radio-option input').change(function(){
-                let name = $(this).attr('name');
-                $('input[name="'+name+'"]').closest('.radio-option').removeClass('selected');
-                $(this).closest('.radio-option').addClass('selected');
-            });
-
-            // Navigation
+            // --- 1. NAVIGATION & VALIDATION ---
             function showStep(step) {
+                $('.error-message').hide();
                 $('.step-content').removeClass('active');
                 $('.step-content[data-step="'+step+'"]').addClass('active');
                 
@@ -258,7 +281,7 @@ class Visa_Five_Step_Wizard {
                 $('#current_step_num').text(step);
                 $('#progress_bar').css('width', (step/totalSteps)*100 + '%');
 
-                // Buttons
+                // Buttons Visibility
                 if(step === 1) $('#btn_back').hide(); else $('#btn_back').show();
                 
                 if(step === totalSteps) {
@@ -271,10 +294,31 @@ class Visa_Five_Step_Wizard {
                 }
             }
 
+            // Check if current step fields are filled
+            function validateStep(step) {
+                let isValid = true;
+                let currentPanel = $('.step-content[data-step="'+step+'"]');
+                
+                currentPanel.find('.required-field').each(function(){
+                    if($(this).val() === '') {
+                        isValid = false;
+                        $(this).css('border-color', '#e74c3c');
+                    } else {
+                        $(this).css('border-color', '#dfe6e9');
+                    }
+                });
+
+                if(!isValid) {
+                    $('#global_error').text('Please fill in all required fields marked with *').slideDown();
+                }
+                return isValid;
+            }
+
             $('#btn_next').click(function(){
-                if(!validateStep(currentStep)) return;
-                currentStep++;
-                showStep(currentStep);
+                if(validateStep(currentStep)) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
             });
 
             $('#btn_back').click(function(){
@@ -282,24 +326,13 @@ class Visa_Five_Step_Wizard {
                 showStep(currentStep);
             });
 
-            function validateStep(step) {
-                if(step === 1 && !$('select[name="nationality"]').val()) { alert('Please select Nationality'); return false; }
-                if(step === 2 && !$('input[name="visa_type"]:checked').val()) { alert('Please select Visa Type'); return false; }
-                if(step === 3 && !$('input[name="processing_time"]:checked').val()) { alert('Please select Processing Time'); return false; }
-                if(step === 4) {
-                    if(!$('#passport_url').val() || !$('#photo_url').val()) { alert('Please upload files.'); return false; }
-                    if(!$('input[name="fullname"]').val() || !$('input[name="email"]').val()) { alert('Please fill in required fields.'); return false; }
-                }
-                return true;
-            }
-
-            // Price Calculation (Trigger on Step 2 & 3 Change)
+            // --- 2. PRICE CALCULATION ---
             $('.price-trigger').change(function(){
-                let type = $('input[name="visa_type"]:checked').val();
-                let time = $('input[name="processing_time"]:checked').val();
+                let type = $('select[name="visa_type"]').val();
+                let time = $('select[name="processing_time"]').val();
                 
                 if(type && time) {
-                    $('#header_price_display').html('<span style="font-size:0.7em; color:#999;">Calculating...</span>');
+                    $('#header_price_display').html('<span class="visa-calculating">Calculating...</span>');
                     
                     $.post('<?php echo admin_url('admin-ajax.php'); ?>', {
                         action: 'visa_get_price',
@@ -313,14 +346,14 @@ class Visa_Five_Step_Wizard {
                             $('#header_price_display').text(res.data.price_html);
                             $('#variation_id').val(res.data.variation_id);
                         } else {
-                            $('#header_price_display').text('N/A');
+                            $('#header_price_display').text('--');
                         }
                     });
                 }
             });
 
-            // File Upload
-            function setupUpload(id, hidden_id, msg_id) {
+            // --- 3. FILE UPLOAD & PREVIEW ---
+            function setupUpload(id, hidden_id, msg_id, prev_id) {
                 $(id).change(function(){
                     let fd = new FormData();
                     fd.append('file', this.files[0]);
@@ -333,30 +366,35 @@ class Visa_Five_Step_Wizard {
                         success: function(res){
                             if(res.success){
                                 $(hidden_id).val(res.data.url);
-                                $(msg_id).text('Uploaded ✓').css('color','green');
+                                $(msg_id).text('Uploaded successfully').css('color','green');
+                                // Show Preview
+                                $(prev_id).html('<img src="'+res.data.url+'">').fadeIn();
+                                $(hidden_id).css('border-color', '#27ae60'); // Valid visual
                             } else {
-                                $(msg_id).text('Error').css('color','red');
+                                $(msg_id).text('Error uploading file').css('color','red');
                             }
                         }
                     });
                 });
             }
-            setupUpload('#file_passport', '#passport_url', '#msg_passport');
-            setupUpload('#file_photo', '#photo_url', '#msg_photo');
+            setupUpload('#file_passport', '#passport_url', '#stat_passport', '#prev_passport');
+            setupUpload('#file_photo', '#photo_url', '#stat_photo', '#prev_photo');
 
-            // Populate Review Data
+            // --- 4. REVIEW DATA ---
             function populateReview() {
                 $('#rev_nation').text($('select[name="nationality"]').val());
-                $('#rev_type').text($('input[name="visa_type"]:checked').val());
-                $('#rev_time').text($('input[name="processing_time"]:checked').val());
+                $('#rev_type').text($('select[name="visa_type"]').val());
+                $('#rev_time').text($('select[name="processing_time"]').val());
+                $('#rev_date').text($('input[name="arrival_date"]').val());
                 $('#rev_name').text($('input[name="fullname"]').val());
+                $('#rev_email').text($('input[name="email"]').val());
                 $('#rev_price').text($('#header_price_display').text());
             }
 
-            // Final Submit
+            // --- 5. CHECKOUT ---
             $('#btn_submit').click(function(){
                 if(!$('#agree_terms').is(':checked')) {
-                    alert('You must agree to the Terms of Service to proceed.'); return;
+                    $('#global_error').text('You must agree to the Terms of Service.').slideDown(); return;
                 }
 
                 let btn = $(this);
@@ -380,7 +418,8 @@ class Visa_Five_Step_Wizard {
         return ob_get_clean();
     }
 
-    /* BACKEND: Get Price Logic (Fix Slug Issue) */
+    /* --- BACKEND HANDLERS --- */
+
     public function ajax_get_price() {
         $pid = intval($_POST['product_id']);
         $type = sanitize_text_field($_POST['type']);
@@ -388,7 +427,6 @@ class Visa_Five_Step_Wizard {
         $slug_type = sanitize_text_field($_POST['slug_type']);
         $slug_time = sanitize_text_field($_POST['slug_time']);
 
-        // Map selection to attributes with correct slugs
         $match_attributes = [
             'attribute_' . $slug_type => $type,
             'attribute_' . $slug_time => $time
@@ -404,7 +442,6 @@ class Visa_Five_Step_Wizard {
         wp_send_json_error();
     }
 
-    /* BACKEND: Upload Logic */
     public function ajax_upload_file() {
         if(!function_exists('wp_handle_upload')) require_once(ABSPATH.'wp-admin/includes/file.php');
         $up = wp_handle_upload($_FILES['file'], ['test_form'=>false]);
@@ -412,10 +449,11 @@ class Visa_Five_Step_Wizard {
         else wp_send_json_error();
     }
 
-    /* BACKEND: Checkout Logic */
     public function ajax_checkout() {
         parse_str($_POST['data'], $form);
         WC()->cart->empty_cart();
+
+        $full_phone = $form['phone_code'] . ' ' . $form['phone_number'];
 
         $custom_data = [
             'visa_full_info' => [
@@ -425,7 +463,7 @@ class Visa_Five_Step_Wizard {
                 'photo' => $form['photo_url'],
                 'fullname' => $form['fullname'],
                 'email' => $form['email'],
-                'phone' => $form['phone']
+                'phone' => $full_phone
             ]
         ];
 
@@ -435,30 +473,31 @@ class Visa_Five_Step_Wizard {
             $c = WC()->customer;
             $c->set_billing_first_name($form['fullname']);
             $c->set_billing_email($form['email']);
-            $c->set_billing_phone($form['phone']);
+            $c->set_billing_phone($full_phone);
+            
+            // Dummy data to pass validation if needed
             $c->set_billing_country('VN'); 
-            $c->set_billing_address_1('Visa Application Online');
+            $c->set_billing_address_1('Online Application');
             $c->set_billing_city('Hanoi');
             $c->set_billing_postcode('10000');
             $c->save();
+            
             wp_send_json_success(['redirect' => wc_get_checkout_url()]);
         } else {
             wp_send_json_error(['message' => 'Cannot add to cart. Please try again.']);
         }
     }
 
-    /* WOOCOMMERCE: Save Order Meta */
     public function save_order_meta($item, $key, $values, $order) {
         if(isset($values['visa_full_info'])) {
             $d = $values['visa_full_info'];
             $item->add_meta_data('Nationality', $d['nationality']);
             $item->add_meta_data('Arrival Date', $d['arrival']);
-            $item->add_meta_data('Passport', $d['passport']);
-            $item->add_meta_data('Photo', $d['photo']);
+            $item->add_meta_data('Passport Link', $d['passport']);
+            $item->add_meta_data('Photo Link', $d['photo']);
         }
     }
 
-    /* WOOCOMMERCE: Clean Checkout */
     public function clean_checkout_fields($fields) {
         unset($fields['billing']['billing_company']);
         unset($fields['billing']['billing_address_1']);
@@ -471,4 +510,4 @@ class Visa_Five_Step_Wizard {
     }
 }
 
-new Visa_Five_Step_Wizard();
+new Visa_Wizard_V2();
