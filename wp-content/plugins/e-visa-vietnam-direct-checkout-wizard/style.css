@@ -153,23 +153,23 @@
     box-shadow: none;
 }
 
-.visa-step-inner .form-control { text-align: center; }
+.visa-step-inner .form-control { text-align: center !important; }
 
 .visa-wizard-container .form-control {
-    display: block;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    height: 50px;
-    padding: 12px 18px;
-    font-size: 16px;
-    color: #333;
-    background: #fff;
-    border: none;
-    border-bottom: 2px solid #e0e0e0;
-    border-radius: 0;
-    transition: all 0.3s ease;
-    box-shadow: none;
+    display: block !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+    height: 50px !important;
+    padding: 12px 18px !important;
+    font-size: 16px !important;
+    color: #333 !important;
+    background: #fff !important;
+    border: none !important;
+    border-bottom: 2px solid #e0e0e0 !important;
+    border-radius: 0 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
 }
 
 .visa-wizard-container .form-control:focus {
