@@ -121,60 +121,89 @@ class Visa_Wizard_V2_5 {
         wp_enqueue_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'jquery' ), '4.0.13', true );
 
         wp_add_inline_style( 'wp-block-library', '
-            .visa-wizard-container { background: #fff; margin: 0 auto; max-width: 100%; font-family: inherit; position: relative; }
-            .visa-sticky-header { background: #f4f5f8; padding: 15px 20px; border-bottom: 2px solid #ffaa17; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 90; border-radius: 5px 5px 0 0; }
-            .visa-header-title { font-weight: 700; font-size: 18px; color: #222; text-transform: uppercase; }
-            .visa-total-price { font-size: 20px; color: #ffaa17; font-weight: 800; }
+            /* Container – theme visa block style */
+            .visa-wizard-container { background: #fff; margin: 0 auto; max-width: 100%; font-family: inherit; position: relative; box-shadow: 0px 30px 70px rgba(0,0,0,0.1); border-radius: 15px; overflow: hidden; }
+            .visa-wizard-container .form-inner { padding: 0 40px 40px; }
+
+            /* Progress – thin bar on top (ref: image) */
+            .visa-progress-top { background: #222; padding: 16px 40px; position: relative; }
+            .visa-progress-track { height: 5px; background: rgba(255,255,255,0.2); border-radius: 5px; overflow: hidden; }
+            .visa-progress-fill { height: 100%; background: #ffaa17; border-radius: 5px; width: 0%; transition: width 0.4s ease; }
+
+            /* Header */
+            .visa-sticky-header { background: #F5F5F5; padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e3e3e3; }
+            .visa-step-info { font-size: 14px; font-weight: 600; color: #6E6E6E; text-transform: uppercase; letter-spacing: 1px; }
+            .visa-step-info span { color: #222; }
+            .visa-total-price { font-size: 22px; color: #ffaa17; font-weight: 800; }
             .visa-total-price bdi { display: inline-flex; align-items: center; }
-            #visa_wizard .step-content { display: none !important; }
-            #visa_wizard .step-content.active { display: block !important; animation: fadeIn 0.4s ease; }
-            @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-            .visa-progress-container { background: #e5e5e5; height: 5px; width: 100%; margin-bottom: 25px; border-radius: 5px; overflow: hidden; }
-            .visa-progress-bar { background: #ffaa17; height: 100%; width: 0%; transition: width 0.4s ease; }
-            .visa-step-info { text-align: center; font-size: 14px; font-weight: 600; color: #848484; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-            .visa-wizard-container .form-control { display: block; width: 100%; height: 50px; padding: 10px 15px; font-size: 16px; color: #333; background: #f4f5f8; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 0; box-shadow: none; }
-            .visa-wizard-container .form-group { margin-bottom: 25px; position: relative; }
-            .visa-wizard-container .form-label { display: block; font-weight: 600; margin-bottom: 8px; color: #222; font-size: 15px; }
-            .form-desc { font-size: 13px; color: #999; margin-top: 6px; font-style: italic; }
-            .select2-container .select2-selection--single { height: 50px !important; background: #f4f5f8 !important; border: 1px solid #ddd !important; border-radius: 5px !important; display: flex !important; align-items: center !important; }
-            .select2-container--default .select2-selection--single .select2-selection__arrow { height: 50px !important; }
-            .select2-container--default .select2-selection--single .select2-selection__rendered { color: #333 !important; padding-left: 15px !important; font-size: 16px; }
-            .file-upload-wrapper input[type=file] { padding-top: 10px; }
-            .upload-preview-box { margin-top: 10px; display: none; }
-            .upload-preview-box img { height: 100px; border-radius: 4px; border: 1px solid #ccc; padding: 2px; }
-            .review-box { background: #f9f9f9; padding: 25px; border-radius: 5px; border: 1px solid #eee; }
-            .review-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 5px; }
+
+            /* Step content */
+            #visa_wizard .step-content { display: none !important; padding-top: 30px; }
+            #visa_wizard .step-content.active { display: block !important; animation: visaFadeIn 0.4s ease; }
+            @keyframes visaFadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+            /* Form – theme contact-style inputs */
+            .visa-wizard-container .form-group { margin-bottom: 30px; }
+            .visa-wizard-container .form-group:last-child { margin-bottom: 0; }
+            .visa-wizard-container .phone-group { display: flex; gap: 12px; align-items: stretch; }
+            .visa-wizard-container .phone-code-wrap { flex: 0 0 160px; }
+            .visa-wizard-container .phone-number-wrap { flex: 1; min-width: 0; }
+            @media (max-width: 576px) { .visa-wizard-container .phone-group { flex-direction: column; } .visa-wizard-container .phone-code-wrap { flex: 1 1 auto; } .visa-wizard-container .form-inner, .visa-progress-top { padding-left: 20px; padding-right: 20px; } .visa-sticky-header { padding-left: 20px; padding-right: 20px; flex-wrap: wrap; gap: 10px; } .visa-actions { flex-wrap: wrap; } .visa-wizard-container .btn-1 { padding: 14px 32px; min-width: 140px; font-size: 14px; } }
+            .visa-wizard-container .form-label { display: block; font-weight: 600; margin-bottom: 10px; color: #222; font-size: 15px; }
+            .visa-wizard-container .form-control { display: block; width: 100%; height: 50px; padding: 12px 18px; font-size: 16px; color: #6E6E6E; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; transition: all 0.3s ease; box-shadow: none; }
+            .visa-wizard-container .form-control:focus { border-color: #ffaa17; outline: none; box-shadow: 0 0 0 3px rgba(255,170,23,0.15); }
+            .visa-wizard-container .form-control::placeholder { color: #aaa; }
+            .form-desc { font-size: 13px; color: #797979; margin-top: 8px; }
+            .visa-wizard-container .step-title { font-size: 20px; font-weight: 700; color: #222; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 2px solid #ffaa17; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+            .visa-step-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; min-width: 32px; background: #222; color: #fff; font-size: 14px; font-weight: 700; border-radius: 4px; line-height: 1; }
+
+            /* Select2 – match form inputs */
+            .visa-wizard-container .select2-container { width: 100% !important; }
+            .visa-wizard-container .select2-container .select2-selection--single { height: 50px !important; background: #fff !important; border: 1px solid #e0e0e0 !important; border-radius: 8px !important; display: flex !important; align-items: center !important; padding: 0 18px; }
+            .visa-wizard-container .select2-container--default.select2-container--focus .select2-selection--single { border-color: #ffaa17 !important; box-shadow: 0 0 0 3px rgba(255,170,23,0.15); }
+            .visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__arrow { height: 50px !important; right: 12px; }
+            .visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__rendered { color: #6E6E6E !important; padding-left: 0 !important; font-size: 16px; }
+
+            /* File upload */
+            .file-upload-wrapper input[type=file] { padding: 12px 0; font-size: 14px; }
+            .upload-preview-box { margin-top: 12px; display: none; }
+            .upload-preview-box img { height: 100px; border-radius: 8px; border: 1px solid #e0e0e0; }
+
+            /* Review box */
+            .review-box { background: #F9F9F9; padding: 28px 32px; border-radius: 10px; border: 1px solid #eee; }
+            .review-item { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; padding-bottom: 10px; border-bottom: 1px dashed #e0e0e0; }
+            .review-item:last-of-type { border-bottom: none; }
             .review-value { font-weight: 700; color: #222; text-align: right; }
-            .visa-actions { margin-top: 30px; display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 30px; }
-            .visa-wizard-container .btn-1 { padding: 12px 35px; font-weight: 700; text-transform: uppercase; color: #fff; background: #ffaa17; border: none; cursor: pointer; border-radius: 5px; font-size: 14px; }
-            .visa-wizard-container .btn-1:hover { background: #222; }
-            .visa-wizard-container .btn-back { background: #e5e5e5; color: #555; }
-            .visa-wizard-container .btn-back:hover { background: #ccc; }
-            .error-message { background: #fff3cd; color: #856404; padding: 15px; margin-bottom: 20px; border: 1px solid #ffeeba; border-radius: 5px; display: none; }
-            .input-error { border: 1px solid #ff3b30 !important; }
-            .select2-container .select2-selection.input-error { border: 1px solid #ff3b30 !important; }
-            
-            /* MODAL STYLES */
+
+            /* Actions – ref: image – Back small left, primary OK-style right */
+            .visa-actions { margin-top: 36px; padding-top: 28px; border-top: 1px solid #e3e3e3; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+            .visa-wizard-container .btn-1 { padding: 16px 48px; min-width: 160px; font-weight: 700; text-transform: uppercase; color: #fff; background: #ffaa17; border: none; cursor: pointer; border-radius: 8px; font-size: 15px; transition: all 0.3s ease; text-align: center; }
+            .visa-wizard-container .btn-1:hover { background: #222; color: #fff; }
+            .visa-wizard-container .btn-back { padding: 10px 20px; min-width: auto; font-weight: 600; font-size: 13px; color: #555; background: transparent; border: 1px solid #ddd; }
+            .visa-wizard-container .btn-back:hover { background: #f0f0f0; border-color: #ccc; color: #222; }
+            .visa-actions .visa-btn-spacer { flex: 1; }
+
+            /* Error */
+            .error-message { background: #fff8e6; color: #856404; padding: 16px 20px; margin: 20px 0; border: 1px solid #ffeeba; border-radius: 8px; display: none; }
+            .input-error { border-color: #e8161b !important; }
+            .visa-wizard-container .select2-container .select2-selection.input-error { border-color: #e8161b !important; }
+
+            /* Modal */
             .visa-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px); align-items: center; justify-content: center; }
-            .visa-modal-content { background-color: #fff; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 700px; border-radius: 8px; box-shadow: 0 15px 50px rgba(0,0,0,0.5); position: relative; animation: slideDown 0.3s; }
-            @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-            .visa-close { position: absolute; right: 15px; top: 10px; color: #aaa; font-size: 30px; font-weight: bold; cursor: pointer; z-index: 10; }
-            .visa-close:hover { color: #000; }
-            .visa-modal-body { max-height: 70vh; overflow-y: auto; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #333; }
+            .visa-modal-content { background: #fff; margin: 5% auto; padding: 30px; width: 90%; max-width: 700px; border-radius: 15px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); position: relative; animation: visaSlideDown 0.3s ease; }
+            @keyframes visaSlideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+            .visa-close { position: absolute; right: 18px; top: 14px; color: #999; font-size: 28px; font-weight: bold; cursor: pointer; }
+            .visa-close:hover { color: #222; }
+            .visa-modal-body { max-height: 70vh; overflow-y: auto; margin-top: 12px; font-size: 15px; line-height: 1.65; color: #333; }
             .visa-link { color: #ffaa17; text-decoration: underline; cursor: pointer; font-weight: 600; }
 
-            /* FIX: POSTCODE HIDE FORCEFULLY (CSS FALLBACK) */
             #billing_postcode_field, .billing_postcode_field { display: none !important; }
-
-            /* HIDE CONTACT INFORMATION & BILLING ADDRESS ON CHECKOUT */
             .wp-block-woocommerce-checkout-contact-information-block,
             [data-block-name="woocommerce/checkout-contact-information-block"],
             .wp-block-woocommerce-checkout-billing-address-block,
             [data-block-name="woocommerce/checkout-billing-address-block"],
             .wc-block-components-checkout-contact-information-block,
-            .wc-block-components-checkout-billing-address-block {
-                display: none !important;
-            }
+            .wc-block-components-checkout-billing-address-block { display: none !important; }
         ' );
     }
 
@@ -246,13 +275,15 @@ class Visa_Wizard_V2_5 {
         ob_start();
         ?>
         <div class="visa-wizard-container contact-section" id="visa_wizard">
+            <!-- Progress: thin bar on top only -->
+            <div class="visa-progress-top">
+                <div class="visa-progress-track"><div class="visa-progress-fill" id="progress_bar"></div></div>
+            </div>
             <div class="form-inner">
                 <div class="visa-sticky-header">
-                    <div class="visa-header-title">Apply For Visa</div>
+                    <div class="visa-step-info">Step <span id="current_step_num">1</span> of 7</div>
                     <div class="visa-total-price" id="header_price_display">--</div>
                 </div>
-                <div class="visa-step-info">Step <span id="current_step_num">1</span> of 7</div>
-                <div class="visa-progress-container"><div class="visa-progress-bar" id="progress_bar"></div></div>
                 <div id="global_error" class="error-message">Please fill in all required fields.</div>
 
                 <form id="visa_form">
@@ -261,7 +292,7 @@ class Visa_Wizard_V2_5 {
                     
                     <div class="step-content active" data-step="1">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">1. Where are you from?</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">1</span>Where are you from?</h3></div>
                             <div class="col-lg-12 form-group">
                                 <label class="form-label">Nationality *</label>
                                 <select name="nationality" class="form-control required-field select2-enable">
@@ -277,7 +308,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="2">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">2. Select Visa Type</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">2</span>Select Visa Type</h3></div>
                             <div class="col-lg-12 form-group">
                                 <label class="form-label">Visa Type *</label>
                                 <select name="visa_type" class="form-control price-trigger required-field select2-enable" id="select_visa_type">
@@ -293,7 +324,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="3">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">3. Processing Time</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">3</span>Processing Time</h3></div>
                             <div class="col-lg-12 form-group">
                                 <label class="form-label">Processing Time *</label>
                                 <select name="processing_time" class="form-control price-trigger required-field select2-enable" id="select_processing_time">
@@ -310,7 +341,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="4">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">4. Date of Arrival</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">4</span>Date of Arrival</h3></div>
                             <div class="col-lg-12 form-group">
                                 <label class="form-label">Arrival Date *</label>
                                 <input type="date" name="arrival_date" class="form-control required-field" value="<?php echo esc_attr($prefill['arrival_date'] ?? ''); ?>">
@@ -320,7 +351,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="5">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">5. Documents Upload</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">5</span>Documents Upload</h3></div>
                             <div class="col-lg-6 col-md-6 form-group">
                                 <label class="form-label">Passport Photo *</label>
                                 <div class="file-upload-wrapper">
@@ -344,7 +375,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="6">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">6. Contact Details</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">6</span>Contact Details</h3></div>
                             <div class="col-lg-6 col-md-6 form-group">
                                 <label class="form-label">Full Name *</label>
                                 <input type="text" name="fullname" class="form-control required-field" placeholder="Enter full name" value="<?php echo esc_attr($prefill['fullname'] ?? ''); ?>">
@@ -373,7 +404,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="7">
                         <div class="row clearfix">
-                            <div class="col-lg-12 form-group"><h3 class="step-title">7. Review & Pay</h3></div>
+                            <div class="col-lg-12 form-group"><h3 class="step-title"><span class="visa-step-badge">7</span>Review & Pay</h3></div>
                             <div class="col-lg-12">
                                 <div class="review-box">
                                     <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
@@ -403,6 +434,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="visa-actions">
                         <button type="button" class="btn-1 btn-back" id="btn_back" style="display:none;">Back</button>
+                        <span class="visa-btn-spacer"></span>
                         <button type="button" class="btn-1 btn-next" id="btn_next">Next Step</button>
                         <button type="button" class="btn-1 btn-checkout" id="btn_submit" style="display:none;">PAY NOW</button>
                     </div>
@@ -445,7 +477,7 @@ class Visa_Wizard_V2_5 {
                 if(e.target === this || $(this).hasClass("visa-close")) $(".visa-modal").fadeOut();
             });
 
-            $(".step-content").hide(); $(".step-content[data-step=\"1\"]").show();
+            showStep(1);
             if($("#passport_url").val()) $("#prev_passport").show();
             if($("#photo_url").val()) $("#prev_photo").show();
 
