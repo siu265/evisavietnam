@@ -142,6 +142,16 @@
 
 .visa-wizard-container .phone-code-wrap { flex: 0 0 140px; }
 .visa-wizard-container .phone-number-wrap { flex: 1; min-width: 0; }
+.visa-wizard-container .phone-number-wrap .form-control {
+    border: none;
+    border-bottom: 2px solid #e0e0e0;
+    border-radius: 0;
+}
+.visa-wizard-container .phone-number-wrap .form-control:focus {
+    border-bottom-color: #ffaa17;
+    outline: none;
+    box-shadow: none;
+}
 
 .visa-step-inner .form-control { text-align: center; }
 

@@ -71,11 +71,14 @@ class Visa_Wizard_V2_5 {
             </div>
             <form method="post" action="options.php">
                 <?php settings_fields( 'visa_group' ); ?>
-                <?php if ( $active_tab == 'general' ): 
-                    $days = get_option('visa_work_days', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
-                    $start = get_option('visa_work_start', '08:30');
-                    $end = get_option('visa_work_end', '16:30');
+                <?php
+                $days = get_option('visa_work_days', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
+                $start = get_option('visa_work_start', '08:30');
+                $end = get_option('visa_work_end', '16:30');
+                $current_list = get_option( 'visa_nationalities_list', '' );
+                if ( empty( $current_list ) ) $current_list = "Japan\nSouth Korea\nAustralia\nUnited States\nCanada\nChina\nTaiwan\nFrance\nGermany\nNew Zealand";
                 ?>
+                <div class="visa-tab-panel" id="tab-general" style="<?php echo $active_tab !== 'general' ? 'display:none;' : ''; ?>">
                     <div class="visa-card">
                         <h2>Schedule</h2>
                         <table class="form-table">
@@ -89,12 +92,10 @@ class Visa_Wizard_V2_5 {
                         <div style="margin-bottom:20px;"><label>Privacy</label><?php wp_editor( get_option('visa_privacy_content'), 'visa_privacy_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                         <div><label>Refund</label><?php wp_editor( get_option('visa_refund_content'), 'visa_refund_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                     </div>
-                <?php elseif ( $active_tab == 'nationality' ): 
-                    $current_list = get_option( 'visa_nationalities_list', '' );
-                    if(empty($current_list)) $current_list = "Vietnam\nUSA\nUK";
-                ?>
+                </div>
+                <div class="visa-tab-panel" id="tab-nationality" style="<?php echo $active_tab !== 'nationality' ? 'display:none;' : ''; ?>">
                     <div class="visa-card"><h2>Nationalities</h2><textarea name="visa_nationalities_list" rows="20" class="large-text code"><?php echo esc_textarea( $current_list ); ?></textarea></div>
-                <?php endif; ?>
+                </div>
                 <div class="visa-submit-bar"><?php submit_button('Save Changes', 'primary large', 'submit', false); ?></div>
             </form>
         </div>
@@ -104,7 +105,7 @@ class Visa_Wizard_V2_5 {
     /* ================= 2. FRONTEND LOGIC ================= */
 
     private function get_all_phone_codes() {
-        return [ '+84'=>'🇻🇳 Vietnam (+84)', '+1'=>'🇺🇸 United States (+1)', '+44'=>'🇬🇧 United Kingdom (+44)', '+61'=>'🇦🇺 Australia (+61)', '+1'=>'🇨🇦 Canada (+1)', '+33'=>'🇫🇷 France (+33)', '+49'=>'🇩🇪 Germany (+49)', '+81'=>'🇯🇵 Japan (+81)', '+82'=>'🇰🇷 South Korea (+82)', '+91'=>'🇮🇳 India (+91)', '+86'=>'🇨🇳 China (+86)', '+65'=>'🇸🇬 Singapore (+65)', '+66'=>'🇹🇭 Thailand (+66)', '+62'=>'🇮🇩 Indonesia (+62)', '+60'=>'🇲🇾 Malaysia (+60)', '+63'=>'🇵🇭 Philippines (+63)', '+7'=>'🇷🇺 Russia (+7)', '+34'=>'🇪🇸 Spain (+34)', '+39'=>'🇮🇹 Italy (+39)', '+31'=>'🇳🇱 Netherlands (+31)', '+41'=>'🇨🇭 Switzerland (+41)', '+46'=>'🇸🇪 Sweden (+46)', '+852'=>'🇭🇰 Hong Kong (+852)', '+886'=>'🇹🇼 Taiwan (+886)', '+90'=>'🇹🇷 Turkey (+90)', '+971'=>'🇦🇪 UAE (+971)', '+55'=>'🇧🇷 Brazil (+55)' ];
+        return [ '+84'=>'🇻🇳 VN (+84)', '+1'=>'🇺🇸 US (+1)', '+44'=>'🇬🇧 UK (+44)', '+61'=>'🇦🇺 AU (+61)', '+1'=>'🇨🇦 CA (+1)', '+33'=>'🇫🇷 FR (+33)', '+49'=>'🇩🇪 DE (+49)', '+81'=>'🇯🇵 JP (+81)', '+82'=>'🇰🇷 KR (+82)', '+91'=>'🇮🇳 IN (+91)', '+86'=>'🇨🇳 CN (+86)', '+65'=>'🇸🇬 SG (+65)', '+66'=>'🇹🇭 TH (+66)', '+62'=>'🇮🇩 ID (+62)', '+60'=>'🇲🇾 MY (+60)', '+63'=>'🇵🇭 PH (+63)', '+7'=>'🇷🇺 RU (+7)', '+34'=>'🇪🇸 ES (+34)', '+39'=>'🇮🇹 IT (+39)', '+31'=>'🇳🇱 NL (+31)', '+41'=>'🇨🇭 CH (+41)', '+46'=>'🇸🇪 SE (+46)', '+852'=>'🇭🇰 HK (+852)', '+886'=>'🇹🇼 TW (+886)', '+90'=>'🇹🇷 TR (+90)', '+971'=>'🇦🇪 AE (+971)', '+55'=>'🇧🇷 BR (+55)' ];
     }
 
     private function get_attribute_label( $slug, $taxonomy ) {
@@ -417,6 +418,14 @@ class Visa_Wizard_V2_5 {
                         isValid = false; $(this).addClass("input-error");
                         if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").addClass("input-error"); }
                     } else { 
+                        // Validate phone number format (step 6 - Contact Information)
+                        if($(this).attr("name") === "phone_number" && step === 6) {
+                            if(!validatePhoneNumber($(this).val())) {
+                                isValid = false;
+                                $(this).addClass("input-error");
+                                return;
+                            }
+                        }
                         $(this).removeClass("input-error"); 
                         if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").removeClass("input-error"); }
                     }
@@ -432,6 +441,22 @@ class Visa_Wizard_V2_5 {
                     $("#global_error").hide(); 
                 }
             });
+
+            // Phone number validation: chỉ cho phép số
+            $(document).on("input", "input[name='phone_number']", function() {
+                let value = $(this).val();
+                // Chỉ giữ lại số (0-9)
+                let cleaned = value.replace(/[^0-9]/g, '');
+                if(value !== cleaned) {
+                    $(this).val(cleaned);
+                }
+            });
+
+            // Validate phone number format khi submit
+            function validatePhoneNumber(phone) {
+                // Chỉ cho phép số, tối thiểu 7 chữ số, tối đa 15 chữ số (theo ITU-T E.164)
+                return /^[0-9]{7,15}$/.test(phone);
+            }
 
             $("#btn_next").click(function(e){ e.preventDefault(); if(validateStep(currentStep)) { currentStep++; showStep(currentStep); } });
             $("#btn_back").click(function(e){ e.preventDefault(); currentStep--; showStep(currentStep); });
