@@ -422,6 +422,7 @@
     font-size: 15px;
     transition: all 0.3s ease;
     text-align: center;
+    box-shadow: unset;
 }
 
 .visa-wizard-container .btn-1:hover {
