@@ -347,9 +347,9 @@ class Visa_Wizard_V2_5 {
                     </div>
 
                     <div class="visa-actions">
-                        <button type="button" class="btn-1 btn-back" id="btn_back" style="display:none;">Back</button>
+                        <button type="button" class="btn-1 btn-back" id="btn_back" style="display:none;">← Back</button>
                         <span class="visa-btn-spacer"></span>
-                        <button type="button" class="btn-1 btn-next" id="btn_next">Next Step</button>
+                        <button type="button" class="btn-1 btn-next" id="btn_next">Next →</button>
                         <button type="button" class="btn-1 btn-checkout" id="btn_submit" style="display:none;">PAY NOW</button>
                     </div>
                 </form>
