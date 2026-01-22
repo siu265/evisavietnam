@@ -232,7 +232,7 @@
 .upload-preview-box img { height: 100px; border-radius: 8px; border: 1px solid #e0e0e0; max-width: 100%; }
 
 /* ========== Review box ========== */
-.visa-step-inner .review-box { max-width: 400px; margin: 0 auto 24px; text-align: left; }
+.visa-step-inner .review-box { max-width: 560px; margin: 0 auto 32px; text-align: left; }
 .review-box {
     background: #F9F9F9;
     padding: 28px 32px;
@@ -243,10 +243,12 @@
 .review-item {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 12px;
     font-size: 15px;
     padding-bottom: 10px;
     border-bottom: 1px dashed #e0e0e0;
+    line-height: 1.5;
 }
 
 .review-item:last-of-type { border-bottom: none; }
@@ -259,7 +261,20 @@
 }
 
 .review-item.review-total .review-value { color: #ffaa17; font-size: 22px; }
-.review-value { font-weight: 700; color: #222; text-align: right; }
+.review-value { 
+    font-weight: 700; 
+    color: #222; 
+    text-align: right; 
+    flex: 1;
+    margin-left: 16px;
+    word-break: break-word;
+}
+.review-item span:first-child {
+    font-weight: 600;
+    color: #555;
+    flex-shrink: 0;
+    min-width: 140px;
+}
 
 /* Terms – step 7 */
 .visa-terms-wrap { margin-top: 20px !important; }
@@ -595,7 +610,7 @@
     flex-shrink: 0;
 }
 
-.woocommerce-additional-fields, .order_review_heading {
+.woocommerce-additional-fields, #order_review_heading {
     display: none !important;
 }
 

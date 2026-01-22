@@ -350,6 +350,23 @@ class Visa_Wizard_V2_5 {
                         <div class="visa-step-inner">
                             <h3 class="step-title"><span class="visa-step-badge">7</span>Review & Payment</h3>
                             <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
+                            
+                            <!-- Review Box: Hiển thị tất cả thông tin đã nhập -->
+                            <div class="review-box" id="review_summary">
+                                <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
+                                <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
+                                <div class="review-item"><span>Processing Time:</span> <span class="review-value" id="rev_time">--</span></div>
+                                <div class="review-item"><span>Arrival Date:</span> <span class="review-value" id="rev_date">--</span></div>
+                                <div class="review-item"><span>Full Name:</span> <span class="review-value" id="rev_name">--</span></div>
+                                <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
+                                <div class="review-item"><span>Phone:</span> <span class="review-value" id="rev_phone">--</span></div>
+                                <div class="review-item"><span>Passport:</span> <span class="review-value" id="rev_passport">--</span></div>
+                                <div class="review-item"><span>Photo:</span> <span class="review-value" id="rev_photo">--</span></div>
+                                <div class="review-item review-total">
+                                    <span>Total:</span> <span class="review-value" id="rev_price">--</span>
+                                </div>
+                            </div>
+                            
                             <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
                                 <!-- Checkout form sẽ được load vào đây -->
                             </div>
@@ -418,6 +435,8 @@ class Visa_Wizard_V2_5 {
                 if(step === totalSteps) { 
                     $("#btn_next").hide(); 
                     $("#btn_submit").hide(); 
+                    // Populate review data khi đến step 7
+                    populateReview();
                     // Load checkout form khi đến step 7
                     if(!$("#visa_checkout_wrapper").html().trim()) {
                         loadCheckoutForm();
@@ -435,6 +454,10 @@ class Visa_Wizard_V2_5 {
                 }, function(res){
                     if(res.success) {
                         $("#visa_checkout_wrapper").html(res.data.html);
+                        
+                        // Bind event handler cho form checkout sau khi form được load
+                        bindCheckoutFormSubmit();
+                        
                         // Trigger WooCommerce checkout scripts
                         if(typeof jQuery !== 'undefined') {
                             jQuery('body').trigger('update_checkout');
@@ -452,6 +475,139 @@ class Visa_Wizard_V2_5 {
                     } else {
                         $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
                     }
+                });
+            }
+            
+            function bindCheckoutFormSubmit() {
+                // Unbind event cũ trước (nếu có)
+                $("#visa_checkout_wrapper form.checkout").off("submit");
+                
+                // Bind event mới
+                $("#visa_checkout_wrapper form.checkout").on("submit", function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    let $form = $(this);
+                    let $submitBtn = $form.find("#place_order");
+                    let originalText = $submitBtn.val() || $submitBtn.text();
+                    
+                    // Disable button và show loading
+                    $submitBtn.prop("disabled", true);
+                    if($submitBtn.is("button")) {
+                        $submitBtn.text("Processing...");
+                    } else {
+                        $submitBtn.val("Processing...");
+                    }
+                    
+                    // Xóa các error message cũ
+                    $form.find(".woocommerce-error").remove();
+                    
+                    // Lấy tất cả form data
+                    let formData = $form.serialize();
+                    
+                    // Đảm bảo có woocommerce_checkout_place_order
+                    if(formData.indexOf("woocommerce_checkout_place_order") === -1) {
+                        formData += "&woocommerce_checkout_place_order=1";
+                    }
+                    
+                    // Sử dụng WooCommerce AJAX endpoint
+                    var checkoutUrl = "<?php echo esc_url( home_url( '/?wc-ajax=checkout' ) ); ?>";
+                    
+                    console.log("Submitting checkout form to:", checkoutUrl);
+                    console.log("Form data:", formData);
+                    
+                    $.ajax({
+                        url: checkoutUrl,
+                        type: "POST",
+                        data: formData,
+                        dataType: "json",
+                        timeout: 30000,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(response) {
+                            console.log("Checkout response:", response);
+                            
+                            if(response && response.result === "success") {
+                                // Redirect đến trang order received
+                                if(response.redirect) {
+                                    window.location.href = response.redirect;
+                                } else {
+                                    // Fallback: redirect đến thank you page
+                                    var thankYouUrl = "<?php echo esc_url( wc_get_endpoint_url( 'order-received', '', wc_get_checkout_url() ) ); ?>";
+                                    window.location.href = thankYouUrl;
+                                }
+                            } else {
+                                // Hiển thị lỗi
+                                var errorMsg = "Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.";
+                                if(response && response.messages) {
+                                    errorMsg = response.messages;
+                                    $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
+                                } else {
+                                    alert(errorMsg);
+                                }
+                                $submitBtn.prop("disabled", false);
+                                if($submitBtn.is("button")) {
+                                    $submitBtn.text(originalText);
+                                } else {
+                                    $submitBtn.val(originalText);
+                                }
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log("Checkout error:", xhr, status, error);
+                            console.log("Response text:", xhr.responseText);
+                            
+                            // Kiểm tra nếu response là HTML redirect
+                            var responseText = xhr.responseText || "";
+                            
+                            // Thử parse JSON từ responseText
+                            try {
+                                var jsonResponse = JSON.parse(responseText);
+                                if(jsonResponse && jsonResponse.result === "success" && jsonResponse.redirect) {
+                                    window.location.href = jsonResponse.redirect;
+                                    return;
+                                }
+                                if(jsonResponse && jsonResponse.messages) {
+                                    $form.prepend('<div class="woocommerce-error" role="alert">' + jsonResponse.messages + '</div>');
+                                    $submitBtn.prop("disabled", false);
+                                    if($submitBtn.is("button")) {
+                                        $submitBtn.text(originalText);
+                                    } else {
+                                        $submitBtn.val(originalText);
+                                    }
+                                    return;
+                                }
+                            } catch(e) {
+                                // Không phải JSON
+                            }
+                            
+                            // Nếu response là HTML redirect hoặc có window.location
+                            if(responseText.indexOf("<!DOCTYPE") !== -1 || 
+                               responseText.indexOf("window.location") !== -1 ||
+                               responseText.indexOf("location.href") !== -1) {
+                                // WooCommerce đã redirect, tìm URL redirect trong response
+                                var redirectMatch = responseText.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
+                                if(redirectMatch && redirectMatch[1]) {
+                                    window.location.href = redirectMatch[1];
+                                    return;
+                                }
+                                // Nếu không tìm thấy, submit form bình thường
+                                $form.off("submit").submit();
+                                return;
+                            }
+                            
+                            alert("Có lỗi xảy ra khi xử lý đơn hàng: " + (error || status));
+                            $submitBtn.prop("disabled", false);
+                            if($submitBtn.is("button")) {
+                                $submitBtn.text(originalText);
+                            } else {
+                                $submitBtn.val(originalText);
+                            }
+                        }
+                    });
+                    
+                    return false;
                 });
             }
 
@@ -608,105 +764,64 @@ class Visa_Wizard_V2_5 {
             setupUpload("#file_photo", "#photo_url", "#stat_photo", "#prev_photo");
 
             function populateReview() {
-                $("#rev_nation").text($("select[name=\"nationality\"]").val());
-                let typeLabel = $("#select_visa_type option:selected").data("label"); $("#rev_type").text(typeLabel);
-                let timeLabel = $("#select_processing_time option:selected").data("label"); $("#rev_time").text(timeLabel);
-                $("#rev_date").text($("input[name=\"arrival_date\"]").val());
-                $("#rev_name").text($("input[name=\"fullname\"]").val());
-                $("#rev_email").text($("input[name=\"email\"]").val());
-                $("#rev_phone").text($("input[name=\"phone_number\"]").val());
-                $("#rev_price").html($("#header_price_display").html());
+                // Nationality
+                let nationality = $("select[name=\"nationality\"]").val() || "--";
+                $("#rev_nation").text(nationality);
+                
+                // Visa Type
+                let typeLabel = $("#select_visa_type option:selected").data("label");
+                if(!typeLabel) {
+                    typeLabel = $("#select_visa_type option:selected").text();
+                }
+                $("#rev_type").text(typeLabel || "--");
+                
+                // Processing Time
+                let timeLabel = $("#select_processing_time option:selected").data("label");
+                if(!timeLabel) {
+                    timeLabel = $("#select_processing_time option:selected").text();
+                }
+                $("#rev_time").text(timeLabel || "--");
+                
+                // Arrival Date
+                let arrivalDate = $("input[name=\"arrival_date\"]").val() || "--";
+                $("#rev_date").text(arrivalDate);
+                
+                // Full Name
+                let fullName = $("input[name=\"fullname\"]").val() || "--";
+                $("#rev_name").text(fullName);
+                
+                // Email
+                let email = $("input[name=\"email\"]").val() || "--";
+                $("#rev_email").text(email);
+                
+                // Phone
+                let phoneCode = $("select[name=\"phone_code\"]").val() || "";
+                let phoneNumber = $("input[name=\"phone_number\"]").val() || "";
+                let phone = phoneCode && phoneNumber ? phoneCode + " " + phoneNumber : (phoneNumber || "--");
+                $("#rev_phone").text(phone);
+                
+                // Passport
+                let passportUrl = $("input[name=\"passport_url\"]").val() || "";
+                if(passportUrl) {
+                    $("#rev_passport").html('<span style="color:green;">✓ Uploaded</span>');
+                } else {
+                    $("#rev_passport").text("--");
+                }
+                
+                // Photo
+                let photoUrl = $("input[name=\"photo_url\"]").val() || "";
+                if(photoUrl) {
+                    $("#rev_photo").html('<span style="color:green;">✓ Uploaded</span>');
+                } else {
+                    $("#rev_photo").text("--");
+                }
+                
+                // Price
+                let priceHtml = $("#header_price_display").html() || "--";
+                $("#rev_price").html(priceHtml);
             }
 
-            // Submit checkout form từ step 7 - Intercept và xử lý bằng AJAX
-            $(document).on("submit", "#visa_checkout_wrapper form.checkout", function(e){
-                e.preventDefault();
-                
-                let $form = $(this);
-                let $submitBtn = $form.find("#place_order");
-                let originalText = $submitBtn.val() || $submitBtn.text();
-                
-                // Disable button và show loading
-                $submitBtn.prop("disabled", true);
-                if($submitBtn.is("button")) {
-                    $submitBtn.text("Processing...");
-                } else {
-                    $submitBtn.val("Processing...");
-                }
-                
-                // Lấy tất cả form data
-                let formData = $form.serialize();
-                
-                // Thêm action để WooCommerce xử lý
-                formData += "&woocommerce_checkout_place_order=1";
-                
-                // Submit bằng AJAX - sử dụng WooCommerce AJAX endpoint
-                var checkoutUrl = $form.attr("action") || wc_checkout_params.checkout_url;
-                // Thêm wc-ajax=checkout để WooCommerce xử lý bằng AJAX
-                if(checkoutUrl.indexOf("wc-ajax") === -1) {
-                    checkoutUrl = checkoutUrl.replace(/\?.*$/, "") + "?wc-ajax=checkout";
-                }
-                
-                $.ajax({
-                    url: checkoutUrl,
-                    type: "POST",
-                    data: formData,
-                    dataType: "json",
-                    success: function(response) {
-                        if(response && response.result === "success") {
-                            // Redirect đến trang order received
-                            if(response.redirect) {
-                                window.location.href = response.redirect;
-                            } else {
-                                // Fallback: redirect đến thank you page
-                                window.location.href = wc_checkout_params.checkout_url.replace("checkout", "order-received");
-                            }
-                        } else {
-                            // Hiển thị lỗi
-                            if(response && response.messages) {
-                                $form.prepend('<div class="woocommerce-error" role="alert">' + response.messages + '</div>');
-                            } else {
-                                alert("Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.");
-                            }
-                            $submitBtn.prop("disabled", false);
-                            if($submitBtn.is("button")) {
-                                $submitBtn.text(originalText);
-                            } else {
-                                $submitBtn.val(originalText);
-                            }
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Kiểm tra nếu response là HTML redirect
-                        var responseText = xhr.responseText || "";
-                        if(responseText.indexOf("<!DOCTYPE") !== -1 || responseText.indexOf("window.location") !== -1) {
-                            // WooCommerce đã redirect, submit form bình thường để follow redirect
-                            $form.off("submit").submit();
-                        } else {
-                            // Thử parse JSON từ responseText
-                            try {
-                                var jsonResponse = JSON.parse(responseText);
-                                if(jsonResponse && jsonResponse.result === "success" && jsonResponse.redirect) {
-                                    window.location.href = jsonResponse.redirect;
-                                    return;
-                                }
-                            } catch(e) {
-                                // Không phải JSON
-                            }
-                            
-                            alert("Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.");
-                            $submitBtn.prop("disabled", false);
-                            if($submitBtn.is("button")) {
-                                $submitBtn.text(originalText);
-                            } else {
-                                $submitBtn.val(originalText);
-                            }
-                        }
-                    }
-                });
-                
-                return false;
-            });
+            // Event handler sẽ được bind trong loadCheckoutForm() sau khi form được load
         });
         </script>
         <?php
