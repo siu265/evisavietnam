@@ -47,6 +47,7 @@ function woocommerce_onepay_init()
 			$this->id = 'onepay';
 			$this->method_title = 'OnePay-Paygate-VCB-Exchange-Rate';
 			$this->has_fields = false;
+			$this->form_submission_method = false;
 
 			$this->init_form_fields();
 			$this->init_settings();
@@ -168,6 +169,7 @@ function woocommerce_onepay_init()
 		public function admin_options()
 		{
 			echo '<h3>' . __('Onepay Payment Gateway', 'monepayus') . '</h3>';
+			$this->maybe_show_config_warning();
 			echo '<table class="form-table">';
 			// Generate the HTML For the settings form.
 			$this->generate_settings_html();
@@ -184,27 +186,46 @@ function woocommerce_onepay_init()
 		}
 
 		/**
-		 * Check if the gateway is available for use
-		 * 
+		 * Check if the gateway is available for use.
+		 * Chỉ kiểm tra enabled; cấu hình đầy đủ sẽ được validate khi process_payment.
+		 *
 		 * @return bool
 		 */
 		public function is_available()
 		{
-			// Kiểm tra gateway có được kích hoạt không
 			if ($this->enabled !== 'yes') {
 				return false;
 			}
-
-			// Kiểm tra các thông tin cấu hình bắt buộc
-			if (empty($this->merchant_id) || 
-				empty($this->merchant_access_code) || 
-				empty($this->secure_secret) || 
-				empty($this->onepay_url)) {
-				return false;
-			}
-
-			// Gọi method is_available() của parent class để kiểm tra các điều kiện khác
 			return parent::is_available();
+		}
+
+		/**
+		 * Kiểm tra đã cấu hình đủ Merchant ID, Access Code, Secure Secret, OnePAY URL chưa.
+		 *
+		 * @return bool
+		 */
+		public function has_required_config()
+		{
+			$mid = isset($this->settings['merchant_id']) ? trim((string) $this->settings['merchant_id']) : '';
+			$mac = isset($this->settings['merchant_access_code']) ? trim((string) $this->settings['merchant_access_code']) : '';
+			$sec = isset($this->settings['secure_secret']) ? trim((string) $this->settings['secure_secret']) : '';
+			$url = isset($this->settings['onepay_url']) ? trim((string) $this->settings['onepay_url']) : '';
+			return $mid !== '' && $mac !== '' && $sec !== '' && $url !== '';
+		}
+
+		/**
+		 * Hiển thị cảnh báo trong admin khi bật OnePay nhưng thiếu cấu hình.
+		 */
+		protected function maybe_show_config_warning()
+		{
+			if ($this->enabled !== 'yes') {
+				return;
+			}
+			if ($this->has_required_config()) {
+				return;
+			}
+			echo '<div class="notice notice-warning"><p><strong>' . esc_html__('OnePay:', 'monepayus') . '</strong> '
+				. esc_html__('Cổng thanh toán đã bật nhưng thiếu cấu hình. Vui lòng điền đủ Merchant ID, Merchant Access Code, Secure Secret và OnePAY URL, sau đó nhấn "Save changes". Nếu thiếu, khách hàng có thể chọn OnePay tại checkout nhưng sẽ không thể thanh toán thành công.', 'monepayus') . '</p></div>';
 		}
 
 		/**
@@ -212,15 +233,21 @@ function woocommerce_onepay_init()
 		 **/
 		function process_payment($order_id)
 		{
+			if (!$this->has_required_config()) {
+				wc_add_notice(__('Cấu hình OnePay chưa đầy đủ. Vui lòng liên hệ quản trị viên.', 'monepayus'), 'error');
+				return array('result' => 'failure');
+			}
+
 			$order = new WC_Order($order_id);
 
 			if (!$this->form_submission_method) {
-
 				return array(
 					'result' => 'success',
 					'redirect' => $this->generate_onepayUS_url($order_id)
 				);
 			}
+
+			return array('result' => 'failure');
 		}
 
 		/**
