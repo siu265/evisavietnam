@@ -3,27 +3,6 @@
  * Ẩn Contact Information và Billing Address trên trang checkout
  */
 
-/* Ẩn Contact Information Block */
-.wp-block-woocommerce-checkout-contact-information-block,
-[data-block-name="woocommerce/checkout-contact-information-block"],
-.wc-block-components-checkout-contact-information-block {
-    display: none !important;
-}
-
-/* Ẩn Billing Address Block */
-.wp-block-woocommerce-checkout-billing-address-block,
-[data-block-name="woocommerce/checkout-billing-address-block"],
-.wc-block-components-checkout-billing-address-block {
-    display: none !important;
-}
-
-/* Ẩn các field billing riêng lẻ (fallback) */
-#billing_postcode_field,
-.billing_postcode_field,
-#billing_company_field,
-#billing_address_1_field,
-#billing_address_2_field,
-#billing_city_field,
-#billing_state_field {
-    display: none !important;
-}
+ .header-style-one .header-lower .menu-area .main-menu {
+    margin-right: 300px;
+ }
