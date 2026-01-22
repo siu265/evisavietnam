@@ -12,7 +12,7 @@ class Visa_Five_Step_Wizard {
 
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
-        add_shortcode( 'visa_5step_form', array( $this, 'render_wizard' ) );
+        add_shortcode( 'visa_wizard_form', array( $this, 'render_wizard' ) );
 
         // AJAX Handlers
         add_action( 'wp_ajax_visa_get_price', array( $this, 'ajax_get_price' ) );
