@@ -346,33 +346,6 @@ class Visa_Wizard_V2_5 {
                         </div>
                     </div>
 
-                    <div class="step-content" data-step="7">
-                        <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">7</span>Review & Payment</h3>
-                            <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
-                            
-                            <!-- Review Box: Hiển thị tất cả thông tin đã nhập -->
-                            <div class="review-box" id="review_summary">
-                                <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
-                                <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
-                                <div class="review-item"><span>Processing Time:</span> <span class="review-value" id="rev_time">--</span></div>
-                                <div class="review-item"><span>Arrival Date:</span> <span class="review-value" id="rev_date">--</span></div>
-                                <div class="review-item"><span>Full Name:</span> <span class="review-value" id="rev_name">--</span></div>
-                                <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
-                                <div class="review-item"><span>Phone:</span> <span class="review-value" id="rev_phone">--</span></div>
-                                <div class="review-item"><span>Passport:</span> <span class="review-value" id="rev_passport">--</span></div>
-                                <div class="review-item"><span>Photo:</span> <span class="review-value" id="rev_photo">--</span></div>
-                                <div class="review-item review-total">
-                                    <span>Total:</span> <span class="review-value" id="rev_price">--</span>
-                                </div>
-                            </div>
-                            
-                            <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
-                                <!-- Checkout form sẽ được load vào đây -->
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="visa-actions">
                         <button type="button" class="btn-1 btn-back" id="btn_back" style="display:none;">← Back</button>
                         <span class="visa-btn-spacer"></span>
@@ -380,6 +353,33 @@ class Visa_Wizard_V2_5 {
                         <button type="button" class="btn-1 btn-checkout" id="btn_submit" style="display:none;">PAY NOW</button>
                     </div>
                 </form>
+
+                <!-- Step 7 ĐẶT NGOÀI form để tránh form lồng form (checkout form có thẻ <form> riêng) -->
+                <div class="step-content" data-step="7">
+                    <div class="visa-step-inner">
+                        <h3 class="step-title"><span class="visa-step-badge">7</span>Review & Payment</h3>
+                        <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
+                        
+                        <div class="review-box" id="review_summary">
+                            <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
+                            <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
+                            <div class="review-item"><span>Processing Time:</span> <span class="review-value" id="rev_time">--</span></div>
+                            <div class="review-item"><span>Arrival Date:</span> <span class="review-value" id="rev_date">--</span></div>
+                            <div class="review-item"><span>Full Name:</span> <span class="review-value" id="rev_name">--</span></div>
+                            <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
+                            <div class="review-item"><span>Phone:</span> <span class="review-value" id="rev_phone">--</span></div>
+                            <div class="review-item"><span>Passport:</span> <span class="review-value" id="rev_passport">--</span></div>
+                            <div class="review-item"><span>Photo:</span> <span class="review-value" id="rev_photo">--</span></div>
+                            <div class="review-item review-total">
+                                <span>Total:</span> <span class="review-value" id="rev_price">--</span>
+                            </div>
+                        </div>
+                        
+                        <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
+                            <!-- Checkout form sẽ được load vào đây -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -455,57 +455,26 @@ class Visa_Wizard_V2_5 {
                     if(res.success) {
                         $("#visa_checkout_wrapper").html(res.data.html);
                         
-                        // Debug: Log HTML được render
-                        console.log("Checkout HTML loaded:", $("#visa_checkout_wrapper").html().substring(0, 500));
-                        
-                        // Đợi một chút để form được render xong và DOM được update
                         setTimeout(function() {
-                            // Debug: Kiểm tra wrapper có tồn tại không
-                            var $wrapper = $("#visa_checkout_wrapper");
-                            console.log("Wrapper exists:", $wrapper.length > 0);
-                            console.log("Wrapper HTML length:", $wrapper.html().length);
-                            
-                            // Tìm form checkout với nhiều selector khác nhau, ưu tiên ID
-                            var $checkoutForm = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper .visa-checkout-form form, #visa_checkout_wrapper form");
-                            
-                            console.log("Forms found:", $checkoutForm.length);
-                            if($checkoutForm.length > 0) {
-                                console.log("Form HTML:", $checkoutForm[0].outerHTML.substring(0, 300));
-                            }
+                            var $checkoutForm = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper form");
                             
                             if($checkoutForm.length > 0) {
-                                console.log("Found checkout form, binding submit handler");
-                                
-                                // Đảm bảo form không submit bình thường - thay đổi action và onsubmit
                                 $checkoutForm.attr("action", "javascript:void(0);");
                                 $checkoutForm.attr("onsubmit", "return false;");
-                                
-                                // Bind event handler cho form checkout sau khi form được load
                                 bindCheckoutFormSubmit();
-                                
-                                // Trigger WooCommerce checkout scripts
                                 if(typeof jQuery !== 'undefined') {
                                     jQuery('body').trigger('update_checkout');
-                                    // Đảm bảo WooCommerce checkout scripts được load
                                     if(typeof wc_checkout_params === 'undefined') {
-                                        // Load WooCommerce checkout scripts nếu chưa có
                                         var script = document.createElement('script');
                                         script.src = '<?php echo WC()->plugin_url(); ?>/assets/js/frontend/checkout.js';
-                                        script.onload = function() {
-                                            jQuery('body').trigger('update_checkout');
-                                        };
+                                        script.onload = function() { jQuery('body').trigger('update_checkout'); };
                                         document.head.appendChild(script);
                                     }
                                 }
                             } else {
-                                console.error("Checkout form not found in DOM. Retrying...");
-                                console.log("Wrapper content:", $("#visa_checkout_wrapper").html().substring(0, 1000));
-                                // Retry sau 500ms nếu form chưa có
-                                setTimeout(function() {
-                                    bindCheckoutFormSubmit();
-                                }, 500);
+                                setTimeout(function() { bindCheckoutFormSubmit(); }, 300);
                             }
-                        }, 500);
+                        }, 200);
                     } else {
                         $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
                     }
@@ -513,32 +482,14 @@ class Visa_Wizard_V2_5 {
             }
             
             function bindCheckoutFormSubmit() {
-                // Tìm form checkout với nhiều selector khác nhau, ưu tiên ID
-                var $form = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper .visa-checkout-form form, #visa_checkout_wrapper form");
+                var $form = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper form");
                 
-                // Debug: Log tất cả forms trong wrapper
-                var $allForms = $("#visa_checkout_wrapper").find("form");
-                console.log("All forms in wrapper:", $allForms.length);
-                $allForms.each(function(i) {
-                    console.log("Form " + i + ":", $(this).attr("id"), $(this).attr("class"), $(this).attr("name"));
-                });
+                if($form.length === 0) return false;
                 
-                if($form.length === 0) {
-                    console.error("Checkout form not found! Selectors tried: #visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper .visa-checkout-form form");
-                    console.log("Wrapper HTML:", $("#visa_checkout_wrapper").html().substring(0, 1000));
-                    return false;
-                }
-                
-                console.log("Binding submit handler to checkout form");
-                
-                // Unbind event cũ trước (nếu có)
                 $form.off("submit.visaCheckout");
-                
-                // Đảm bảo form không submit bình thường
                 $form.attr("action", "javascript:void(0);");
                 $form.attr("onsubmit", "return false;");
                 
-                // Bind event mới với namespace và priority cao
                 $form.on("submit.visaCheckout", function(e){
                     e.preventDefault();
                     e.stopPropagation();
@@ -578,9 +529,6 @@ class Visa_Wizard_V2_5 {
                     // Thêm action để xử lý checkout
                     formData += "&action=visa_process_checkout";
                     
-                    console.log("Submitting checkout form to:", checkoutUrl);
-                    console.log("Form data:", formData);
-                    
                     $.ajax({
                         url: checkoutUrl,
                         type: "POST",
@@ -591,8 +539,6 @@ class Visa_Wizard_V2_5 {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         success: function(response) {
-                            console.log("Checkout response:", response);
-                            
                             if(response && response.success) {
                                 // Redirect đến trang order received
                                 if(response.data && response.data.redirect) {
@@ -623,13 +569,7 @@ class Visa_Wizard_V2_5 {
                             }
                         },
                         error: function(xhr, status, error) {
-                            console.log("Checkout error:", xhr, status, error);
-                            console.log("Response text:", xhr.responseText);
-                            
-                            // Kiểm tra nếu response là HTML redirect
                             var responseText = xhr.responseText || "";
-                            
-                            // Thử parse JSON từ responseText
                             try {
                                 var jsonResponse = JSON.parse(responseText);
                                 if(jsonResponse && jsonResponse.success && jsonResponse.data && jsonResponse.data.redirect) {
@@ -640,33 +580,15 @@ class Visa_Wizard_V2_5 {
                                     var errorMsg = jsonResponse.data && jsonResponse.data.messages ? jsonResponse.data.messages : "Có lỗi xảy ra khi xử lý đơn hàng.";
                                     $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
                                     $submitBtn.prop("disabled", false);
-                                    if($submitBtn.is("button")) {
-                                        $submitBtn.text(originalText);
-                                    } else {
-                                        $submitBtn.val(originalText);
-                                    }
+                                    if($submitBtn.is("button")) $submitBtn.text(originalText); else $submitBtn.val(originalText);
                                     return;
                                 }
-                            } catch(e) {
-                                // Không phải JSON
-                                console.log("Failed to parse JSON:", e);
-                            }
-                            
-                            // Nếu response là HTML redirect hoặc có window.location
-                            if(responseText.indexOf("<!DOCTYPE") !== -1 || 
-                               responseText.indexOf("window.location") !== -1 ||
-                               responseText.indexOf("location.href") !== -1) {
-                                // WooCommerce đã redirect, tìm URL redirect trong response
-                                var redirectMatch = responseText.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
-                                if(redirectMatch && redirectMatch[1]) {
-                                    window.location.href = redirectMatch[1];
-                                    return;
-                                }
-                                // Nếu không tìm thấy, submit form bình thường
-                                $form.off("submit").submit();
+                            } catch(e) {}
+                            var redirectMatch = responseText.match(/window\.location\.href\s*=\s*['"]([^'"]+)['"]/);
+                            if(redirectMatch && redirectMatch[1]) {
+                                window.location.href = redirectMatch[1];
                                 return;
                             }
-                            
                             alert("Có lỗi xảy ra khi xử lý đơn hàng: " + (error || status));
                             $submitBtn.prop("disabled", false);
                             if($submitBtn.is("button")) {
@@ -988,51 +910,21 @@ class Visa_Wizard_V2_5 {
             WC()->session->set( 'checkout', true );
         }
         
-        // Output checkout form bằng cách sử dụng WooCommerce template
-        echo '<div class="visa-checkout-form">';
-        
-        // Tạo checkout object
         $checkout = WC()->checkout();
         
-        // Output checkout form - sử dụng template
-        do_action( 'woocommerce_before_checkout_form', $checkout );
-        
-        // If checkout registration is disabled and not logged in, the user cannot checkout.
-        if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
-            echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
-        } else {
-            // Sử dụng javascript:void(0) để ngăn form submit bình thường, sẽ xử lý bằng AJAX
-            echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="javascript:void(0);" enctype="multipart/form-data" onsubmit="return false;" id="visa_checkout_form">';
-            
-            if ( $checkout->get_checkout_fields() ) {
-                do_action( 'woocommerce_checkout_before_customer_details' );
-                echo '<div class="col2-set" id="customer_details">';
-                echo '<div class="col-1">';
-                do_action( 'woocommerce_checkout_billing' );
-                echo '</div>';
-                echo '<div class="col-2">';
-                do_action( 'woocommerce_checkout_shipping' );
-                echo '</div>';
-                echo '</div>';
-                do_action( 'woocommerce_checkout_after_customer_details' );
-            }
-            
-            do_action( 'woocommerce_checkout_before_order_review_heading' );
-            echo '<h3 id="order_review_heading">' . esc_html__( 'Your order', 'woocommerce' ) . '</h3>';
-            do_action( 'woocommerce_checkout_before_order_review' );
-            echo '<div id="order_review" class="woocommerce-checkout-review-order">';
-            do_action( 'woocommerce_checkout_order_review' );
-            echo '</div>';
-            do_action( 'woocommerce_checkout_after_order_review' );
-            
-            echo '</form>';
-        }
-        
-        do_action( 'woocommerce_after_checkout_form', $checkout );
-        
+        ob_start();
+        echo '<div class="visa-checkout-form">';
+        wc_get_template( 'checkout/form-checkout.php', array( 'checkout' => $checkout ) );
         echo '</div>';
-        
         $html = ob_get_clean();
+        
+        // Đổi form action thành javascript:void(0) để xử lý submit bằng AJAX, tránh redirect
+        $html = preg_replace(
+            '#<form([^>]*)\s+action="[^"]*"#',
+            '<form$1 action="javascript:void(0);" onsubmit="return false;" id="visa_checkout_form"',
+            $html,
+            1
+        );
         
         wp_send_json_success(['html' => $html]);
     }
