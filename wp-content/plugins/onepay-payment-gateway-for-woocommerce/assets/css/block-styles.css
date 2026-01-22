@@ -1,0 +1,16 @@
+/* Example styles for the block editor */
+.wp-block-onepay-payment-block {
+    background-color: #f3f4f6;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.wp-block-onepay-payment-block h2 {
+    font-size: 24px;
+    color: #0073aa;
+}
+
+.wp-block-onepay-payment-block p {
+    font-size: 16px;
+    color: #333;
+}
