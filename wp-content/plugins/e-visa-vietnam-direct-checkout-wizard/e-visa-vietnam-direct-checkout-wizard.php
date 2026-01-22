@@ -8,7 +8,7 @@ Author: DuyViet
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class Visa_Wizard_V2 {
+class Visa_Wizard_Fixed {
 
     public function __construct() {
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
@@ -31,6 +31,7 @@ class Visa_Wizard_V2 {
 
     public function enqueue_assets() {
         wp_enqueue_script( 'jquery' );
+        // CSS FIX: Thêm !important và ID selector để đảm bảo ẩn/hiện đúng
         wp_add_inline_style( 'wp-block-library', '
             /* --- LAYOUT & CONTAINER --- */
             .visa-wizard-container { max-width: 800px; margin: 30px auto; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; position: relative; }
@@ -43,12 +44,18 @@ class Visa_Wizard_V2 {
 
             /* --- PROGRESS BAR --- */
             .visa-progress-container { background: #f0f2f5; height: 6px; width: 100%; }
-            .visa-progress-bar { background: #3498db; height: 100%; width: 14%; transition: width 0.4s ease; } /* 100% / 7 steps approx 14% */
+            .visa-progress-bar { background: #3498db; height: 100%; width: 14%; transition: width 0.4s ease; }
             .visa-step-info { padding: 10px 30px; font-size: 13px; color: #7f8c8d; font-weight: 600; background: #f9f9f9; border-bottom: 1px solid #eee; }
 
-            /* --- STEPS CONTENT --- */
-            .step-content { padding: 40px 30px; display: none; }
-            .step-content.active { display: block; animation: slideIn 0.3s ease-out; }
+            /* --- STEPS CONTENT (FIXED VISIBILITY) --- */
+            #visa_wizard .step-content { 
+                display: none !important; /* Mặc định ẩn tất cả */
+                padding: 40px 30px; 
+            }
+            #visa_wizard .step-content.active { 
+                display: block !important; /* Chỉ hiện class active */
+                animation: slideIn 0.3s ease-out; 
+            }
             @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
             
             h3.step-title { margin-top: 0; margin-bottom: 25px; color: #2c3e50; font-size: 22px; }
@@ -271,11 +278,15 @@ class Visa_Wizard_V2 {
             let currentStep = 1;
             const totalSteps = 7;
 
+            // FIX: Ẩn tất cả các bước trước khi bắt đầu để đảm bảo không bị chồng
+            $('.step-content').hide();
+            $('.step-content[data-step="1"]').show();
+
             // --- 1. NAVIGATION & VALIDATION ---
             function showStep(step) {
                 $('.error-message').hide();
-                $('.step-content').removeClass('active');
-                $('.step-content[data-step="'+step+'"]').addClass('active');
+                $('.step-content').removeClass('active').hide(); // Thêm hide() để chắc chắn ẩn
+                $('.step-content[data-step="'+step+'"]').fadeIn(300).addClass('active');
                 
                 // Update Progress
                 $('#current_step_num').text(step);
@@ -510,4 +521,4 @@ class Visa_Wizard_V2 {
     }
 }
 
-new Visa_Wizard_V2();
+new Visa_Wizard_Fixed();
