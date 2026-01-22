@@ -1,10 +1,16 @@
 <?php
 /**
- * Tag Main File.
+ * The Template for displaying all single products
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/single-product.php.
+ *
+ * @see https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 1.6.4
+ * 
+ * Custom theme template - IMMIGRO
  * @package IMMIGRO
  * @author  Template Path
- * @version 1.0
  */
 get_header();
 global $wp_query;

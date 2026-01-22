@@ -1,10 +1,16 @@
 <?php
 /**
- * Tag Main File.
+ * The Template for displaying product archives, including the main shop page
  *
+ * This template can be overridden by copying it to yourtheme/woocommerce/archive-product.php.
+ *
+ * @see https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 8.6.0
+ * 
+ * Custom theme template - IMMIGRO
  * @package IMMIGRO
  * @author  tonatheme
- * @version 1.0
  */
 get_header();
 global $wp_query;
