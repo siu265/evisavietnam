@@ -97,3 +97,89 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 if ( ! is_ajax() ) {
 	do_action( 'woocommerce_review_order_after_payment' );
 }
+
+// DEBUG: JavaScript để log payment gateways vào console
+?>
+<script type="text/javascript">
+(function() {
+	'use strict';
+	
+	// Đợi DOM và WooCommerce ready
+	if (typeof jQuery !== 'undefined' && typeof wc_checkout_params !== 'undefined') {
+		jQuery(document).ready(function($) {
+			// Log khi trang load
+			console.log('=== CHECKOUT PAYMENT GATEWAYS DEBUG ===');
+			
+			// Lấy tất cả payment methods từ DOM
+			var paymentMethods = $('.wc_payment_methods .wc_payment_method');
+			console.log('Payment methods found in DOM: ' + paymentMethods.length);
+			
+			// Log từng payment method
+			paymentMethods.each(function(index) {
+				var $method = $(this);
+				var methodId = $method.find('input[type="radio"]').attr('id');
+				var methodTitle = $method.find('label').text().trim();
+				var isChecked = $method.find('input[type="radio"]').is(':checked');
+				
+				console.log('Payment Method #' + (index + 1) + ':');
+				console.log('  - ID: ' + methodId);
+				console.log('  - Title: ' + methodTitle);
+				console.log('  - Checked: ' + isChecked);
+				console.log('  - Element:', $method[0]);
+			});
+			
+			// Kiểm tra OnePay cụ thể
+			var onepayMethod = $('#payment_method_onepay');
+			if (onepayMethod.length > 0) {
+				console.log('✅ OnePay Gateway FOUND in DOM');
+				console.log('  - Element:', onepayMethod[0]);
+				console.log('  - Parent:', onepayMethod.closest('.wc_payment_method')[0]);
+				console.log('  - Visible: ' + onepayMethod.closest('.wc_payment_method').is(':visible'));
+			} else {
+				console.log('❌ OnePay Gateway NOT FOUND in DOM');
+				console.log('  - Searching for any input with "onepay" in ID...');
+				var anyOnepay = $('input[id*="onepay"], input[name*="onepay"]');
+				if (anyOnepay.length > 0) {
+					console.log('  - Found ' + anyOnepay.length + ' element(s) with "onepay" in ID/name');
+					anyOnepay.each(function() {
+						console.log('    - Element:', this);
+					});
+				}
+			}
+			
+			// Log khi payment methods được update (AJAX)
+			$(document.body).on('updated_checkout', function() {
+				console.log('--- Checkout Updated (AJAX) ---');
+				var updatedMethods = $('.wc_payment_methods .wc_payment_method');
+				console.log('Payment methods after update: ' + updatedMethods.length);
+				
+				updatedMethods.each(function(index) {
+					var $method = $(this);
+					var methodId = $method.find('input[type="radio"]').attr('id');
+					console.log('  Method #' + (index + 1) + ': ' + methodId);
+				});
+			});
+			
+			// Log khi payment method được chọn
+			$('.wc_payment_methods input[type="radio"]').on('change', function() {
+				console.log('Payment method changed to: ' + $(this).attr('id'));
+			});
+			
+			console.log('=====================================');
+		});
+	} else {
+		console.warn('WooCommerce checkout scripts not loaded yet');
+		// Retry sau 1 giây
+		setTimeout(function() {
+			if (typeof jQuery !== 'undefined') {
+				jQuery(document).ready(function($) {
+					console.log('Retry: Checking payment methods...');
+					var paymentMethods = $('.wc_payment_methods .wc_payment_method');
+					console.log('Payment methods: ' + paymentMethods.length);
+				});
+			}
+		}, 1000);
+	}
+})();
+</script>
+<?php
