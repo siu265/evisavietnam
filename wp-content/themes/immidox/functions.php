@@ -554,7 +554,32 @@ add_action( 'woocommerce_blocks_payment_method_type_registration', function( $re
 	if ( method_exists( $registry, 'get_all_registered' ) ) {
 		$registered = $registry->get_all_registered();
 		$log_msg .= "Registered payment methods: " . implode( ', ', array_keys( $registered ) ) . "\n";
+		
+		// Kiểm tra OnePay cụ thể
+		if ( isset( $registered['onepay'] ) ) {
+			$onepay_integration = $registered['onepay'];
+			$log_msg .= "OnePay integration found - Class: " . get_class( $onepay_integration ) . "\n";
+			
+			// Kiểm tra is_active()
+			if ( method_exists( $onepay_integration, 'is_active' ) ) {
+				$is_active = $onepay_integration->is_active();
+				$log_msg .= "OnePay is_active(): " . ( $is_active ? 'TRUE' : 'FALSE' ) . "\n";
+			}
+			
+			// Kiểm tra get_payment_method_data()
+			if ( method_exists( $onepay_integration, 'get_payment_method_data' ) ) {
+				$data = $onepay_integration->get_payment_method_data();
+				$log_msg .= "OnePay payment method data keys: " . implode( ', ', array_keys( $data ) ) . "\n";
+			}
+		} else {
+			$log_msg .= "❌ OnePay NOT FOUND in registered payment methods!\n";
+		}
 	}
+	
+	// Kiểm tra available gateways tại thời điểm này
+	$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
+	$log_msg .= "Available gateways at registry time: " . implode( ', ', array_keys( $available_gateways ) ) . "\n";
+	$log_msg .= "OnePay in available_gateways: " . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) . "\n";
 	
 	$log_msg .= "\n";
 	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );

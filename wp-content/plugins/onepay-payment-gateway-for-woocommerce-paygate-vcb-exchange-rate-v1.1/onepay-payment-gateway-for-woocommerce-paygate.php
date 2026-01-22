@@ -893,6 +893,7 @@ add_action( 'woocommerce_blocks_loaded', function() {
 		}
 		
 		public function get_payment_method_script_handles() {
+			// Blocks tự động tạo script từ server-side integration
 			// Không cần custom script, dùng default của WooCommerce Blocks
 			return array();
 		}
@@ -948,7 +949,11 @@ add_action( 'woocommerce_blocks_loaded', function() {
 			$log_msg .= "Supports: " . implode(', ', $supports) . "\n";
 			$log_msg .= "Icon HTML: " . (is_string($icon_html) ? substr($icon_html, 0, 100) : 'N/A') . "\n";
 			$log_msg .= "Icon URL: {$icon_url}\n";
-			$log_msg .= "Returning data: " . json_encode($data, JSON_UNESCAPED_UNICODE) . "\n\n";
+			$log_msg .= "Returning data: " . json_encode($data, JSON_UNESCAPED_UNICODE) . "\n";
+			
+			// Kiểm tra xem gateway có trong available_gateways không
+			$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
+			$log_msg .= "OnePay in available_gateways: " . (isset($available_gateways['onepay']) ? 'YES' : 'NO') . "\n\n";
 			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
 			
 			return $data;
