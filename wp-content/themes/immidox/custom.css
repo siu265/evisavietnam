@@ -29,3 +29,6 @@
    outline: none;
    box-shadow: none;
  }
+ #add_payment_method #payment, .woocommerce-cart #payment, .woocommerce-checkout #payment {
+   background-color: unset;
+ }

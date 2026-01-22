@@ -51,13 +51,21 @@ class Visa_Wizard_V2_5 {
 
     /** Ghi log vào file riêng trong plugin (không phụ thuộc debug.log) */
     private function visa_log( $msg ) {
-        $dir = __DIR__ . '/logs';
-        if ( ! is_dir( $dir ) ) {
-            wp_mkdir_p( $dir );
+        try {
+            $dir = __DIR__ . '/logs';
+            if ( ! is_dir( $dir ) ) {
+                wp_mkdir_p( $dir );
+            }
+            $file = $dir . '/visa-checkout.log';
+            $line = '[' . current_time( 'Y-m-d H:i:s' ) . '] ' . ( is_string( $msg ) ? $msg : print_r( $msg, true ) ) . "\n";
+            $result = @file_put_contents( $file, $line, FILE_APPEND | LOCK_EX );
+            // Nếu không ghi được, thử ghi vào error_log
+            if ( $result === false ) {
+                error_log( '[VISA LOG FAILED] ' . $msg );
+            }
+        } catch ( Exception $e ) {
+            error_log( '[VISA LOG EXCEPTION] ' . $e->getMessage() );
         }
-        $file = $dir . '/visa-checkout.log';
-        $line = '[' . current_time( 'Y-m-d H:i:s' ) . '] ' . ( is_string( $msg ) ? $msg : print_r( $msg, true ) ) . "\n";
-        @file_put_contents( $file, $line, FILE_APPEND | LOCK_EX );
     }
 
     /* ================= 1. ADMIN SETTINGS ================= */
@@ -540,6 +548,9 @@ class Visa_Wizard_V2_5 {
                     // Thêm action để xử lý checkout
                     formData += "&action=visa_process_checkout";
                     
+                    console.log("Sending AJAX to:", checkoutUrl);
+                    console.log("Form data:", formData);
+                    
                     $.ajax({
                         url: checkoutUrl,
                         type: "POST",
@@ -942,7 +953,10 @@ class Visa_Wizard_V2_5 {
     }
     
     public function ajax_process_checkout() {
+        // Log ngay đầu để đảm bảo hàm được gọi
         $this->visa_log( '=== ajax_process_checkout CALLED ===' );
+        $this->visa_log( 'POST keys: ' . implode( ', ', array_keys( $_POST ) ) );
+        $this->visa_log( 'REQUEST action: ' . ( isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'not set' ) );
         $this->visa_log( array(
             'action' => 'ajax_process_checkout_start',
             'time' => current_time( 'mysql' ),
@@ -1086,13 +1100,26 @@ class Visa_Wizard_V2_5 {
 
     // REMOVE FIELDS AGGRESSIVELY (Priority 9999)
     public function clean_checkout_fields($fields) {
+        // Unset các field không cần thiết
         unset($fields['billing']['billing_company']);
         unset($fields['billing']['billing_address_1']);
         unset($fields['billing']['billing_address_2']);
         unset($fields['billing']['billing_city']);
-        unset($fields['billing']['billing_postcode']); // Standard Unset
+        unset($fields['billing']['billing_postcode']);
         unset($fields['billing']['billing_state']);
         unset($fields['shipping']);
+        
+        // Chỉ giữ required cho: first_name, email, phone
+        // Bỏ required cho tất cả field khác (bao gồm last_name)
+        if ( isset( $fields['billing'] ) ) {
+            foreach ( $fields['billing'] as $key => $field ) {
+                // Chỉ giữ required cho: billing_first_name, billing_email, billing_phone
+                if ( ! in_array( $key, array( 'billing_first_name', 'billing_email', 'billing_phone' ) ) ) {
+                    $fields['billing'][$key]['required'] = false;
+                }
+            }
+        }
+        
         return $fields;
     }
     // Also remove from default address fields to prevent validation errors
