@@ -595,6 +595,10 @@
     flex-shrink: 0;
 }
 
+.woocommerce-additional-fields, .order_review_heading {
+    display: none !important;
+}
+
 /* Responsive */
 @media (max-width: 576px) {
     .visa-checkout-form #place_order {

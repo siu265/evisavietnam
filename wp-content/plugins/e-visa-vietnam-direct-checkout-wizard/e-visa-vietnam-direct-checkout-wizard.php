@@ -34,6 +34,9 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'wp_ajax_visa_load_checkout', array( $this, 'ajax_load_checkout' ) );
         add_action( 'wp_ajax_nopriv_visa_load_checkout', array( $this, 'ajax_load_checkout' ) );
+        
+        add_action( 'wp_ajax_visa_process_checkout', array( $this, 'ajax_process_checkout' ) );
+        add_action( 'wp_ajax_nopriv_visa_process_checkout', array( $this, 'ajax_process_checkout' ) );
 
         // Woo Hooks (Postcode Removal Logic)
         add_filter( 'woocommerce_checkout_fields', array( $this, 'clean_checkout_fields' ), 9999 );
@@ -41,6 +44,9 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'save_order_meta' ), 10, 4 );
         add_action( 'template_redirect', array( $this, 'redirect_cart_page' ) );
+        
+        // Đảm bảo WooCommerce trả về JSON khi submit từ AJAX
+        add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'fix_checkout_endpoint' ), 10, 2 );
     }
 
     /* ================= 1. ADMIN SETTINGS ================= */
@@ -133,6 +139,14 @@ class Visa_Wizard_V2_5 {
             array( 'select2' ),
             $version
         );
+        
+        // Enqueue WooCommerce checkout scripts nếu cart không rỗng (để hỗ trợ checkout trong step 7)
+        if ( ! WC()->cart->is_empty() ) {
+            if ( function_exists( 'is_checkout' ) && ! is_checkout() ) {
+                // Chỉ enqueue khi không phải trang checkout (vì đang nhúng vào wizard)
+                wp_enqueue_script( 'wc-checkout' );
+            }
+        }
     }
 
     public function redirect_cart_page() {
@@ -422,8 +436,18 @@ class Visa_Wizard_V2_5 {
                     if(res.success) {
                         $("#visa_checkout_wrapper").html(res.data.html);
                         // Trigger WooCommerce checkout scripts
-                        if(typeof jQuery !== 'undefined' && jQuery.fn.checkout) {
+                        if(typeof jQuery !== 'undefined') {
                             jQuery('body').trigger('update_checkout');
+                            // Đảm bảo WooCommerce checkout scripts được load
+                            if(typeof wc_checkout_params === 'undefined') {
+                                // Load WooCommerce checkout scripts nếu chưa có
+                                var script = document.createElement('script');
+                                script.src = '<?php echo WC()->plugin_url(); ?>/assets/js/frontend/checkout.js';
+                                script.onload = function() {
+                                    jQuery('body').trigger('update_checkout');
+                                };
+                                document.head.appendChild(script);
+                            }
                         }
                     } else {
                         $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
@@ -594,10 +618,94 @@ class Visa_Wizard_V2_5 {
                 $("#rev_price").html($("#header_price_display").html());
             }
 
-            // Submit checkout form từ step 7
+            // Submit checkout form từ step 7 - Intercept và xử lý bằng AJAX
             $(document).on("submit", "#visa_checkout_wrapper form.checkout", function(e){
-                // Form sẽ được submit bình thường bởi WooCommerce
-                // Không cần preventDefault vì WooCommerce sẽ xử lý
+                e.preventDefault();
+                
+                let $form = $(this);
+                let $submitBtn = $form.find("#place_order");
+                let originalText = $submitBtn.val() || $submitBtn.text();
+                
+                // Disable button và show loading
+                $submitBtn.prop("disabled", true);
+                if($submitBtn.is("button")) {
+                    $submitBtn.text("Processing...");
+                } else {
+                    $submitBtn.val("Processing...");
+                }
+                
+                // Lấy tất cả form data
+                let formData = $form.serialize();
+                
+                // Thêm action để WooCommerce xử lý
+                formData += "&woocommerce_checkout_place_order=1";
+                
+                // Submit bằng AJAX - sử dụng WooCommerce AJAX endpoint
+                var checkoutUrl = $form.attr("action") || wc_checkout_params.checkout_url;
+                // Thêm wc-ajax=checkout để WooCommerce xử lý bằng AJAX
+                if(checkoutUrl.indexOf("wc-ajax") === -1) {
+                    checkoutUrl = checkoutUrl.replace(/\?.*$/, "") + "?wc-ajax=checkout";
+                }
+                
+                $.ajax({
+                    url: checkoutUrl,
+                    type: "POST",
+                    data: formData,
+                    dataType: "json",
+                    success: function(response) {
+                        if(response && response.result === "success") {
+                            // Redirect đến trang order received
+                            if(response.redirect) {
+                                window.location.href = response.redirect;
+                            } else {
+                                // Fallback: redirect đến thank you page
+                                window.location.href = wc_checkout_params.checkout_url.replace("checkout", "order-received");
+                            }
+                        } else {
+                            // Hiển thị lỗi
+                            if(response && response.messages) {
+                                $form.prepend('<div class="woocommerce-error" role="alert">' + response.messages + '</div>');
+                            } else {
+                                alert("Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.");
+                            }
+                            $submitBtn.prop("disabled", false);
+                            if($submitBtn.is("button")) {
+                                $submitBtn.text(originalText);
+                            } else {
+                                $submitBtn.val(originalText);
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Kiểm tra nếu response là HTML redirect
+                        var responseText = xhr.responseText || "";
+                        if(responseText.indexOf("<!DOCTYPE") !== -1 || responseText.indexOf("window.location") !== -1) {
+                            // WooCommerce đã redirect, submit form bình thường để follow redirect
+                            $form.off("submit").submit();
+                        } else {
+                            // Thử parse JSON từ responseText
+                            try {
+                                var jsonResponse = JSON.parse(responseText);
+                                if(jsonResponse && jsonResponse.result === "success" && jsonResponse.redirect) {
+                                    window.location.href = jsonResponse.redirect;
+                                    return;
+                                }
+                            } catch(e) {
+                                // Không phải JSON
+                            }
+                            
+                            alert("Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.");
+                            $submitBtn.prop("disabled", false);
+                            if($submitBtn.is("button")) {
+                                $submitBtn.text(originalText);
+                            } else {
+                                $submitBtn.val(originalText);
+                            }
+                        }
+                    }
+                });
+                
+                return false;
             });
         });
         </script>
@@ -708,6 +816,7 @@ class Visa_Wizard_V2_5 {
         if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
             echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
         } else {
+            // Sử dụng trang hiện tại để submit form
             echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="' . esc_url( wc_get_checkout_url() ) . '" enctype="multipart/form-data">';
             
             if ( $checkout->get_checkout_fields() ) {
@@ -742,6 +851,14 @@ class Visa_Wizard_V2_5 {
         
         wp_send_json_success(['html' => $html]);
     }
+    
+    public function ajax_process_checkout() {
+        // Xử lý checkout bằng WooCommerce checkout process
+        // Điều này sẽ được gọi nếu form submit với action="visa_process_checkout"
+        // Nhưng hiện tại chúng ta sẽ dùng cách khác (intercept bằng JS)
+        // Giữ hàm này để tương thích
+        WC()->checkout()->process_checkout();
+    }
 
     public function save_order_meta($item, $key, $values, $order) {
         if(isset($values['visa_full_info'])) {
@@ -766,6 +883,14 @@ class Visa_Wizard_V2_5 {
     public function clean_default_address_fields($fields) {
         unset($fields['postcode']);
         return $fields;
+    }
+    
+    public function fix_checkout_endpoint($endpoint, $request) {
+        // Đảm bảo checkout endpoint trả về JSON
+        if($request === 'checkout' && wp_doing_ajax()) {
+            return add_query_arg('wc-ajax', 'checkout', home_url('/'));
+        }
+        return $endpoint;
     }
 }
 
