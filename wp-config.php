@@ -20,13 +20,13 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define( 'DB_NAME', 'immigration_db' );
+define( 'DB_NAME', 'evisavietnam' );
 
 /** Database username */
-define( 'DB_USER', 'immigration_db' );
+define( 'DB_USER', 'evisavietnam' );
 
 /** Database password */
-define( 'DB_PASSWORD', 'ADFk6NZCnW' );
+define( 'DB_PASSWORD', 'Tf7tcwwnTnmMG4db' );
 
 /** Database hostname */
 define( 'DB_HOST', 'localhost' );
@@ -79,7 +79,14 @@ $table_prefix = 'img_';
  *
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
-define( 'WP_DEBUG', false );
+define( 'WP_DEBUG', true );
+
+define( 'WP_DEBUG_LOG', true );
+define( 'WP_DEBUG_DISPLAY', false );
+
+ini_set( 'display_errors', 0 );
+ini_set( 'display_startup_errors', 0 );
+error_reporting( 0 );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
