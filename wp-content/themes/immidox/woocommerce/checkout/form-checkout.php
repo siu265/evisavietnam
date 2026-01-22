@@ -19,12 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// DEBUG: Log khi form-checkout.php được load
-$log_file = WP_CONTENT_DIR . '/woo.log';
-$log_msg = "\n[FORM CHECKOUT TEMPLATE] " . date( 'Y-m-d H:i:s' ) . "\n";
-$log_msg .= "Template form-checkout.php được load\n\n";
-@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
-
 do_action( 'woocommerce_before_checkout_form', $checkout );
 
 // If checkout registration is disabled and not logged in, the user cannot checkout.
@@ -62,14 +56,7 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 	<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
 
 	<div id="order_review" class="woocommerce-checkout-review-order">
-		<?php 
-		// DEBUG: Log trước khi gọi hook
-		$log_file = WP_CONTENT_DIR . '/woo.log';
-		$log_msg = "[FORM CHECKOUT] Sắp gọi do_action('woocommerce_checkout_order_review') - " . date( 'Y-m-d H:i:s' ) . "\n";
-		@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
-		
-		do_action( 'woocommerce_checkout_order_review' ); 
-		?>
+		<?php do_action( 'woocommerce_checkout_order_review' ); ?>
 	</div>
 
 	<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>

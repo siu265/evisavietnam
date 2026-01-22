@@ -10,13 +10,6 @@
  * License: GPL2
  */
 
-// Khai báo hỗ trợ WooCommerce Blocks
-add_action('before_woocommerce_init', function() {
-	if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
-		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('cart_checkout_blocks', __FILE__, true);
-	}
-});
-
 add_action('plugins_loaded', 'woocommerce_onepay_init', 0);
 
 function woocommerce_onepay_init()
@@ -54,22 +47,9 @@ function woocommerce_onepay_init()
 			$this->id = 'onepay';
 			$this->method_title = 'OnePay-Paygate-VCB-Exchange-Rate';
 			$this->has_fields = false;
-			
-			// Hỗ trợ Block checkout (WooCommerce Blocks)
-			$this->supports = array(
-				'products',
-			);
-			
-			// Thêm support cho Block checkout nếu WooCommerce Blocks đang active
-			if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
-				$this->supports[] = 'block';
-			}
 
 			$this->init_form_fields();
 			$this->init_settings();
-
-			// Đảm bảo enabled được set từ settings (parent init_settings đã set, nhưng set lại để chắc chắn)
-			$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
 
 			$this->title = $this->settings['title'];
 			$this->description = $this->settings['description'];
@@ -200,23 +180,6 @@ function woocommerce_onepay_init()
 		{
 			if ($this->description)
 				echo wpautop(wptexturize(__($this->description, 'monepayus')));
-		}
-
-		/**
-		 * Check if the gateway is available for use.
-		 * Override để đảm bảo gateway hiển thị khi enabled = 'yes'
-		 *
-		 * @return bool
-		 */
-		public function is_available()
-		{
-			// Kiểm tra enabled trước tiên
-			if ( $this->enabled !== 'yes' ) {
-				return false;
-			}
-
-			// Gọi parent để kiểm tra các điều kiện khác (max_amount, etc.)
-			return parent::is_available();
 		}
 
 		/**
@@ -819,188 +782,4 @@ function woocommerce_onepay_init()
 	}
 
 	add_filter('woocommerce_payment_gateways', 'woocommerce_add_onepay_gateway');
-	
-	// Hỗ trợ Block checkout: Đảm bảo OnePay được include trong Block checkout
-	add_filter('woocommerce_gateway_title', function($title, $gateway_id) {
-		if ($gateway_id === 'onepay') {
-			// Log để debug
-			$log_file = WP_CONTENT_DIR . '/woo.log';
-			$log_msg = "[ONEPAY GATEWAY] Filter woocommerce_gateway_title được gọi cho onepay - " . date('Y-m-d H:i:s') . "\n";
-			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-		}
-		return $title;
-	}, 10, 2);
-	
-	// Filter để đảm bảo OnePay có trong available payment gateways cho Block checkout
-	add_filter('woocommerce_available_payment_gateways', function($available_gateways) {
-		$log_file = WP_CONTENT_DIR . '/woo.log';
-		$log_msg = "\n[BLOCK CHECKOUT FILTER] woocommerce_available_payment_gateways - " . date('Y-m-d H:i:s') . "\n";
-		$log_msg .= "Available gateways: " . implode(', ', array_keys($available_gateways)) . "\n";
-		
-		// Kiểm tra xem OnePay có trong available_gateways không
-		if (!isset($available_gateways['onepay'])) {
-			$all_gateways = WC()->payment_gateways()->payment_gateways();
-			if (isset($all_gateways['onepay'])) {
-				$onepay = $all_gateways['onepay'];
-				if ($onepay->is_available()) {
-					$log_msg .= "⚠️ OnePay có trong all_gateways và is_available()=TRUE nhưng KHÔNG có trong available_gateways!\n";
-					$log_msg .= "Thêm OnePay vào available_gateways...\n";
-					$available_gateways['onepay'] = $onepay;
-				}
-			}
-		} else {
-			$log_msg .= "✓ OnePay đã có trong available_gateways\n";
-		}
-		
-		$log_msg .= "Sau filter - Available gateways: " . implode(', ', array_keys($available_gateways)) . "\n\n";
-		@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-		
-		return $available_gateways;
-	}, 999); // Priority cao để chạy sau các filter khác
 }
-
-// Đăng ký integration với WooCommerce Blocks
-add_action( 'woocommerce_blocks_loaded', function() {
-	if ( ! class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
-		return;
-	}
-	
-	// Định nghĩa class integration khi Blocks đã load
-	class WC_Onepay_Blocks_Integration extends \Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType {
-		protected $name = 'onepay';
-		
-		public function initialize() {
-			$this->settings = get_option( 'woocommerce_onepay_settings', array() );
-			
-			// Log để debug
-			$log_file = WP_CONTENT_DIR . '/woo.log';
-			$log_msg = "[BLOCKS INTEGRATION] initialize() called - Settings loaded: " . (empty($this->settings) ? 'NO' : 'YES') . "\n";
-			if (!empty($this->settings['enabled'])) {
-				$log_msg .= "Enabled setting: " . $this->settings['enabled'] . "\n";
-			}
-			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-		}
-		
-		public function is_active() {
-			$is_active = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
-			
-			// Log để debug
-			$log_file = WP_CONTENT_DIR . '/woo.log';
-			$log_msg = "[BLOCKS INTEGRATION] is_active() called - enabled: " . (isset($this->settings['enabled']) ? $this->settings['enabled'] : 'NOT SET') . ", result: " . ($is_active ? 'TRUE' : 'FALSE') . "\n";
-			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-			
-			return $is_active;
-		}
-		
-		public function get_payment_method_script_handles() {
-			// Blocks tự động tạo script từ server-side integration
-			// Không cần custom script, dùng default của WooCommerce Blocks
-			return array();
-		}
-		
-		public function get_payment_method_data() {
-			$log_file = WP_CONTENT_DIR . '/woo.log';
-			$log_msg = "\n[BLOCKS INTEGRATION] get_payment_method_data() called\n";
-			
-			$gateway = WC()->payment_gateways()->payment_gateways()['onepay'] ?? null;
-			
-			if ( ! $gateway ) {
-				$log_msg .= "❌ Gateway 'onepay' NOT FOUND in payment_gateways()\n";
-				$all_gateways = WC()->payment_gateways()->payment_gateways();
-				$log_msg .= "Available gateway IDs: " . implode(', ', array_keys($all_gateways)) . "\n";
-				@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-				return array();
-			}
-			
-			$title = $gateway->get_title();
-			$description = $gateway->get_description();
-			$supports = $this->get_supported_features();
-			$icon_html = $gateway->get_icon();
-			
-			// Blocks cần icon là URL string, không phải HTML
-			// Extract URL từ HTML nếu có
-			$icon_url = '';
-			if ( is_string( $icon_html ) && ! empty( $icon_html ) ) {
-				// Nếu là HTML, extract URL từ src attribute
-				if ( preg_match( '/src=["\']([^"\']+)["\']/', $icon_html, $matches ) ) {
-					$icon_url = $matches[1];
-				} elseif ( filter_var( $icon_html, FILTER_VALIDATE_URL ) ) {
-					// Nếu đã là URL
-					$icon_url = $icon_html;
-				} else {
-					// Fallback: dùng icon từ gateway settings
-					$icon_url = plugins_url( 'onepay-payment-gateway-for-woocommerce-paygate-vcb-exchange-rate-v1.1/logo.png', dirname( __FILE__ ) );
-				}
-			} else {
-				// Fallback: dùng icon mặc định
-				$icon_url = plugins_url( 'onepay-payment-gateway-for-woocommerce-paygate-vcb-exchange-rate-v1.1/logo.png', dirname( __FILE__ ) );
-			}
-			
-			$data = array(
-				'name'        => $this->name, // Thêm name field
-				'title'       => $title,
-				'description' => $description,
-				'supports'    => $supports,
-				'icon'        => $icon_url, // Dùng URL thay vì HTML
-			);
-			
-			$log_msg .= "Gateway found - Title: {$title}\n";
-			$log_msg .= "Description: {$description}\n";
-			$log_msg .= "Supports: " . implode(', ', $supports) . "\n";
-			$log_msg .= "Icon HTML: " . (is_string($icon_html) ? substr($icon_html, 0, 100) : 'N/A') . "\n";
-			$log_msg .= "Icon URL: {$icon_url}\n";
-			$log_msg .= "Returning data: " . json_encode($data, JSON_UNESCAPED_UNICODE) . "\n";
-			
-			// Kiểm tra xem gateway có trong available_gateways không
-			$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
-			$log_msg .= "OnePay in available_gateways: " . (isset($available_gateways['onepay']) ? 'YES' : 'NO') . "\n\n";
-			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-			
-			return $data;
-		}
-		
-		public function get_supported_features() {
-			$gateway = WC()->payment_gateways()->payment_gateways()['onepay'] ?? null;
-			
-			if ( ! $gateway ) {
-				return array();
-			}
-			
-			$supports = array();
-			
-			// Kiểm tra các features được hỗ trợ
-			if ( method_exists( $gateway, 'supports' ) ) {
-				$features = array( 'products' );
-				foreach ( $features as $feature ) {
-					if ( $gateway->supports( $feature ) ) {
-						$supports[] = $feature;
-					}
-				}
-			} else {
-				$supports = array( 'products' );
-			}
-			
-			return $supports;
-		}
-	}
-	
-	add_action(
-		'woocommerce_blocks_payment_method_type_registration',
-		function( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
-			$integration = new WC_Onepay_Blocks_Integration();
-			
-			// Gọi initialize() để load settings
-			$integration->initialize();
-			
-			// Kiểm tra is_active() trước khi đăng ký
-			$is_active = $integration->is_active();
-			$log_file = WP_CONTENT_DIR . '/woo.log';
-			$log_msg = "[BLOCKS INTEGRATION] Before register - is_active(): " . ($is_active ? 'TRUE' : 'FALSE') . "\n";
-			
-			$payment_method_registry->register( $integration );
-			
-			$log_msg .= "[BLOCKS INTEGRATION] OnePay Blocks Integration đã được đăng ký - " . date('Y-m-d H:i:s') . "\n";
-			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
-		}
-	);
-});
