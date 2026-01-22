@@ -914,19 +914,40 @@ add_action( 'woocommerce_blocks_loaded', function() {
 			$title = $gateway->get_title();
 			$description = $gateway->get_description();
 			$supports = $this->get_supported_features();
-			$icon = $gateway->get_icon();
+			$icon_html = $gateway->get_icon();
+			
+			// Blocks cần icon là URL string, không phải HTML
+			// Extract URL từ HTML nếu có
+			$icon_url = '';
+			if ( is_string( $icon_html ) && ! empty( $icon_html ) ) {
+				// Nếu là HTML, extract URL từ src attribute
+				if ( preg_match( '/src=["\']([^"\']+)["\']/', $icon_html, $matches ) ) {
+					$icon_url = $matches[1];
+				} elseif ( filter_var( $icon_html, FILTER_VALIDATE_URL ) ) {
+					// Nếu đã là URL
+					$icon_url = $icon_html;
+				} else {
+					// Fallback: dùng icon từ gateway settings
+					$icon_url = plugins_url( 'onepay-payment-gateway-for-woocommerce-paygate-vcb-exchange-rate-v1.1/logo.png', dirname( __FILE__ ) );
+				}
+			} else {
+				// Fallback: dùng icon mặc định
+				$icon_url = plugins_url( 'onepay-payment-gateway-for-woocommerce-paygate-vcb-exchange-rate-v1.1/logo.png', dirname( __FILE__ ) );
+			}
 			
 			$data = array(
+				'name'        => $this->name, // Thêm name field
 				'title'       => $title,
 				'description' => $description,
 				'supports'    => $supports,
-				'icon'        => $icon,
+				'icon'        => $icon_url, // Dùng URL thay vì HTML
 			);
 			
 			$log_msg .= "Gateway found - Title: {$title}\n";
 			$log_msg .= "Description: {$description}\n";
 			$log_msg .= "Supports: " . implode(', ', $supports) . "\n";
-			$log_msg .= "Icon: " . (is_string($icon) ? $icon : 'HTML') . "\n";
+			$log_msg .= "Icon HTML: " . (is_string($icon_html) ? substr($icon_html, 0, 100) : 'N/A') . "\n";
+			$log_msg .= "Icon URL: {$icon_url}\n";
 			$log_msg .= "Returning data: " . json_encode($data, JSON_UNESCAPED_UNICODE) . "\n\n";
 			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
 			

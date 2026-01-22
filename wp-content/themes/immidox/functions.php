@@ -544,3 +544,18 @@ function immigro_check_checkout_type() {
 	$log_msg .= "\n";
 	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
 }
+
+// DEBUG: Kiểm tra Blocks payment method registry
+add_action( 'woocommerce_blocks_payment_method_type_registration', function( $registry ) {
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_msg = "\n[BLOCKS REGISTRY] Payment method registry - " . date( 'Y-m-d H:i:s' ) . "\n";
+	
+	// Kiểm tra xem có method nào được đăng ký không
+	if ( method_exists( $registry, 'get_all_registered' ) ) {
+		$registered = $registry->get_all_registered();
+		$log_msg .= "Registered payment methods: " . implode( ', ', array_keys( $registered ) ) . "\n";
+	}
+	
+	$log_msg .= "\n";
+	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
+}, 999 );
