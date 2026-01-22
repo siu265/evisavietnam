@@ -510,8 +510,11 @@ class Visa_Wizard_V2_5 {
                         formData += "&woocommerce_checkout_place_order=1";
                     }
                     
-                    // Sử dụng WooCommerce AJAX endpoint
-                    var checkoutUrl = "<?php echo esc_url( home_url( '/?wc-ajax=checkout' ) ); ?>";
+                    // Sử dụng AJAX endpoint riêng để xử lý checkout
+                    var checkoutUrl = "<?php echo admin_url('admin-ajax.php'); ?>";
+                    
+                    // Thêm action để xử lý checkout
+                    formData += "&action=visa_process_checkout";
                     
                     console.log("Submitting checkout form to:", checkoutUrl);
                     console.log("Form data:", formData);
@@ -528,10 +531,10 @@ class Visa_Wizard_V2_5 {
                         success: function(response) {
                             console.log("Checkout response:", response);
                             
-                            if(response && response.result === "success") {
+                            if(response && response.success) {
                                 // Redirect đến trang order received
-                                if(response.redirect) {
-                                    window.location.href = response.redirect;
+                                if(response.data && response.data.redirect) {
+                                    window.location.href = response.data.redirect;
                                 } else {
                                     // Fallback: redirect đến thank you page
                                     var thankYouUrl = "<?php echo esc_url( wc_get_endpoint_url( 'order-received', '', wc_get_checkout_url() ) ); ?>";
@@ -540,8 +543,11 @@ class Visa_Wizard_V2_5 {
                             } else {
                                 // Hiển thị lỗi
                                 var errorMsg = "Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.";
-                                if(response && response.messages) {
-                                    errorMsg = response.messages;
+                                if(response && response.data && response.data.messages) {
+                                    errorMsg = response.data.messages;
+                                    $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
+                                } else if(response && response.data && response.data.message) {
+                                    errorMsg = response.data.message;
                                     $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
                                 } else {
                                     alert(errorMsg);
@@ -564,12 +570,13 @@ class Visa_Wizard_V2_5 {
                             // Thử parse JSON từ responseText
                             try {
                                 var jsonResponse = JSON.parse(responseText);
-                                if(jsonResponse && jsonResponse.result === "success" && jsonResponse.redirect) {
-                                    window.location.href = jsonResponse.redirect;
+                                if(jsonResponse && jsonResponse.success && jsonResponse.data && jsonResponse.data.redirect) {
+                                    window.location.href = jsonResponse.data.redirect;
                                     return;
                                 }
-                                if(jsonResponse && jsonResponse.messages) {
-                                    $form.prepend('<div class="woocommerce-error" role="alert">' + jsonResponse.messages + '</div>');
+                                if(jsonResponse && jsonResponse.success === false) {
+                                    var errorMsg = jsonResponse.data && jsonResponse.data.messages ? jsonResponse.data.messages : "Có lỗi xảy ra khi xử lý đơn hàng.";
+                                    $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
                                     $submitBtn.prop("disabled", false);
                                     if($submitBtn.is("button")) {
                                         $submitBtn.text(originalText);
@@ -580,6 +587,7 @@ class Visa_Wizard_V2_5 {
                                 }
                             } catch(e) {
                                 // Không phải JSON
+                                console.log("Failed to parse JSON:", e);
                             }
                             
                             // Nếu response là HTML redirect hoặc có window.location
@@ -968,11 +976,82 @@ class Visa_Wizard_V2_5 {
     }
     
     public function ajax_process_checkout() {
-        // Xử lý checkout bằng WooCommerce checkout process
-        // Điều này sẽ được gọi nếu form submit với action="visa_process_checkout"
-        // Nhưng hiện tại chúng ta sẽ dùng cách khác (intercept bằng JS)
-        // Giữ hàm này để tương thích
-        WC()->checkout()->process_checkout();
+        // Đảm bảo cart không rỗng
+        if ( WC()->cart->is_empty() ) {
+            wp_send_json_error( array( 'messages' => __( 'Your cart is empty.', 'woocommerce' ) ) );
+        }
+        
+        // Set nonce check
+        $nonce_value = isset( $_POST['woocommerce-process-checkout-nonce'] ) ? $_POST['woocommerce-process-checkout-nonce'] : '';
+        
+        if ( ! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' ) ) {
+            wp_send_json_error( array( 'messages' => __( 'Security check failed. Please refresh the page and try again.', 'woocommerce' ) ) );
+        }
+        
+        // Đảm bảo có woocommerce_checkout_place_order
+        $_POST['woocommerce_checkout_place_order'] = '1';
+        
+        // Set flag để WooCommerce biết đây là AJAX request
+        $_REQUEST['wc-ajax'] = 'checkout';
+        if ( ! defined( 'WOOCOMMERCE_CHECKOUT' ) ) {
+            define( 'WOOCOMMERCE_CHECKOUT', true );
+        }
+        
+        // Capture redirect URL
+        $redirect_url = null;
+        add_filter( 'woocommerce_checkout_redirect', function( $url ) use ( &$redirect_url ) {
+            $redirect_url = $url;
+            return false; // Prevent redirect
+        }, 999 );
+        
+        // Capture order ID
+        $order_id = null;
+        add_action( 'woocommerce_checkout_order_processed', function( $id ) use ( &$order_id ) {
+            $order_id = $id;
+        }, 10, 1 );
+        
+        // Capture output
+        ob_start();
+        
+        try {
+            // Process checkout
+            $checkout = WC()->checkout();
+            $checkout->process_checkout();
+            
+            // Clean output
+            ob_end_clean();
+            
+            // Nếu có redirect URL, sử dụng nó
+            if ( $redirect_url ) {
+                wp_send_json_success( array( 'redirect' => $redirect_url ) );
+            } 
+            // Nếu có order ID, tạo redirect URL
+            elseif ( $order_id ) {
+                $order = wc_get_order( $order_id );
+                if ( $order ) {
+                    $redirect_url = $order->get_checkout_order_received_url();
+                    wp_send_json_success( array( 'redirect' => $redirect_url ) );
+                } else {
+                    wp_send_json_error( array( 'messages' => __( 'Order created but unable to get redirect URL.', 'woocommerce' ) ) );
+                }
+            } 
+            // Fallback: tìm order mới nhất
+            else {
+                $order_id = WC()->session->get( 'order_awaiting_payment' );
+                if ( $order_id ) {
+                    $order = wc_get_order( $order_id );
+                    if ( $order ) {
+                        $redirect_url = $order->get_checkout_order_received_url();
+                        wp_send_json_success( array( 'redirect' => $redirect_url ) );
+                    }
+                }
+                wp_send_json_error( array( 'messages' => __( 'Checkout processed but unable to determine redirect URL.', 'woocommerce' ) ) );
+            }
+            
+        } catch ( Exception $e ) {
+            ob_end_clean();
+            wp_send_json_error( array( 'messages' => $e->getMessage() ) );
+        }
     }
 
     public function save_order_meta($item, $key, $values, $order) {
