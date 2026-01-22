@@ -1,0 +1,628 @@
+
+[2026-01-22 00:44:20] merlin-logger.DEBUG: The welcome step has been displayed [] []
+
+[2026-01-22 00:44:29] merlin-logger.DEBUG: The welcome step has been displayed [] []
+
+[2026-01-22 00:44:46] merlin-logger.DEBUG: The welcome step has been displayed [] []
+
+[2026-01-22 00:47:00] merlin-logger.DEBUG: The welcome step has been displayed [] []
+
+[2026-01-22 00:47:03] merlin-logger.DEBUG: The welcome step has been displayed [] []
+
+[2026-01-22 00:47:13] merlin-logger.DEBUG: The child theme installation step has been displayed [] []
+
+[2026-01-22 00:47:19] merlin-logger.DEBUG: The child theme style.css content was generated [] []
+
+[2026-01-22 00:47:19] merlin-logger.DEBUG: The child theme functions.php content was generated [] []
+
+[2026-01-22 00:47:19] merlin-logger.DEBUG: The child theme screenshot was copied to the child theme, with the following result {"copied":true} []
+
+[2026-01-22 00:47:19] merlin-logger.DEBUG: The newly generated child theme was activated [] []
+
+[2026-01-22 00:47:24] merlin-logger.DEBUG: The plugin installation step has been displayed [] []
+
+[2026-01-22 00:47:27] merlin-logger.DEBUG: The content import step has been displayed [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Business Visas" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 1 remapped to 3 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Others" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 2 remapped to 4 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Residence Visas" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 3 remapped to 5 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Spouse/Family Visas" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 4 remapped to 6 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Student Visas" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 5 remapped to 7 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Turist Visas" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 6 remapped to 8 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Working Visas" (category) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 8 remapped to 9 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Agents" (post_tag) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 9 remapped to 10 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Business" (post_tag) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 10 remapped to 11 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Resident" (post_tag) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 11 remapped to 12 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Study" (post_tag) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 12 remapped to 13 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Tourist" (post_tag) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 13 remapped to 14 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "page" (elementor_library_type) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 14 remapped to 15 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "section" (elementor_library_type) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 15 remapped to 16 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Main Menu" (nav_menu) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 16 remapped to 17 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "Main Menu Two" (nav_menu) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 17 remapped to 18 [] []
+
+[2026-01-22 00:47:31] merlin-logger.INFO: Imported "One Page Menu" (nav_menu) [] []
+
+[2026-01-22 00:47:31] merlin-logger.DEBUG: Term 18 remapped to 19 [] []
+
+[2026-01-22 00:47:33] merlin-logger.INFO: Imported "logo-2" (Media) [] []
+
+[2026-01-22 00:47:33] merlin-logger.DEBUG: Post 10 remapped to 13 [] []
+
+[2026-01-22 00:47:35] merlin-logger.INFO: Imported "logo-3" (Media) [] []
+
+[2026-01-22 00:47:35] merlin-logger.DEBUG: Post 11 remapped to 14 [] []
+
+[2026-01-22 00:47:37] merlin-logger.INFO: Imported "banner-1" (Media) [] []
+
+[2026-01-22 00:47:37] merlin-logger.DEBUG: Post 13 remapped to 15 [] []
+
+[2026-01-22 00:47:39] merlin-logger.INFO: Imported "banner-2" (Media) [] []
+
+[2026-01-22 00:47:39] merlin-logger.DEBUG: Post 14 remapped to 16 [] []
+
+[2026-01-22 00:47:42] merlin-logger.INFO: Imported "banner-3" (Media) [] []
+
+[2026-01-22 00:47:42] merlin-logger.DEBUG: Post 15 remapped to 17 [] []
+
+[2026-01-22 00:47:44] merlin-logger.INFO: Imported "banner-4" (Media) [] []
+
+[2026-01-22 00:47:44] merlin-logger.DEBUG: Post 16 remapped to 18 [] []
+
+[2026-01-22 00:47:46] merlin-logger.INFO: Imported "banner-5" (Media) [] []
+
+[2026-01-22 00:47:46] merlin-logger.DEBUG: Post 17 remapped to 19 [] []
+
+[2026-01-22 00:47:49] merlin-logger.INFO: Imported "banner-6" (Media) [] []
+
+[2026-01-22 00:47:49] merlin-logger.DEBUG: Post 18 remapped to 20 [] []
+
+[2026-01-22 00:47:50] merlin-logger.INFO: Imported "logo" (Media) [] []
+
+[2026-01-22 00:47:50] merlin-logger.DEBUG: Post 33 remapped to 33 [] []
+
+[2026-01-22 00:47:51] merlin-logger.INFO: Imported "arrow-1" (Media) [] []
+
+[2026-01-22 00:47:51] merlin-logger.DEBUG: Post 79 remapped to 79 [] []
+
+[2026-01-22 00:47:51] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:47:52] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:47:52] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:47:53] merlin-logger.INFO: Imported "shape-1" (Media) [] []
+
+[2026-01-22 00:47:53] merlin-logger.DEBUG: Post 80 remapped to 80 [] []
+
+[2026-01-22 00:47:54] merlin-logger.INFO: Imported "shape-2" (Media) [] []
+
+[2026-01-22 00:47:54] merlin-logger.DEBUG: Post 81 remapped to 81 [] []
+
+[2026-01-22 00:47:56] merlin-logger.INFO: Imported "shape-3" (Media) [] []
+
+[2026-01-22 00:47:56] merlin-logger.DEBUG: Post 82 remapped to 82 [] []
+
+[2026-01-22 00:47:57] merlin-logger.INFO: Imported "shape-4" (Media) [] []
+
+[2026-01-22 00:47:57] merlin-logger.DEBUG: Post 83 remapped to 83 [] []
+
+[2026-01-22 00:47:58] merlin-logger.INFO: Imported "shape-5" (Media) [] []
+
+[2026-01-22 00:47:58] merlin-logger.DEBUG: Post 84 remapped to 84 [] []
+
+[2026-01-22 00:48:00] merlin-logger.INFO: Imported "shape-6" (Media) [] []
+
+[2026-01-22 00:48:00] merlin-logger.DEBUG: Post 85 remapped to 85 [] []
+
+[2026-01-22 00:48:02] merlin-logger.INFO: Imported "shape-7" (Media) [] []
+
+[2026-01-22 00:48:02] merlin-logger.DEBUG: Post 86 remapped to 86 [] []
+
+[2026-01-22 00:48:04] merlin-logger.INFO: Imported "shape-8" (Media) [] []
+
+[2026-01-22 00:48:04] merlin-logger.DEBUG: Post 87 remapped to 87 [] []
+
+[2026-01-22 00:48:05] merlin-logger.INFO: Imported "shape-9" (Media) [] []
+
+[2026-01-22 00:48:05] merlin-logger.DEBUG: Post 88 remapped to 88 [] []
+
+[2026-01-22 00:48:06] merlin-logger.INFO: Imported "shape-10" (Media) [] []
+
+[2026-01-22 00:48:06] merlin-logger.DEBUG: Post 89 remapped to 89 [] []
+
+[2026-01-22 00:48:09] merlin-logger.INFO: Imported "shape-11" (Media) [] []
+
+[2026-01-22 00:48:09] merlin-logger.DEBUG: Post 90 remapped to 90 [] []
+
+[2026-01-22 00:48:11] merlin-logger.INFO: Imported "shape-12" (Media) [] []
+
+[2026-01-22 00:48:11] merlin-logger.DEBUG: Post 91 remapped to 91 [] []
+
+[2026-01-22 00:48:14] merlin-logger.INFO: Imported "shape-13" (Media) [] []
+
+[2026-01-22 00:48:14] merlin-logger.DEBUG: Post 92 remapped to 92 [] []
+
+[2026-01-22 00:48:14] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:48:14] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:48:14] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:48:16] merlin-logger.INFO: Imported "shape-14" (Media) [] []
+
+[2026-01-22 00:48:16] merlin-logger.DEBUG: Post 93 remapped to 93 [] []
+
+[2026-01-22 00:48:18] merlin-logger.INFO: Imported "shape-15" (Media) [] []
+
+[2026-01-22 00:48:18] merlin-logger.DEBUG: Post 94 remapped to 94 [] []
+
+[2026-01-22 00:48:19] merlin-logger.INFO: Imported "shape-16" (Media) [] []
+
+[2026-01-22 00:48:19] merlin-logger.DEBUG: Post 95 remapped to 95 [] []
+
+[2026-01-22 00:48:20] merlin-logger.INFO: Imported "shape-17" (Media) [] []
+
+[2026-01-22 00:48:20] merlin-logger.DEBUG: Post 96 remapped to 96 [] []
+
+[2026-01-22 00:48:21] merlin-logger.INFO: Imported "shape-18" (Media) [] []
+
+[2026-01-22 00:48:21] merlin-logger.DEBUG: Post 97 remapped to 97 [] []
+
+[2026-01-22 00:48:22] merlin-logger.INFO: Imported "shape-19" (Media) [] []
+
+[2026-01-22 00:48:22] merlin-logger.DEBUG: Post 98 remapped to 98 [] []
+
+[2026-01-22 00:48:24] merlin-logger.INFO: Imported "shape-20" (Media) [] []
+
+[2026-01-22 00:48:24] merlin-logger.DEBUG: Post 99 remapped to 99 [] []
+
+[2026-01-22 00:48:25] merlin-logger.INFO: Imported "shape-21" (Media) [] []
+
+[2026-01-22 00:48:25] merlin-logger.DEBUG: Post 100 remapped to 100 [] []
+
+[2026-01-22 00:48:26] merlin-logger.INFO: Imported "shape-22" (Media) [] []
+
+[2026-01-22 00:48:26] merlin-logger.DEBUG: Post 101 remapped to 101 [] []
+
+[2026-01-22 00:48:27] merlin-logger.INFO: Imported "shape-23" (Media) [] []
+
+[2026-01-22 00:48:27] merlin-logger.DEBUG: Post 102 remapped to 102 [] []
+
+[2026-01-22 00:48:28] merlin-logger.INFO: Imported "shape-24" (Media) [] []
+
+[2026-01-22 00:48:28] merlin-logger.DEBUG: Post 103 remapped to 103 [] []
+
+[2026-01-22 00:48:30] merlin-logger.INFO: Imported "shape-25" (Media) [] []
+
+[2026-01-22 00:48:30] merlin-logger.DEBUG: Post 104 remapped to 104 [] []
+
+[2026-01-22 00:48:31] merlin-logger.INFO: Imported "shape-26" (Media) [] []
+
+[2026-01-22 00:48:31] merlin-logger.DEBUG: Post 105 remapped to 105 [] []
+
+[2026-01-22 00:48:32] merlin-logger.INFO: Imported "shape-27" (Media) [] []
+
+[2026-01-22 00:48:32] merlin-logger.DEBUG: Post 106 remapped to 106 [] []
+
+[2026-01-22 00:48:33] merlin-logger.INFO: Imported "shape-28" (Media) [] []
+
+[2026-01-22 00:48:33] merlin-logger.DEBUG: Post 107 remapped to 107 [] []
+
+[2026-01-22 00:48:34] merlin-logger.INFO: Imported "shape-29" (Media) [] []
+
+[2026-01-22 00:48:34] merlin-logger.DEBUG: Post 108 remapped to 108 [] []
+
+[2026-01-22 00:48:35] merlin-logger.INFO: Imported "shape-30" (Media) [] []
+
+[2026-01-22 00:48:35] merlin-logger.DEBUG: Post 109 remapped to 109 [] []
+
+[2026-01-22 00:48:35] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:48:35] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:48:35] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:48:36] merlin-logger.INFO: Imported "shape-31" (Media) [] []
+
+[2026-01-22 00:48:36] merlin-logger.DEBUG: Post 110 remapped to 110 [] []
+
+[2026-01-22 00:48:37] merlin-logger.INFO: Imported "shape-32" (Media) [] []
+
+[2026-01-22 00:48:37] merlin-logger.DEBUG: Post 111 remapped to 111 [] []
+
+[2026-01-22 00:48:38] merlin-logger.INFO: Imported "shape-33" (Media) [] []
+
+[2026-01-22 00:48:38] merlin-logger.DEBUG: Post 112 remapped to 112 [] []
+
+[2026-01-22 00:48:40] merlin-logger.INFO: Imported "shape-34" (Media) [] []
+
+[2026-01-22 00:48:40] merlin-logger.DEBUG: Post 113 remapped to 113 [] []
+
+[2026-01-22 00:48:41] merlin-logger.INFO: Imported "shape-35" (Media) [] []
+
+[2026-01-22 00:48:41] merlin-logger.DEBUG: Post 114 remapped to 114 [] []
+
+[2026-01-22 00:48:43] merlin-logger.INFO: Imported "shape-36" (Media) [] []
+
+[2026-01-22 00:48:43] merlin-logger.DEBUG: Post 115 remapped to 115 [] []
+
+[2026-01-22 00:48:44] merlin-logger.INFO: Imported "shape-37" (Media) [] []
+
+[2026-01-22 00:48:44] merlin-logger.DEBUG: Post 116 remapped to 116 [] []
+
+[2026-01-22 00:48:45] merlin-logger.INFO: Imported "shape-38" (Media) [] []
+
+[2026-01-22 00:48:45] merlin-logger.DEBUG: Post 117 remapped to 117 [] []
+
+[2026-01-22 00:48:46] merlin-logger.INFO: Imported "shape-39" (Media) [] []
+
+[2026-01-22 00:48:46] merlin-logger.DEBUG: Post 118 remapped to 118 [] []
+
+[2026-01-22 00:48:48] merlin-logger.INFO: Imported "shape-40" (Media) [] []
+
+[2026-01-22 00:48:48] merlin-logger.DEBUG: Post 119 remapped to 119 [] []
+
+[2026-01-22 00:48:49] merlin-logger.INFO: Imported "shape-41" (Media) [] []
+
+[2026-01-22 00:48:49] merlin-logger.DEBUG: Post 120 remapped to 121 [] []
+
+[2026-01-22 00:48:51] merlin-logger.INFO: Imported "shape-42" (Media) [] []
+
+[2026-01-22 00:48:51] merlin-logger.DEBUG: Post 121 remapped to 122 [] []
+
+[2026-01-22 00:48:52] merlin-logger.INFO: Imported "shape-43" (Media) [] []
+
+[2026-01-22 00:48:52] merlin-logger.DEBUG: Post 122 remapped to 123 [] []
+
+[2026-01-22 00:48:53] merlin-logger.INFO: Imported "shape-44" (Media) [] []
+
+[2026-01-22 00:48:53] merlin-logger.DEBUG: Post 123 remapped to 124 [] []
+
+[2026-01-22 00:48:55] merlin-logger.INFO: Imported "shape-45" (Media) [] []
+
+[2026-01-22 00:48:55] merlin-logger.DEBUG: Post 124 remapped to 125 [] []
+
+[2026-01-22 00:48:56] merlin-logger.INFO: Imported "shape-46" (Media) [] []
+
+[2026-01-22 00:48:56] merlin-logger.DEBUG: Post 125 remapped to 126 [] []
+
+[2026-01-22 00:48:56] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:48:57] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:48:57] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:48:58] merlin-logger.INFO: Imported "shape-47" (Media) [] []
+
+[2026-01-22 00:48:58] merlin-logger.DEBUG: Post 126 remapped to 127 [] []
+
+[2026-01-22 00:48:59] merlin-logger.INFO: Imported "shape-48" (Media) [] []
+
+[2026-01-22 00:48:59] merlin-logger.DEBUG: Post 127 remapped to 128 [] []
+
+[2026-01-22 00:49:00] merlin-logger.INFO: Imported "shape-49" (Media) [] []
+
+[2026-01-22 00:49:00] merlin-logger.DEBUG: Post 128 remapped to 129 [] []
+
+[2026-01-22 00:49:01] merlin-logger.INFO: Imported "shape-50" (Media) [] []
+
+[2026-01-22 00:49:01] merlin-logger.DEBUG: Post 129 remapped to 130 [] []
+
+[2026-01-22 00:49:02] merlin-logger.INFO: Imported "about-1" (Media) [] []
+
+[2026-01-22 00:49:02] merlin-logger.DEBUG: Post 168 remapped to 168 [] []
+
+[2026-01-22 00:49:06] merlin-logger.INFO: Imported "about-1" (Media) [] []
+
+[2026-01-22 00:49:06] merlin-logger.DEBUG: Post 169 remapped to 169 [] []
+
+[2026-01-22 00:49:07] merlin-logger.INFO: Imported "about-2" (Media) [] []
+
+[2026-01-22 00:49:07] merlin-logger.DEBUG: Post 170 remapped to 170 [] []
+
+[2026-01-22 00:49:08] merlin-logger.INFO: Imported "about-3" (Media) [] []
+
+[2026-01-22 00:49:08] merlin-logger.DEBUG: Post 171 remapped to 171 [] []
+
+[2026-01-22 00:49:09] merlin-logger.INFO: Imported "coaching-1" (Media) [] []
+
+[2026-01-22 00:49:09] merlin-logger.DEBUG: Post 172 remapped to 172 [] []
+
+[2026-01-22 00:49:10] merlin-logger.INFO: Imported "coaching-2" (Media) [] []
+
+[2026-01-22 00:49:10] merlin-logger.DEBUG: Post 173 remapped to 173 [] []
+
+[2026-01-22 00:49:12] merlin-logger.INFO: Imported "coaching-3" (Media) [] []
+
+[2026-01-22 00:49:12] merlin-logger.DEBUG: Post 174 remapped to 174 [] []
+
+[2026-01-22 00:49:13] merlin-logger.INFO: Imported "coaching-4" (Media) [] []
+
+[2026-01-22 00:49:13] merlin-logger.DEBUG: Post 175 remapped to 175 [] []
+
+[2026-01-22 00:49:14] merlin-logger.INFO: Imported "coaching-5" (Media) [] []
+
+[2026-01-22 00:49:14] merlin-logger.DEBUG: Post 176 remapped to 176 [] []
+
+[2026-01-22 00:49:15] merlin-logger.INFO: Imported "coaching-6" (Media) [] []
+
+[2026-01-22 00:49:15] merlin-logger.DEBUG: Post 177 remapped to 177 [] []
+
+[2026-01-22 00:49:16] merlin-logger.INFO: Imported "coaching-7" (Media) [] []
+
+[2026-01-22 00:49:16] merlin-logger.DEBUG: Post 178 remapped to 178 [] []
+
+[2026-01-22 00:49:17] merlin-logger.INFO: Imported "coaching-8" (Media) [] []
+
+[2026-01-22 00:49:17] merlin-logger.DEBUG: Post 179 remapped to 179 [] []
+
+[2026-01-22 00:49:17] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:49:18] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:49:18] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:49:19] merlin-logger.INFO: Imported "coaching-9" (Media) [] []
+
+[2026-01-22 00:49:19] merlin-logger.DEBUG: Post 180 remapped to 180 [] []
+
+[2026-01-22 00:49:20] merlin-logger.INFO: Imported "coaching-10" (Media) [] []
+
+[2026-01-22 00:49:20] merlin-logger.DEBUG: Post 181 remapped to 181 [] []
+
+[2026-01-22 00:49:21] merlin-logger.INFO: Imported "coaching-11" (Media) [] []
+
+[2026-01-22 00:49:21] merlin-logger.DEBUG: Post 182 remapped to 182 [] []
+
+[2026-01-22 00:49:22] merlin-logger.INFO: Imported "coaching-12" (Media) [] []
+
+[2026-01-22 00:49:22] merlin-logger.DEBUG: Post 183 remapped to 183 [] []
+
+[2026-01-22 00:49:24] merlin-logger.INFO: Imported "coaching-13" (Media) [] []
+
+[2026-01-22 00:49:24] merlin-logger.DEBUG: Post 184 remapped to 184 [] []
+
+[2026-01-22 00:49:25] merlin-logger.INFO: Imported "coaching-14" (Media) [] []
+
+[2026-01-22 00:49:25] merlin-logger.DEBUG: Post 185 remapped to 185 [] []
+
+[2026-01-22 00:49:26] merlin-logger.INFO: Imported "coaching-15" (Media) [] []
+
+[2026-01-22 00:49:26] merlin-logger.DEBUG: Post 186 remapped to 186 [] []
+
+[2026-01-22 00:49:27] merlin-logger.INFO: Imported "coaching-16" (Media) [] []
+
+[2026-01-22 00:49:27] merlin-logger.DEBUG: Post 187 remapped to 187 [] []
+
+[2026-01-22 00:49:29] merlin-logger.INFO: Imported "coaching-17" (Media) [] []
+
+[2026-01-22 00:49:29] merlin-logger.DEBUG: Post 188 remapped to 188 [] []
+
+[2026-01-22 00:49:30] merlin-logger.INFO: Imported "coaching-18" (Media) [] []
+
+[2026-01-22 00:49:30] merlin-logger.DEBUG: Post 189 remapped to 189 [] []
+
+[2026-01-22 00:49:31] merlin-logger.INFO: Imported "coaching-19" (Media) [] []
+
+[2026-01-22 00:49:31] merlin-logger.DEBUG: Post 190 remapped to 190 [] []
+
+[2026-01-22 00:49:32] merlin-logger.INFO: Imported "coaching-20" (Media) [] []
+
+[2026-01-22 00:49:32] merlin-logger.DEBUG: Post 191 remapped to 191 [] []
+
+[2026-01-22 00:49:34] merlin-logger.INFO: Imported "coaching-21" (Media) [] []
+
+[2026-01-22 00:49:34] merlin-logger.DEBUG: Post 192 remapped to 192 [] []
+
+[2026-01-22 00:49:35] merlin-logger.INFO: Imported "coaching-22" (Media) [] []
+
+[2026-01-22 00:49:35] merlin-logger.DEBUG: Post 193 remapped to 193 [] []
+
+[2026-01-22 00:49:36] merlin-logger.INFO: Imported "country-1" (Media) [] []
+
+[2026-01-22 00:49:36] merlin-logger.DEBUG: Post 194 remapped to 194 [] []
+
+[2026-01-22 00:49:38] merlin-logger.INFO: Imported "country-2" (Media) [] []
+
+[2026-01-22 00:49:38] merlin-logger.DEBUG: Post 195 remapped to 195 [] []
+
+[2026-01-22 00:49:38] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:49:38] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:49:38] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:49:39] merlin-logger.INFO: Imported "footer-1" (Media) [] []
+
+[2026-01-22 00:49:39] merlin-logger.DEBUG: Post 196 remapped to 196 [] []
+
+[2026-01-22 00:49:39] merlin-logger.INFO: Imported "footer-2" (Media) [] []
+
+[2026-01-22 00:49:39] merlin-logger.DEBUG: Post 197 remapped to 197 [] []
+
+[2026-01-22 00:49:40] merlin-logger.INFO: Imported "footer-3" (Media) [] []
+
+[2026-01-22 00:49:40] merlin-logger.DEBUG: Post 198 remapped to 198 [] []
+
+[2026-01-22 00:49:41] merlin-logger.INFO: Imported "footer-4" (Media) [] []
+
+[2026-01-22 00:49:41] merlin-logger.DEBUG: Post 199 remapped to 199 [] []
+
+[2026-01-22 00:49:42] merlin-logger.INFO: Imported "footer-5" (Media) [] []
+
+[2026-01-22 00:49:42] merlin-logger.DEBUG: Post 200 remapped to 200 [] []
+
+[2026-01-22 00:49:43] merlin-logger.INFO: Imported "footer-6" (Media) [] []
+
+[2026-01-22 00:49:43] merlin-logger.DEBUG: Post 201 remapped to 201 [] []
+
+[2026-01-22 00:49:46] merlin-logger.INFO: Imported "men-2" (Media) [] []
+
+[2026-01-22 00:49:46] merlin-logger.DEBUG: Post 203 remapped to 203 [] []
+
+[2026-01-22 00:49:48] merlin-logger.INFO: Imported "men-3" (Media) [] []
+
+[2026-01-22 00:49:48] merlin-logger.DEBUG: Post 204 remapped to 204 [] []
+
+[2026-01-22 00:49:50] merlin-logger.INFO: Imported "men-4" (Media) [] []
+
+[2026-01-22 00:49:50] merlin-logger.DEBUG: Post 205 remapped to 205 [] []
+
+[2026-01-22 00:49:52] merlin-logger.INFO: Imported "men-5" (Media) [] []
+
+[2026-01-22 00:49:52] merlin-logger.DEBUG: Post 206 remapped to 206 [] []
+
+[2026-01-22 00:49:54] merlin-logger.INFO: Imported "skills-1" (Media) [] []
+
+[2026-01-22 00:49:54] merlin-logger.DEBUG: Post 207 remapped to 207 [] []
+
+[2026-01-22 00:49:55] merlin-logger.INFO: Imported "testimonial-1" (Media) [] []
+
+[2026-01-22 00:49:55] merlin-logger.DEBUG: Post 208 remapped to 208 [] []
+
+[2026-01-22 00:49:56] merlin-logger.INFO: Imported "testimonial-2" (Media) [] []
+
+[2026-01-22 00:49:56] merlin-logger.DEBUG: Post 209 remapped to 209 [] []
+
+[2026-01-22 00:49:57] merlin-logger.INFO: Imported "testimonial-3" (Media) [] []
+
+[2026-01-22 00:49:57] merlin-logger.DEBUG: Post 210 remapped to 210 [] []
+
+[2026-01-22 00:49:57] merlin-logger.INFO: Imported "testimonial-4" (Media) [] []
+
+[2026-01-22 00:49:57] merlin-logger.DEBUG: Post 211 remapped to 211 [] []
+
+[2026-01-22 00:49:58] merlin-logger.INFO: Imported "testimonial-5" (Media) [] []
+
+[2026-01-22 00:49:58] merlin-logger.DEBUG: Post 212 remapped to 212 [] []
+
+[2026-01-22 00:49:58] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:49:59] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:49:59] merlin-logger.DEBUG: The Hello world post status was set to draft [] []
+
+[2026-01-22 00:50:00] merlin-logger.INFO: Imported "testimonial-6" (Media) [] []
+
+[2026-01-22 00:50:00] merlin-logger.DEBUG: Post 213 remapped to 213 [] []
+
+[2026-01-22 00:50:01] merlin-logger.INFO: Imported "visa-1" (Media) [] []
+
+[2026-01-22 00:50:01] merlin-logger.DEBUG: Post 214 remapped to 214 [] []
+
+[2026-01-22 00:50:02] merlin-logger.INFO: Imported "visa-2" (Media) [] []
+
+[2026-01-22 00:50:02] merlin-logger.DEBUG: Post 215 remapped to 215 [] []
+
+[2026-01-22 00:50:04] merlin-logger.INFO: Imported "visa-3" (Media) [] []
+
+[2026-01-22 00:50:04] merlin-logger.DEBUG: Post 216 remapped to 216 [] []
+
+[2026-01-22 00:50:05] merlin-logger.INFO: Imported "visa-4" (Media) [] []
+
+[2026-01-22 00:50:05] merlin-logger.DEBUG: Post 217 remapped to 217 [] []
+
+[2026-01-22 00:50:06] merlin-logger.INFO: Imported "visa-5" (Media) [] []
+
+[2026-01-22 00:50:06] merlin-logger.DEBUG: Post 218 remapped to 218 [] []
+
+[2026-01-22 00:50:07] merlin-logger.INFO: Imported "visa-6" (Media) [] []
+
+[2026-01-22 00:50:07] merlin-logger.DEBUG: Post 219 remapped to 219 [] []
+
+[2026-01-22 00:50:08] merlin-logger.INFO: Imported "visa-7" (Media) [] []
+
+[2026-01-22 00:50:08] merlin-logger.DEBUG: Post 220 remapped to 220 [] []
+
+[2026-01-22 00:50:09] merlin-logger.INFO: Imported "visa-8" (Media) [] []
+
+[2026-01-22 00:50:09] merlin-logger.DEBUG: Post 221 remapped to 221 [] []
+
+[2026-01-22 00:50:10] merlin-logger.INFO: Imported "visa-9" (Media) [] []
+
+[2026-01-22 00:50:10] merlin-logger.DEBUG: Post 222 remapped to 222 [] []
+
+[2026-01-22 00:50:11] merlin-logger.INFO: Imported "visa-10" (Media) [] []
+
+[2026-01-22 00:50:11] merlin-logger.DEBUG: Post 223 remapped to 223 [] []
+
+[2026-01-22 00:50:13] merlin-logger.INFO: Imported "visa-11" (Media) [] []
+
+[2026-01-22 00:50:13] merlin-logger.DEBUG: Post 224 remapped to 224 [] []
+
+[2026-01-22 00:50:14] merlin-logger.INFO: Imported "visa-12" (Media) [] []
+
+[2026-01-22 00:50:14] merlin-logger.DEBUG: Post 225 remapped to 225 [] []
+
+[2026-01-22 00:50:16] merlin-logger.INFO: Imported "visa-13" (Media) [] []
+
+[2026-01-22 00:50:16] merlin-logger.DEBUG: Post 226 remapped to 226 [] []
+
+[2026-01-22 00:50:17] merlin-logger.INFO: Imported "visa-14" (Media) [] []
+
+[2026-01-22 00:50:17] merlin-logger.DEBUG: Post 227 remapped to 227 [] []
+
+[2026-01-22 00:50:18] merlin-logger.INFO: Imported "visa-15" (Media) [] []
+
+[2026-01-22 00:50:18] merlin-logger.DEBUG: Post 228 remapped to 228 [] []
+
+[2026-01-22 00:50:19] merlin-logger.INFO: Imported "visa-16" (Media) [] []
+
+[2026-01-22 00:50:19] merlin-logger.DEBUG: Post 229 remapped to 229 [] []
+
+[2026-01-22 00:50:19] merlin-logger.INFO: New AJAX call! [] []
+
+[2026-01-22 00:50:20] merlin-logger.INFO: The content import AJAX call will be executed with this import data {"title":"Content","data":"/www/wwwroot/immigration.demo-site.asia/wp-content/themes/immidox/demo-import/content/content.xml"} []
+
+[2026-01-22 00:50:20] merlin-logger.DEBUG: The Hello world post status was set to draft [] []

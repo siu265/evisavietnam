@@ -1,0 +1,105 @@
+.coaching-details{
+	padding: 150px 0px;
+}
+
+.coaching-details-content .content-one .image-box{
+	position: relative;
+	display: block;
+	border-radius: 15px;
+	margin-bottom: 40px;
+}
+
+.coaching-details-content .content-one .image-box img{
+	width: 100%;
+	border-radius: 15px;
+}
+
+.coaching-details-content h2{
+	display: block;
+	font-size: 30px;
+	line-height: 36px;
+	font-weight: 700;
+	margin-bottom: 31px;
+}
+
+.coaching-details-content p{
+	margin-bottom: 22px;
+}
+
+.coaching-details-content p:last-child{
+	margin-bottom: 0px;
+}
+
+.coaching-details-content .content-one .list-style-three{
+	margin-bottom: 22px;
+}
+
+.coaching-details-content h3{
+	display: block;
+	font-size: 25px;
+	line-height: 30px;
+	font-weight: 500;
+	margin-bottom: 16px;
+}
+
+.coaching-details-content .content-two .image-box{
+	position: relative;
+	display: block;
+	border-radius: 15px;
+}
+
+.coaching-details-content .content-two .image-box img{
+	width: 100%;
+	border-radius: 15px;
+}
+
+.coaching-details-content .content-five .download-list li{
+	position: relative;
+	display: block;
+	background: #F5F5F5;
+	border-radius: 15px;
+	padding: 25px 30px 21px 82px;
+	margin-bottom: 20px;
+}
+
+.coaching-details-content .content-five .download-list li:last-child{
+	margin-bottom: 0px;
+}
+
+.coaching-details-content .content-five .download-list li .icon-box{
+	position: absolute;
+	left: 35px;
+	top: 32px;
+	font-size: 36px;
+	color: #222;
+}
+
+.coaching-details-content .content-five .download-list li h5{
+	display: block;
+	font-size: 20px;
+	line-height: 26px;
+	font-weight: 600;
+}
+
+.coaching-details-content .content-five .download-list li span{
+	position: relative;
+	display: block;
+}
+
+.coaching-details-content .content-five .download-list li a{
+	position: absolute;
+	top: 35px;
+	right: 30px;
+	font-size: 15px;
+	line-height: 20px;
+	font-family: 'League Spartan', sans-serif;
+	font-weight: 700;
+	color: #fff;
+	padding: 6px 27px 4px 27px;
+	border-radius: 30px;
+	z-index: 1;
+}
+
+.coaching-details-content .content-five .download-list li a:hover{
+	background: #1D2133;
+}

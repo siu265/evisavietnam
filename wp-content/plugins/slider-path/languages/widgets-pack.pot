@@ -1,0 +1,1836 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-08-24 16:11+0600\n"
+"PO-Revision-Date: 2020-02-04 18:33+0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __(;_e;esc_html__;esc_html_e;esc_attr__;esc_attr_e\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: assets\n"
+"X-Poedit-SearchPathExcluded-1: languages\n"
+
+#: includes/classes/class-functions.php:40
+msgid "Accordion"
+msgstr ""
+
+#: includes/classes/class-functions.php:53 widgets/button/widget.php:76
+#: widgets/contact/widget.php:657 widgets/edd-products-grid/widget.php:248
+#: widgets/mailchimp/widget.php:573 widgets/ninja-forms/widget.php:604
+#: widgets/products-carousel/widget.php:338
+#: widgets/products-grid/widget.php:237 widgets/promotion/widget.php:365
+msgid "Button"
+msgstr ""
+
+#: includes/classes/class-functions.php:60
+msgid "Countdown"
+msgstr ""
+
+#: includes/classes/class-functions.php:67
+msgid "Counter"
+msgstr ""
+
+#: includes/classes/class-functions.php:74
+msgid "Contact From 7"
+msgstr ""
+
+#: includes/classes/class-functions.php:81
+msgid "Charts"
+msgstr ""
+
+#: includes/classes/class-functions.php:95
+msgid "Tribe Events Grid"
+msgstr ""
+
+#: includes/classes/class-functions.php:106
+msgid "Edd Products Grid"
+msgstr ""
+
+#: includes/classes/class-functions.php:113
+msgid "Gradient Heading"
+msgstr ""
+
+#: includes/classes/class-functions.php:120
+msgid "Info Box"
+msgstr ""
+
+#: includes/classes/class-functions.php:127
+msgid "Gallery - Justified"
+msgstr ""
+
+#: includes/classes/class-functions.php:134
+msgid "Image Compare"
+msgstr ""
+
+#: includes/classes/class-functions.php:141
+msgid "Marquee"
+msgstr ""
+
+#: includes/classes/class-functions.php:148
+msgid "Mailchimp"
+msgstr ""
+
+#: includes/classes/class-functions.php:155
+msgid "Ninja Forms"
+msgstr ""
+
+#: includes/classes/class-functions.php:162
+msgid "Newsticker"
+msgstr ""
+
+#: includes/classes/class-functions.php:169
+msgid "Posts Grid"
+msgstr ""
+
+#: includes/classes/class-functions.php:183
+msgid "Portfolio"
+msgstr ""
+
+#: includes/classes/class-functions.php:194 widgets/pricing/widget.php:40
+msgid "Pricing"
+msgstr ""
+
+#: includes/classes/class-functions.php:207
+msgid "Promotional Banner"
+msgstr ""
+
+#: includes/classes/class-functions.php:214
+msgid "Progressbar"
+msgstr ""
+
+#: includes/classes/class-functions.php:224
+msgid "Progresspie"
+msgstr ""
+
+#: includes/classes/class-functions.php:231
+msgid "Products Grid"
+msgstr ""
+
+#: includes/classes/class-functions.php:238
+msgid "Products Carousel"
+msgstr ""
+
+#: includes/classes/class-functions.php:245
+msgid "Social Profile"
+msgstr ""
+
+#: includes/classes/class-functions.php:256
+msgid "Table"
+msgstr ""
+
+#: includes/classes/class-functions.php:263
+msgid "Tabs"
+msgstr ""
+
+#: includes/classes/class-functions.php:270 widgets/testimonial/widget.php:39
+msgid "Testimonial"
+msgstr ""
+
+#: includes/classes/class-functions.php:282 widgets/team/widget.php:40
+msgid "Team"
+msgstr ""
+
+#: includes/classes/class-functions.php:294 widgets/typewriter/widget.php:121
+msgid "Typewriter"
+msgstr ""
+
+#: includes/classes/class-functions.php:301
+msgid "Timeline"
+msgstr ""
+
+#: includes/classes/class-functions.php:311
+msgid "Tutor"
+msgstr ""
+
+#: includes/classes/class-functions.php:318
+msgid "Timeline Slider"
+msgstr ""
+
+#: includes/classes/class-functions.php:325
+msgid "weForms"
+msgstr ""
+
+#: includes/classes/class-functions.php:507
+#, php-format
+msgid "Style %s"
+msgstr ""
+
+#: includes/classes/class-hooks.php:46
+msgid "Widgets Pack"
+msgstr ""
+
+#: includes/classes/class-widget-base.php:19
+msgid "Widget - Widget Pack"
+msgstr ""
+
+#: includes/classes/class-widget-base.php:88
+msgid "Select Style"
+msgstr ""
+
+#: includes/functions.php:148
+msgid "Prev"
+msgstr ""
+
+#: includes/functions.php:149
+msgid "Next"
+msgstr ""
+
+#: widgets/accordion/widget.php:46
+msgid "Accordion Items"
+msgstr ""
+
+#: widgets/accordion/widget.php:55 widgets/accordion/widget.php:183
+#: widgets/counter/widget.php:99 widgets/counter/widget.php:337
+#: widgets/edd-products-grid/widget.php:163
+#: widgets/gallery-justified/widget.php:60
+#: widgets/gradient-heading/widget.php:46 widgets/info-box/widget.php:86
+#: widgets/info-box/widget.php:368 widgets/portfolio/widget.php:70
+#: widgets/pricing/widget.php:136 widgets/products-carousel/widget.php:253
+#: widgets/products-grid/widget.php:152 widgets/promotion/widget.php:61
+#: widgets/promotion/widget.php:272 widgets/team/widget.php:171
+#: widgets/tribe-events-grid/widget.php:238 widgets/typewriter/widget.php:70
+msgid "Title"
+msgstr ""
+
+#: widgets/accordion/widget.php:66 widgets/accordion/widget.php:334
+#: widgets/edd-products-grid/widget.php:212 widgets/info-box/widget.php:114
+#: widgets/info-box/widget.php:426 widgets/products-carousel/widget.php:302
+#: widgets/products-grid/widget.php:201 widgets/tabs/widget.php:273
+#: widgets/team/widget.php:508 widgets/tribe-events-grid/widget.php:288
+msgid "Description"
+msgstr ""
+
+#: widgets/accordion/widget.php:78 widgets/button/widget.php:42
+#: widgets/contact/widget.php:40 widgets/gallery-justified/widget.php:42
+#: widgets/gradient-heading/widget.php:38 widgets/mailchimp/widget.php:40
+#: widgets/ninja-forms/widget.php:40 widgets/portfolio/widget.php:35
+#: widgets/progressbar/widget.php:46 widgets/progresspie/widget.php:46
+#: widgets/promotion/widget.php:42 widgets/social-profile/widget.php:116
+#: widgets/table/widget.php:34 widgets/tabs/widget.php:67
+#: widgets/timeline-slider/widget.php:43 widgets/timeline/widget.php:35
+#: widgets/typewriter/widget.php:45 widgets/typewriter/widget.php:94
+#: widgets/weforms/widget.php:28
+msgid "Content"
+msgstr ""
+
+#: widgets/accordion/widget.php:88
+msgid "How to Change my Photo from Admin Dashboard? "
+msgstr ""
+
+#: widgets/accordion/widget.php:89 widgets/accordion/widget.php:93
+#: widgets/accordion/widget.php:97
+msgid "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast"
+msgstr ""
+
+#: widgets/accordion/widget.php:92
+msgid "How to Change my Password easily?"
+msgstr ""
+
+#: widgets/accordion/widget.php:96
+msgid "How to Change my Subscription Plan using PayPal"
+msgstr ""
+
+#: widgets/accordion/widget.php:109 widgets/countdown/widget.php:58
+#: widgets/gradient-heading/widget.php:56 widgets/image-compare/widget.php:255
+#: widgets/tabs/widget.php:112
+msgid "Style"
+msgstr ""
+
+#: widgets/accordion/widget.php:119 widgets/countdown/widget.php:170
+#: widgets/tabs/widget.php:259
+msgid "Item Margin"
+msgstr ""
+
+#: widgets/accordion/widget.php:132 widgets/button/widget.php:256
+#: widgets/button/widget.php:315 widgets/contact/widget.php:128
+#: widgets/contact/widget.php:401 widgets/contact/widget.php:456
+#: widgets/contact/widget.php:511 widgets/contact/widget.php:863
+#: widgets/contact/widget.php:922 widgets/countdown/widget.php:137
+#: widgets/edd-products-grid/widget.php:272
+#: widgets/gradient-heading/widget.php:65 widgets/image-compare/widget.php:286
+#: widgets/image-compare/widget.php:320 widgets/info-box/widget.php:492
+#: widgets/mailchimp/widget.php:105 widgets/mailchimp/widget.php:331
+#: widgets/mailchimp/widget.php:382 widgets/mailchimp/widget.php:433
+#: widgets/mailchimp/widget.php:753 widgets/mailchimp/widget.php:812
+#: widgets/ninja-forms/widget.php:105 widgets/ninja-forms/widget.php:362
+#: widgets/ninja-forms/widget.php:413 widgets/ninja-forms/widget.php:464
+#: widgets/ninja-forms/widget.php:810 widgets/ninja-forms/widget.php:869
+#: widgets/products-carousel/widget.php:362
+#: widgets/products-grid/widget.php:261 widgets/promotion/widget.php:161
+#: widgets/promotion/widget.php:545 widgets/promotion/widget.php:604
+#: widgets/tabs/widget.php:123 widgets/team/widget.php:329
+#: widgets/tribe-events-grid/widget.php:346
+#: widgets/tribe-events-grid/widget.php:390
+msgid "Background"
+msgstr ""
+
+#: widgets/accordion/widget.php:144 widgets/countdown/widget.php:98
+#: widgets/counter/widget.php:137 widgets/info-box/widget.php:177
+#: widgets/pricing/widget.php:233 widgets/social-profile/widget.php:158
+#: widgets/tabs/widget.php:136 widgets/tabs/widget.php:155
+#: widgets/team/widget.php:241 widgets/testimonial/widget.php:159
+#: widgets/testimonial/widget.php:179 widgets/timeline-slider/widget.php:104
+msgid "Primary Color"
+msgstr ""
+
+#: widgets/accordion/widget.php:163 widgets/countdown/widget.php:118
+#: widgets/counter/widget.php:152 widgets/info-box/widget.php:192
+#: widgets/pricing/widget.php:262 widgets/social-profile/widget.php:170
+#: widgets/team/widget.php:259 widgets/testimonial/widget.php:194
+msgid "Secondary Color"
+msgstr ""
+
+#: widgets/accordion/widget.php:191 widgets/info-box/widget.php:376
+#: widgets/typewriter/widget.php:161
+msgid "Title Color"
+msgstr ""
+
+#: widgets/accordion/widget.php:206
+msgid "Title Active Color"
+msgstr ""
+
+#: widgets/accordion/widget.php:230 widgets/accordion/widget.php:366
+#: widgets/button/widget.php:118 widgets/contact/widget.php:115
+#: widgets/contact/widget.php:192 widgets/contact/widget.php:725
+#: widgets/counter/widget.php:259 widgets/counter/widget.php:323
+#: widgets/counter/widget.php:369 widgets/gradient-heading/widget.php:87
+#: widgets/info-box/widget.php:400 widgets/info-box/widget.php:458
+#: widgets/mailchimp/widget.php:92 widgets/mailchimp/widget.php:169
+#: widgets/mailchimp/widget.php:615 widgets/ninja-forms/widget.php:92
+#: widgets/ninja-forms/widget.php:169 widgets/ninja-forms/widget.php:672
+#: widgets/progressbar/widget.php:122 widgets/promotion/widget.php:258
+#: widgets/promotion/widget.php:304 widgets/promotion/widget.php:350
+#: widgets/promotion/widget.php:407 widgets/tabs/widget.php:305
+#: widgets/team/widget.php:448 widgets/team/widget.php:494
+#: widgets/team/widget.php:543 widgets/testimonial/widget.php:243
+#: widgets/testimonial/widget.php:289 widgets/testimonial/widget.php:335
+msgid "Margin"
+msgstr ""
+
+#: widgets/accordion/widget.php:242 widgets/button/widget.php:106
+#: widgets/contact/widget.php:103 widgets/contact/widget.php:246
+#: widgets/contact/widget.php:371 widgets/contact/widget.php:713
+#: widgets/image-compare/widget.php:365 widgets/info-box/widget.php:412
+#: widgets/info-box/widget.php:525 widgets/mailchimp/widget.php:80
+#: widgets/mailchimp/widget.php:235 widgets/mailchimp/widget.php:603
+#: widgets/ninja-forms/widget.php:80 widgets/ninja-forms/widget.php:223
+#: widgets/ninja-forms/widget.php:660 widgets/promotion/widget.php:170
+#: widgets/promotion/widget.php:246 widgets/promotion/widget.php:395
+#: widgets/tabs/widget.php:247
+msgid "Padding"
+msgstr ""
+
+#: widgets/accordion/widget.php:256
+msgid "Toggle Icon"
+msgstr ""
+
+#: widgets/accordion/widget.php:264 widgets/button/widget.php:243
+#: widgets/button/widget.php:302 widgets/contact/widget.php:180
+#: widgets/contact/widget.php:223 widgets/contact/widget.php:580
+#: widgets/contact/widget.php:850 widgets/contact/widget.php:909
+#: widgets/counter/widget.php:271 widgets/counter/widget.php:299
+#: widgets/counter/widget.php:345 widgets/edd-products-grid/widget.php:171
+#: widgets/edd-products-grid/widget.php:220
+#: widgets/edd-products-grid/widget.php:256
+#: widgets/image-compare/widget.php:297 widgets/image-compare/widget.php:331
+#: widgets/info-box/widget.php:314 widgets/info-box/widget.php:480
+#: widgets/mailchimp/widget.php:157 widgets/mailchimp/widget.php:200
+#: widgets/mailchimp/widget.php:212 widgets/mailchimp/widget.php:498
+#: widgets/mailchimp/widget.php:740 widgets/mailchimp/widget.php:799
+#: widgets/ninja-forms/widget.php:157 widgets/ninja-forms/widget.php:200
+#: widgets/ninja-forms/widget.php:529 widgets/ninja-forms/widget.php:797
+#: widgets/ninja-forms/widget.php:856 widgets/products-carousel/widget.php:261
+#: widgets/products-carousel/widget.php:310
+#: widgets/products-carousel/widget.php:346
+#: widgets/products-grid/widget.php:160 widgets/products-grid/widget.php:209
+#: widgets/products-grid/widget.php:245 widgets/promotion/widget.php:280
+#: widgets/promotion/widget.php:326 widgets/promotion/widget.php:532
+#: widgets/promotion/widget.php:591 widgets/social-profile/widget.php:104
+#: widgets/tabs/widget.php:184 widgets/team/widget.php:424
+#: widgets/team/widget.php:470 widgets/team/widget.php:519
+#: widgets/testimonial/widget.php:219 widgets/testimonial/widget.php:265
+#: widgets/testimonial/widget.php:311 widgets/tribe-events-grid/widget.php:246
+#: widgets/tribe-events-grid/widget.php:296
+#: widgets/tribe-events-grid/widget.php:331
+#: widgets/tribe-events-grid/widget.php:374 widgets/typewriter/widget.php:82
+msgid "Color"
+msgstr ""
+
+#: widgets/accordion/widget.php:280 widgets/tabs/widget.php:199
+msgid "Active Color"
+msgstr ""
+
+#: widgets/accordion/widget.php:296
+msgid "Open Background"
+msgstr ""
+
+#: widgets/accordion/widget.php:314
+msgid "Close Background"
+msgstr ""
+
+#: widgets/accordion/widget.php:342 widgets/info-box/widget.php:434
+#: widgets/tabs/widget.php:281
+msgid "Description Color"
+msgstr ""
+
+#: widgets/button/widget.php:50 widgets/info-box/widget.php:140
+#: widgets/pricing/widget.php:185 widgets/promotion/widget.php:79
+#: widgets/timeline/widget.php:61
+msgid "Button Text"
+msgstr ""
+
+#: widgets/button/widget.php:59 widgets/info-box/widget.php:149
+#: widgets/pricing/widget.php:194 widgets/promotion/widget.php:88
+msgid "Button URL"
+msgstr ""
+
+#: widgets/button/widget.php:61 widgets/info-box/widget.php:151
+#: widgets/pricing/widget.php:196 widgets/promotion/widget.php:90
+msgid "https://your-link.com"
+msgstr ""
+
+#: widgets/button/widget.php:85 widgets/contact/widget.php:171
+#: widgets/contact/widget.php:214 widgets/contact/widget.php:561
+#: widgets/contact/widget.php:571 widgets/contact/widget.php:692
+#: widgets/edd-products-grid/widget.php:235
+#: widgets/image-compare/widget.php:391 widgets/mailchimp/widget.php:148
+#: widgets/mailchimp/widget.php:191 widgets/mailchimp/widget.php:479
+#: widgets/mailchimp/widget.php:489 widgets/mailchimp/widget.php:582
+#: widgets/ninja-forms/widget.php:148 widgets/ninja-forms/widget.php:191
+#: widgets/ninja-forms/widget.php:510 widgets/ninja-forms/widget.php:520
+#: widgets/ninja-forms/widget.php:639 widgets/products-carousel/widget.php:325
+#: widgets/products-grid/widget.php:224 widgets/promotion/widget.php:374
+#: widgets/tribe-events-grid/widget.php:311
+msgid "Typography"
+msgstr ""
+
+#: widgets/button/widget.php:94 widgets/contact/widget.php:91
+#: widgets/contact/widget.php:413 widgets/contact/widget.php:468
+#: widgets/contact/widget.php:523 widgets/contact/widget.php:701
+#: widgets/image-compare/widget.php:378 widgets/mailchimp/widget.php:68
+#: widgets/mailchimp/widget.php:343 widgets/mailchimp/widget.php:394
+#: widgets/mailchimp/widget.php:445 widgets/mailchimp/widget.php:591
+#: widgets/ninja-forms/widget.php:68 widgets/ninja-forms/widget.php:374
+#: widgets/ninja-forms/widget.php:425 widgets/ninja-forms/widget.php:476
+#: widgets/ninja-forms/widget.php:648 widgets/progressbar/widget.php:156
+#: widgets/promotion/widget.php:383
+msgid "Border Radius"
+msgstr ""
+
+#: widgets/button/widget.php:131 widgets/contact/widget.php:738
+#: widgets/mailchimp/widget.php:628 widgets/ninja-forms/widget.php:685
+#: widgets/promotion/widget.php:420
+msgid "Use Height Width"
+msgstr ""
+
+#: widgets/button/widget.php:133 widgets/contact/widget.php:740
+#: widgets/mailchimp/widget.php:630 widgets/ninja-forms/widget.php:687
+#: widgets/products-carousel/widget.php:105
+#: widgets/products-carousel/widget.php:117
+#: widgets/products-grid/widget.php:113 widgets/products-grid/widget.php:125
+#: widgets/promotion/widget.php:422
+msgid "Show"
+msgstr ""
+
+#: widgets/button/widget.php:134 widgets/contact/widget.php:741
+#: widgets/gallery-justified/widget.php:124 widgets/mailchimp/widget.php:631
+#: widgets/ninja-forms/widget.php:688 widgets/products-carousel/widget.php:106
+#: widgets/products-carousel/widget.php:118
+#: widgets/products-grid/widget.php:114 widgets/products-grid/widget.php:126
+#: widgets/promotion/widget.php:423
+msgid "Hide"
+msgstr ""
+
+#: widgets/button/widget.php:143 widgets/contact/widget.php:259
+#: widgets/contact/widget.php:750 widgets/mailchimp/widget.php:247
+#: widgets/mailchimp/widget.php:640 widgets/ninja-forms/widget.php:235
+#: widgets/ninja-forms/widget.php:697 widgets/promotion/widget.php:432
+msgid "Width"
+msgstr ""
+
+#: widgets/button/widget.php:173 widgets/contact/widget.php:286
+#: widgets/contact/widget.php:344 widgets/contact/widget.php:780
+#: widgets/mailchimp/widget.php:274 widgets/mailchimp/widget.php:670
+#: widgets/ninja-forms/widget.php:262 widgets/ninja-forms/widget.php:317
+#: widgets/ninja-forms/widget.php:727 widgets/promotion/widget.php:462
+msgid "Height"
+msgstr ""
+
+#: widgets/button/widget.php:203 widgets/contact/widget.php:810
+#: widgets/mailchimp/widget.php:700 widgets/ninja-forms/widget.php:757
+#: widgets/promotion/widget.php:492
+msgid "Line Height"
+msgstr ""
+
+#: widgets/button/widget.php:236 widgets/contact/widget.php:393
+#: widgets/contact/widget.php:843 widgets/mailchimp/widget.php:323
+#: widgets/mailchimp/widget.php:733 widgets/ninja-forms/widget.php:354
+#: widgets/ninja-forms/widget.php:790 widgets/promotion/widget.php:525
+msgid "Normal"
+msgstr ""
+
+#: widgets/button/widget.php:269 widgets/button/widget.php:328
+#: widgets/contact/widget.php:141 widgets/contact/widget.php:436
+#: widgets/contact/widget.php:491 widgets/contact/widget.php:546
+#: widgets/contact/widget.php:876 widgets/contact/widget.php:935
+#: widgets/mailchimp/widget.php:118 widgets/mailchimp/widget.php:365
+#: widgets/mailchimp/widget.php:416 widgets/mailchimp/widget.php:467
+#: widgets/mailchimp/widget.php:766 widgets/mailchimp/widget.php:825
+#: widgets/ninja-forms/widget.php:118 widgets/ninja-forms/widget.php:396
+#: widgets/ninja-forms/widget.php:447 widgets/ninja-forms/widget.php:498
+#: widgets/ninja-forms/widget.php:823 widgets/ninja-forms/widget.php:882
+#: widgets/promotion/widget.php:183 widgets/promotion/widget.php:558
+#: widgets/promotion/widget.php:617 widgets/testimonial/widget.php:148
+msgid "Box Shadow"
+msgstr ""
+
+#: widgets/button/widget.php:278 widgets/button/widget.php:337
+#: widgets/contact/widget.php:150 widgets/contact/widget.php:427
+#: widgets/contact/widget.php:482 widgets/contact/widget.php:537
+#: widgets/contact/widget.php:885 widgets/contact/widget.php:944
+#: widgets/mailchimp/widget.php:127 widgets/mailchimp/widget.php:356
+#: widgets/mailchimp/widget.php:407 widgets/mailchimp/widget.php:458
+#: widgets/mailchimp/widget.php:775 widgets/mailchimp/widget.php:834
+#: widgets/ninja-forms/widget.php:127 widgets/ninja-forms/widget.php:387
+#: widgets/ninja-forms/widget.php:438 widgets/ninja-forms/widget.php:489
+#: widgets/ninja-forms/widget.php:832 widgets/ninja-forms/widget.php:891
+#: widgets/promotion/widget.php:192 widgets/promotion/widget.php:567
+#: widgets/promotion/widget.php:626
+msgid "Border"
+msgstr ""
+
+#: widgets/button/widget.php:295 widgets/contact/widget.php:448
+#: widgets/contact/widget.php:902 widgets/mailchimp/widget.php:374
+#: widgets/mailchimp/widget.php:792 widgets/ninja-forms/widget.php:405
+#: widgets/ninja-forms/widget.php:849 widgets/promotion/widget.php:584
+msgid "Hover"
+msgstr ""
+
+#: widgets/charts/widget.php:31 widgets/countdown/widget.php:38
+#: widgets/counter/widget.php:44 widgets/counter/widget.php:56
+#: widgets/counter/widget.php:169 widgets/info-box/widget.php:37
+#: widgets/info-box/widget.php:49 widgets/info-box/widget.php:224
+#: widgets/pricing/widget.php:52 widgets/social-profile/widget.php:52
+#: widgets/timeline/widget.php:73
+msgid "Icon"
+msgstr ""
+
+#: widgets/charts/widget.php:41 widgets/counter/widget.php:52
+msgid "Select Type"
+msgstr ""
+
+#: widgets/charts/widget.php:45
+msgid "Line"
+msgstr ""
+
+#: widgets/charts/widget.php:46
+msgid "Bar / Column"
+msgstr ""
+
+#: widgets/charts/widget.php:47
+msgid "Pie"
+msgstr ""
+
+#: widgets/charts/widget.php:48
+msgid "Donut"
+msgstr ""
+
+#: widgets/charts/widget.php:56
+msgid "Data Label"
+msgstr ""
+
+#: widgets/charts/widget.php:68 widgets/contact/widget.php:162
+#: widgets/mailchimp/widget.php:139 widgets/marquee/widget.php:120
+#: widgets/newsticker/widget.php:121 widgets/ninja-forms/widget.php:139
+#: widgets/progressbar/widget.php:54 widgets/progresspie/widget.php:54
+#: widgets/social-profile/widget.php:87
+msgid "Label"
+msgstr ""
+
+#: widgets/charts/widget.php:76
+msgid "Value"
+msgstr ""
+
+#: widgets/charts/widget.php:85
+msgid "Chart Data"
+msgstr ""
+
+#: widgets/charts/widget.php:95
+msgid "Leo Messi"
+msgstr ""
+
+#: widgets/charts/widget.php:99
+msgid "Chris Ronaldo"
+msgstr ""
+
+#: widgets/charts/widget.php:103
+msgid "EM Buppe"
+msgstr ""
+
+#: widgets/contact/widget.php:48 widgets/mailchimp/widget.php:48
+#: widgets/ninja-forms/widget.php:48 widgets/weforms/widget.php:36
+msgid "Select Form"
+msgstr ""
+
+#: widgets/contact/widget.php:60 widgets/mailchimp/widget.php:60
+#: widgets/ninja-forms/widget.php:60 widgets/promotion/widget.php:105
+msgid "Wrapper"
+msgstr ""
+
+#: widgets/contact/widget.php:68
+msgid "Form Alignment"
+msgstr ""
+
+#: widgets/contact/widget.php:72 widgets/contact/widget.php:669
+#: widgets/ninja-forms/widget.php:616 widgets/promotion/widget.php:138
+#: widgets/promotion/widget.php:214
+msgid "Left"
+msgstr ""
+
+#: widgets/contact/widget.php:76 widgets/contact/widget.php:673
+#: widgets/gallery-justified/widget.php:125 widgets/ninja-forms/widget.php:620
+#: widgets/promotion/widget.php:142
+msgid "Center"
+msgstr ""
+
+#: widgets/contact/widget.php:80 widgets/contact/widget.php:677
+#: widgets/gallery-justified/widget.php:126 widgets/ninja-forms/widget.php:624
+#: widgets/promotion/widget.php:146 widgets/promotion/widget.php:215
+msgid "Right"
+msgstr ""
+
+#: widgets/contact/widget.php:204 widgets/mailchimp/widget.php:181
+#: widgets/ninja-forms/widget.php:181
+msgid "Hint"
+msgstr ""
+
+#: widgets/contact/widget.php:238 widgets/mailchimp/widget.php:227
+#: widgets/ninja-forms/widget.php:215
+msgid "Input"
+msgstr ""
+
+#: widgets/contact/widget.php:312 widgets/mailchimp/widget.php:297
+#: widgets/ninja-forms/widget.php:285
+msgid "Margin Bottom"
+msgstr ""
+
+#: widgets/contact/widget.php:335 widgets/ninja-forms/widget.php:308
+msgid "Textarea"
+msgstr ""
+
+#: widgets/contact/widget.php:503 widgets/mailchimp/widget.php:425
+#: widgets/ninja-forms/widget.php:456
+msgid "Focus"
+msgstr ""
+
+#: widgets/contact/widget.php:594 widgets/mailchimp/widget.php:510
+#: widgets/ninja-forms/widget.php:541
+msgid "Placeholder"
+msgstr ""
+
+#: widgets/contact/widget.php:603 widgets/mailchimp/widget.php:519
+#: widgets/ninja-forms/widget.php:550
+msgid "Font Size"
+msgstr ""
+
+#: widgets/contact/widget.php:633 widgets/mailchimp/widget.php:549
+#: widgets/ninja-forms/widget.php:580
+msgid "Placeholder Color"
+msgstr ""
+
+#: widgets/contact/widget.php:665 widgets/ninja-forms/widget.php:612
+#: widgets/promotion/widget.php:134
+msgid "Alignment"
+msgstr ""
+
+#: widgets/countdown/views/template-1.php:40
+msgid "Days"
+msgstr ""
+
+#: widgets/countdown/views/template-1.php:41
+msgid "Hours"
+msgstr ""
+
+#: widgets/countdown/views/template-1.php:42
+msgid "Minutes"
+msgstr ""
+
+#: widgets/countdown/views/template-1.php:43
+msgid "Seconds"
+msgstr ""
+
+#: widgets/countdown/widget.php:47
+msgid "Date & Time"
+msgstr ""
+
+#: widgets/countdown/widget.php:68
+msgid "Number Color"
+msgstr ""
+
+#: widgets/countdown/widget.php:83 widgets/timeline-slider/widget.php:123
+msgid "Text Color"
+msgstr ""
+
+#: widgets/countdown/widget.php:150
+msgid "Number Size"
+msgstr ""
+
+#: widgets/countdown/widget.php:160
+msgid "Text Size"
+msgstr ""
+
+#: widgets/countdown/widget.php:182
+msgid "Item Padding"
+msgstr ""
+
+#: widgets/counter/widget.php:57 widgets/info-box/widget.php:50
+#: widgets/pricing/widget.php:53 widgets/promotion/widget.php:202
+#: widgets/social-profile/widget.php:53
+msgid "Image"
+msgstr ""
+
+#: widgets/counter/widget.php:65 widgets/info-box/widget.php:58
+#: widgets/pricing/widget.php:64 widgets/promotion/widget.php:50
+#: widgets/social-profile/widget.php:61 widgets/team/widget.php:48
+#: widgets/testimonial/widget.php:47
+msgid "Choose Image"
+msgstr ""
+
+#: widgets/counter/widget.php:79 widgets/info-box/widget.php:72
+#: widgets/pricing/widget.php:79 widgets/social-profile/widget.php:75
+#: widgets/tabs/widget.php:81 widgets/team/widget.php:189
+#: widgets/timeline-slider/widget.php:71 widgets/timeline/widget.php:86
+msgid "Choose Icon"
+msgstr ""
+
+#: widgets/counter/widget.php:91 widgets/counter/widget.php:291
+#: widgets/gallery-justified/widget.php:102
+msgid "Number"
+msgstr ""
+
+#: widgets/counter/widget.php:109 widgets/info-box/widget.php:167
+#: widgets/pricing/widget.php:211 widgets/progressbar/widget.php:111
+#: widgets/progresspie/widget.php:97 widgets/social-profile/widget.php:148
+#: widgets/team/widget.php:231 widgets/testimonial/widget.php:122
+#: widgets/timeline-slider/widget.php:94 widgets/timeline/widget.php:109
+msgid "Global Style"
+msgstr ""
+
+#: widgets/counter/widget.php:119 widgets/info-box/widget.php:330
+#: widgets/info-box/widget.php:348
+msgid "Background Color"
+msgstr ""
+
+#: widgets/counter/widget.php:177 widgets/info-box/widget.php:232
+msgid "Image Width"
+msgstr ""
+
+#: widgets/counter/widget.php:207 widgets/info-box/widget.php:262
+#: widgets/tabs/widget.php:224
+msgid "Icon Size"
+msgstr ""
+
+#: widgets/counter/widget.php:233 widgets/info-box/widget.php:288
+msgid "Icon Background Size"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:44 widgets/posts-grid/widget.php:37
+#: widgets/products-carousel/widget.php:44 widgets/products-grid/widget.php:37
+#: widgets/tribe-events-grid/widget.php:37 widgets/tutor/widget.php:37
+msgid "Query"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:51 widgets/marquee/widget.php:48
+#: widgets/newsticker/widget.php:49 widgets/posts-grid/widget.php:45
+#: widgets/tribe-events-grid/widget.php:45 widgets/tutor/widget.php:44
+msgid "Content Type"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:55
+msgid "By Latest Products"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:56
+msgid "By Products Category"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:57
+msgid "By Products Tags"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:58
+msgid "By Products"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:59 widgets/marquee/widget.php:56
+#: widgets/newsticker/widget.php:57 widgets/posts-grid/widget.php:53
+#: widgets/tribe-events-grid/widget.php:53 widgets/tutor/widget.php:52
+msgid "By Custom"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:68 widgets/marquee/widget.php:65
+#: widgets/newsticker/widget.php:66 widgets/portfolio/widget.php:88
+#: widgets/posts-grid/widget.php:61 widgets/tribe-events-grid/widget.php:61
+#: widgets/tutor/widget.php:61
+msgid "Category"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:82 widgets/marquee/widget.php:79
+#: widgets/newsticker/widget.php:80 widgets/posts-grid/widget.php:75
+#: widgets/tribe-events-grid/widget.php:75 widgets/tutor/widget.php:75
+msgid "Tags"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:96
+msgid "Products List"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:110
+msgid "Custom Products IDs"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:111
+msgid "Add any product ids of EDD download post types. If multiple use comma to separate them. Example: 1023,201,239"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:123 widgets/posts-grid/widget.php:116
+#: widgets/products-carousel/widget.php:52 widgets/products-grid/widget.php:45
+#: widgets/timeline-slider/widget.php:51 widgets/timeline/widget.php:43
+#: widgets/tribe-events-grid/widget.php:116 widgets/tutor/widget.php:116
+msgid "Total Items"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:132 widgets/portfolio/widget.php:45
+#: widgets/posts-grid/widget.php:125 widgets/products-grid/widget.php:54
+#: widgets/tribe-events-grid/widget.php:135 widgets/tutor/widget.php:125
+msgid "Item (s) Per Row"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:136 widgets/portfolio/widget.php:49
+#: widgets/posts-grid/widget.php:129 widgets/products-grid/widget.php:58
+#: widgets/tribe-events-grid/widget.php:139 widgets/tutor/widget.php:129
+msgid "1 Column"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:137 widgets/portfolio/widget.php:50
+#: widgets/posts-grid/widget.php:130 widgets/products-grid/widget.php:59
+#: widgets/tribe-events-grid/widget.php:140 widgets/tutor/widget.php:130
+msgid "2 Column"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:138 widgets/portfolio/widget.php:51
+#: widgets/posts-grid/widget.php:131 widgets/products-grid/widget.php:60
+#: widgets/tribe-events-grid/widget.php:141 widgets/tutor/widget.php:131
+msgid "3 Column"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:139 widgets/portfolio/widget.php:52
+#: widgets/posts-grid/widget.php:132 widgets/products-grid/widget.php:61
+#: widgets/tribe-events-grid/widget.php:142 widgets/tutor/widget.php:132
+msgid "4 Column"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:149 widgets/posts-grid/widget.php:158
+#: widgets/products-carousel/widget.php:239
+#: widgets/products-grid/widget.php:138
+#: widgets/tribe-events-grid/widget.php:224 widgets/tutor/widget.php:142
+msgid "Global"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:186
+#: widgets/edd-products-grid/widget.php:282 widgets/info-box/widget.php:503
+#: widgets/products-carousel/widget.php:276
+#: widgets/products-carousel/widget.php:371
+#: widgets/products-grid/widget.php:175 widgets/products-grid/widget.php:270
+#: widgets/tribe-events-grid/widget.php:261
+msgid "Hover Color"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:298 widgets/info-box/widget.php:514
+#: widgets/products-carousel/widget.php:387
+#: widgets/products-grid/widget.php:286
+msgid "Hover Background"
+msgstr ""
+
+#: widgets/edd-products-grid/widget.php:307
+msgid "Radio/Checkbox Background"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:52 widgets/portfolio/widget.php:62
+msgid "Select Image"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:72
+msgid "Gallery"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:82
+msgid "Gallery Image"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:94
+#: widgets/tribe-events-grid/widget.php:127
+msgid "Additional Settings"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:110
+msgid "Gutter Gap"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:118
+msgid "Last Row"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:122
+msgid "No Justify"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:123
+msgid "Justify"
+msgstr ""
+
+#: widgets/gallery-justified/widget.php:134
+msgid "Captions"
+msgstr ""
+
+#: widgets/image-compare/views/template-1.php:62
+#: widgets/image-compare/widget.php:50
+msgid "Before Image"
+msgstr ""
+
+#: widgets/image-compare/views/template-1.php:64
+#: widgets/image-compare/widget.php:63
+msgid "After Image"
+msgstr ""
+
+#: widgets/image-compare/widget.php:43
+msgid "Layout"
+msgstr ""
+
+#: widgets/image-compare/widget.php:51 widgets/image-compare/widget.php:64
+msgid "Use same size image for before and after for better preview."
+msgstr ""
+
+#: widgets/image-compare/widget.php:76 widgets/image-compare/widget.php:78
+msgid "Before Label"
+msgstr ""
+
+#: widgets/image-compare/widget.php:79 widgets/image-compare/widget.php:279
+msgid "Before"
+msgstr ""
+
+#: widgets/image-compare/widget.php:88 widgets/image-compare/widget.php:90
+msgid "After Label"
+msgstr ""
+
+#: widgets/image-compare/widget.php:91 widgets/image-compare/widget.php:313
+msgid "After"
+msgstr ""
+
+#: widgets/image-compare/widget.php:102
+msgid "Additional"
+msgstr ""
+
+#: widgets/image-compare/widget.php:110
+msgid "Orientation"
+msgstr ""
+
+#: widgets/image-compare/widget.php:114
+msgid "Horizontal"
+msgstr ""
+
+#: widgets/image-compare/widget.php:115
+msgid "Vertical"
+msgstr ""
+
+#: widgets/image-compare/widget.php:123
+msgid "Before Image Visibility"
+msgstr ""
+
+#: widgets/image-compare/widget.php:141
+msgid "Overlay"
+msgstr ""
+
+#: widgets/image-compare/widget.php:142
+msgid "Do not show the overlay with before and after."
+msgstr ""
+
+#: widgets/image-compare/widget.php:151
+msgid "Slide on Hover"
+msgstr ""
+
+#: widgets/image-compare/widget.php:152
+msgid "Move slider on mouse hover?"
+msgstr ""
+
+#: widgets/image-compare/widget.php:160
+msgid "Handle Only"
+msgstr ""
+
+#: widgets/image-compare/widget.php:161
+msgid "Allow a user to swipe anywhere on the image to control slider movement."
+msgstr ""
+
+#: widgets/image-compare/widget.php:170
+msgid "Click to Move"
+msgstr ""
+
+#: widgets/image-compare/widget.php:171
+msgid "Allow a user to click (or tap) anywhere on the image to move the slider to that location."
+msgstr ""
+
+#: widgets/image-compare/widget.php:179
+msgid "On Hover?"
+msgstr ""
+
+#: widgets/image-compare/widget.php:191
+msgid "Add Circle In Bar?"
+msgstr ""
+
+#: widgets/image-compare/widget.php:200
+msgid "add Circle Blur?"
+msgstr ""
+
+#: widgets/image-compare/widget.php:211
+msgid "Circle Shadow?"
+msgstr ""
+
+#: widgets/image-compare/widget.php:222
+msgid "Smoothing?"
+msgstr ""
+
+#: widgets/image-compare/widget.php:232
+msgid "Smoothing Amount"
+msgstr ""
+
+#: widgets/image-compare/widget.php:263
+msgid "Overlay Color"
+msgstr ""
+
+#: widgets/image-compare/widget.php:344
+msgid "Bar"
+msgstr ""
+
+#: widgets/image-compare/widget.php:351 widgets/progressbar/widget.php:218
+#: widgets/progresspie/widget.php:149
+msgid "Bar Color"
+msgstr ""
+
+#: widgets/info-box/widget.php:45 widgets/pricing/widget.php:48
+#: widgets/social-profile/widget.php:48
+msgid "Select Icon"
+msgstr ""
+
+#: widgets/info-box/widget.php:94
+msgid "Info Count"
+msgstr ""
+
+#: widgets/info-box/widget.php:123
+msgid "Type your description here"
+msgstr ""
+
+#: widgets/info-box/widget.php:132 widgets/info-box/widget.php:472
+msgid "Buttons"
+msgstr ""
+
+#: widgets/info-box/widget.php:142
+msgid "Get Started"
+msgstr ""
+
+#: widgets/info-box/widget.php:207
+msgid "Featured?"
+msgstr ""
+
+#: widgets/info-box/widget.php:209 widgets/pricing/widget.php:146
+#: widgets/pricing/widget.php:223
+msgid "Yes"
+msgstr ""
+
+#: widgets/info-box/widget.php:210 widgets/pricing/widget.php:147
+#: widgets/pricing/widget.php:224
+msgid "No"
+msgstr ""
+
+#: widgets/info-box/widget.php:537
+msgid "Radius"
+msgstr ""
+
+#: widgets/marquee/views/template-1.php:12
+#: widgets/newsticker/views/template-1.php:12
+msgid "Latest News"
+msgstr ""
+
+#: widgets/marquee/widget.php:40 widgets/newsticker/widget.php:41
+msgid "Posts Query"
+msgstr ""
+
+#: widgets/marquee/widget.php:52 widgets/newsticker/widget.php:53
+#: widgets/posts-grid/widget.php:49
+msgid "By Latest Posts"
+msgstr ""
+
+#: widgets/marquee/widget.php:53 widgets/newsticker/widget.php:54
+#: widgets/posts-grid/widget.php:50
+msgid "By Posts Category"
+msgstr ""
+
+#: widgets/marquee/widget.php:54 widgets/newsticker/widget.php:55
+#: widgets/posts-grid/widget.php:51
+msgid "By Posts Tags"
+msgstr ""
+
+#: widgets/marquee/widget.php:55 widgets/newsticker/widget.php:56
+#: widgets/posts-grid/widget.php:52
+msgid "By Posts"
+msgstr ""
+
+#: widgets/marquee/widget.php:93 widgets/newsticker/widget.php:94
+#: widgets/posts-grid/widget.php:89
+msgid "Posts List"
+msgstr ""
+
+#: widgets/marquee/widget.php:107 widgets/newsticker/widget.php:108
+#: widgets/posts-grid/widget.php:103
+msgid "Custom Posts IDs"
+msgstr ""
+
+#: widgets/marquee/widget.php:108 widgets/newsticker/widget.php:109
+msgid "Add any post IDs of any post types. If multiple use comma to separate them. Example: 1023,201,239"
+msgstr ""
+
+#: widgets/marquee/widget.php:129 widgets/newsticker/widget.php:130
+msgid "Items Limit"
+msgstr ""
+
+#: widgets/marquee/widget.php:140 widgets/newsticker/widget.php:141
+msgid "Styles"
+msgstr ""
+
+#: widgets/portfolio/widget.php:81 widgets/team/widget.php:180
+msgid "Link"
+msgstr ""
+
+#: widgets/portfolio/widget.php:96
+msgid "Author Name"
+msgstr ""
+
+#: widgets/portfolio/widget.php:104
+msgid "Author URL(s)"
+msgstr ""
+
+#: widgets/portfolio/widget.php:111
+msgid "Hire Me Text"
+msgstr ""
+
+#: widgets/portfolio/widget.php:119
+msgid "Hire Me URL(s)"
+msgstr ""
+
+#: widgets/portfolio/widget.php:128
+msgid "Portfolios"
+msgstr ""
+
+#: widgets/portfolio/widget.php:138
+msgid "Mockup Design"
+msgstr ""
+
+#: widgets/posts-grid/views/template-1.php:12
+#: widgets/posts-grid/views/template-2.php:12
+#: widgets/posts-grid/views/template-3.php:12
+#: widgets/posts-grid/views/template-4.php:12
+#: widgets/posts-grid/views/template-5.php:12
+#: widgets/posts-grid/views/template-6.php:12 widgets/timeline/widget.php:62
+msgid "Read More"
+msgstr ""
+
+#: widgets/posts-grid/views/template-2.php:126
+msgid "Story By"
+msgstr ""
+
+#: widgets/posts-grid/views/template-3.php:84
+msgid "No Comments"
+msgstr ""
+
+#: widgets/posts-grid/views/template-3.php:84
+msgid "One Comment"
+msgstr ""
+
+#: widgets/posts-grid/views/template-3.php:84
+msgid "% Comments"
+msgstr ""
+
+#: widgets/posts-grid/widget.php:104
+msgid "Add any post ids of post types. If multiple use comma to separate them. Example: 1023,201,239"
+msgstr ""
+
+#: widgets/posts-grid/widget.php:140
+msgid "Show Pagination"
+msgstr ""
+
+#: widgets/posts-grid/widget.php:148 widgets/timeline-slider/widget.php:60
+#: widgets/timeline/widget.php:52 widgets/tribe-events-grid/widget.php:150
+msgid "Excerpt Length"
+msgstr ""
+
+#: widgets/pricing/widget.php:92
+msgid "Highlighted Text"
+msgstr ""
+
+#: widgets/pricing/widget.php:93
+msgid "Basic Plan"
+msgstr ""
+
+#: widgets/pricing/widget.php:102
+msgid "Sale Price"
+msgstr ""
+
+#: widgets/pricing/widget.php:110
+msgid "Regular Price"
+msgstr ""
+
+#: widgets/pricing/widget.php:118
+msgid "Currency"
+msgstr ""
+
+#: widgets/pricing/widget.php:126 widgets/team/widget.php:158
+msgid "Short Description"
+msgstr ""
+
+#: widgets/pricing/widget.php:144
+msgid "Feature in"
+msgstr ""
+
+#: widgets/pricing/widget.php:221
+msgid "Is Featured?"
+msgstr ""
+
+#: widgets/pricing/widget.php:285
+msgid "Gradient Color"
+msgstr ""
+
+#: widgets/products-carousel/views/template-1.php:166
+#: widgets/products-grid/views/template-1.php:114
+msgid "Free"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:61 widgets/products-grid/widget.php:69
+msgid "Display"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:65 widgets/products-grid/widget.php:73
+msgid "All products"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:66 widgets/products-grid/widget.php:74
+msgid "Featured products"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:67 widgets/products-grid/widget.php:75
+msgid "On-sale products"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:75
+#: widgets/products-carousel/widget.php:90 widgets/products-grid/widget.php:83
+#: widgets/products-grid/widget.php:98
+msgid "Order by"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:79 widgets/products-grid/widget.php:87
+msgid "Date"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:80 widgets/products-grid/widget.php:88
+msgid "Price"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:81 widgets/products-grid/widget.php:89
+msgid "Random"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:82 widgets/products-grid/widget.php:90
+msgid "Sales"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:94 widgets/products-grid/widget.php:102
+msgid "ASC"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:95 widgets/products-grid/widget.php:103
+msgid "DESC"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:103
+#: widgets/products-grid/widget.php:111
+msgid "Hide Free Products"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:115
+#: widgets/products-grid/widget.php:123
+msgid "Show hidden products"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:131
+msgid "Slider Settings"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:153
+msgid "Autoplay"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:162
+msgid "Autoplay Speed"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:174
+msgid "Loop"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:183
+msgid "Pause on Hover"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:191
+msgid "Infinite Loop"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:200
+msgid "Animation Speed"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:209
+msgid "Space Between"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:218
+msgid "Observer"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:219
+msgid "When you use carousel in any hidden place (in tabs, accordion etc) keep it yes."
+msgstr ""
+
+#: widgets/products-carousel/widget.php:227
+msgid "Centered Slide"
+msgstr ""
+
+#: widgets/products-carousel/widget.php:229
+msgid "If you turn on this option so set column even number for good looking"
+msgstr ""
+
+#: widgets/progressbar/widget.php:65
+msgid "Start Label"
+msgstr ""
+
+#: widgets/progressbar/widget.php:76
+msgid "End Label"
+msgstr ""
+
+#: widgets/progressbar/widget.php:87
+msgid "Percentage Value"
+msgstr ""
+
+#: widgets/progressbar/widget.php:95
+msgid "Bar Image"
+msgstr ""
+
+#: widgets/progressbar/widget.php:134
+msgid "Bar Height"
+msgstr ""
+
+#: widgets/progressbar/widget.php:169 widgets/progresspie/widget.php:106
+msgid "Label Typography"
+msgstr ""
+
+#: widgets/progressbar/widget.php:179
+msgid "Percent Value Typography"
+msgstr ""
+
+#: widgets/progressbar/widget.php:191 widgets/progresspie/widget.php:115
+#: widgets/tribe-events-grid/widget.php:416
+msgid "Label Color"
+msgstr ""
+
+#: widgets/progressbar/widget.php:204 widgets/progresspie/widget.php:137
+#: widgets/tribe-events-grid/widget.php:431
+msgid "Value Color"
+msgstr ""
+
+#: widgets/progressbar/widget.php:231 widgets/progressbar/widget.php:248
+#: widgets/progresspie/widget.php:157
+msgid "Fill Color"
+msgstr ""
+
+#: widgets/progressbar/widget.php:264
+msgid "Indicator Color"
+msgstr ""
+
+#: widgets/progresspie/widget.php:62
+msgid "Percentage"
+msgstr ""
+
+#: widgets/progresspie/widget.php:77
+msgid "Speed (ms)"
+msgstr ""
+
+#: widgets/progresspie/widget.php:78
+msgid "30"
+msgstr ""
+
+#: widgets/progresspie/widget.php:86
+msgid "Delay (ms)"
+msgstr ""
+
+#: widgets/progresspie/widget.php:87
+msgid "1000"
+msgstr ""
+
+#: widgets/progresspie/widget.php:128
+msgid "Value Typography"
+msgstr ""
+
+#: widgets/progresspie/widget.php:166
+msgid "Track Color"
+msgstr ""
+
+#: widgets/progresspie/widget.php:175
+msgid "Bar Size"
+msgstr ""
+
+#: widgets/promotion/widget.php:70 widgets/promotion/widget.php:318
+msgid "Sub Title"
+msgstr ""
+
+#: widgets/promotion/widget.php:115
+msgid "Min Height"
+msgstr ""
+
+#: widgets/promotion/widget.php:210
+msgid "Image Position"
+msgstr ""
+
+#: widgets/promotion/widget.php:223
+msgid "Max Width"
+msgstr ""
+
+#: widgets/social-profile/widget.php:37
+msgid "Social Items"
+msgstr ""
+
+#: widgets/social-profile/widget.php:96
+msgid "Custom Link"
+msgstr ""
+
+#: widgets/social-profile/widget.php:125
+msgid "Facebook"
+msgstr ""
+
+#: widgets/social-profile/widget.php:129
+msgid "Twitter"
+msgstr ""
+
+#: widgets/social-profile/widget.php:133
+msgid "Linkedin"
+msgstr ""
+
+#: widgets/table/widget.php:42
+msgid "Select Table"
+msgstr ""
+
+#: widgets/tabs/widget.php:46 widgets/tabs/widget.php:90
+msgid "Tabs Items"
+msgstr ""
+
+#: widgets/tabs/widget.php:56
+msgid "Title & Description"
+msgstr ""
+
+#: widgets/tabs/widget.php:58 widgets/tabs/widget.php:59
+msgid "Tab Title"
+msgstr ""
+
+#: widgets/tabs/widget.php:68 widgets/tabs/widget.php:69
+msgid "Tab Content"
+msgstr ""
+
+#: widgets/tabs/widget.php:95
+msgid "Tab #1"
+msgstr ""
+
+#: widgets/tabs/widget.php:96 widgets/tabs/widget.php:100
+msgid "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo."
+msgstr ""
+
+#: widgets/tabs/widget.php:99
+msgid "Tab #2"
+msgstr ""
+
+#: widgets/tabs/widget.php:176
+msgid "Nav"
+msgstr ""
+
+#: widgets/team/views/template-2.php:76
+msgid "Tel:"
+msgstr ""
+
+#: widgets/team/widget.php:59 widgets/team/widget.php:416
+#: widgets/testimonial/widget.php:58 widgets/testimonial/widget.php:211
+msgid "Name"
+msgstr ""
+
+#: widgets/team/widget.php:60 widgets/testimonial/widget.php:59
+msgid "James Smith"
+msgstr ""
+
+#: widgets/team/widget.php:69 widgets/testimonial/widget.php:68
+#: widgets/testimonial/widget.php:257
+msgid "Designation"
+msgstr ""
+
+#: widgets/team/widget.php:70
+msgid "CEO & Founder"
+msgstr ""
+
+#: widgets/team/widget.php:79
+msgid "Tel: Number"
+msgstr ""
+
+#: widgets/team/widget.php:80
+msgid "+1401201203"
+msgstr ""
+
+#: widgets/team/widget.php:92
+msgid "Enter Email Address"
+msgstr ""
+
+#: widgets/team/widget.php:93
+msgid "your@site.com"
+msgstr ""
+
+#: widgets/team/widget.php:106 widgets/testimonial/widget.php:99
+msgid "Rating"
+msgstr ""
+
+#: widgets/team/widget.php:110 widgets/testimonial/widget.php:103
+msgid "No Rating"
+msgstr ""
+
+#: widgets/team/widget.php:111 widgets/testimonial/widget.php:104
+msgid "1"
+msgstr ""
+
+#: widgets/team/widget.php:112 widgets/testimonial/widget.php:105
+msgid "1.5"
+msgstr ""
+
+#: widgets/team/widget.php:113 widgets/testimonial/widget.php:106
+msgid "2"
+msgstr ""
+
+#: widgets/team/widget.php:114 widgets/testimonial/widget.php:107
+msgid "2.5"
+msgstr ""
+
+#: widgets/team/widget.php:115 widgets/testimonial/widget.php:108
+msgid "3"
+msgstr ""
+
+#: widgets/team/widget.php:116 widgets/testimonial/widget.php:109
+msgid "3.5"
+msgstr ""
+
+#: widgets/team/widget.php:117 widgets/testimonial/widget.php:110
+msgid "4"
+msgstr ""
+
+#: widgets/team/widget.php:118 widgets/testimonial/widget.php:111
+msgid "4.5"
+msgstr ""
+
+#: widgets/team/widget.php:119 widgets/testimonial/widget.php:112
+msgid "5"
+msgstr ""
+
+#: widgets/team/widget.php:130
+msgid "Review Count Text"
+msgstr ""
+
+#: widgets/team/widget.php:131
+msgid "455+ Review"
+msgstr ""
+
+#: widgets/team/widget.php:144
+msgid "Experience"
+msgstr ""
+
+#: widgets/team/widget.php:145
+msgid "12+ Years"
+msgstr ""
+
+#: widgets/team/widget.php:182 widgets/team/widget.php:206
+#: widgets/team/widget.php:211 widgets/team/widget.php:216
+msgid "#"
+msgstr ""
+
+#: widgets/team/widget.php:274
+msgid "Divider Color"
+msgstr ""
+
+#: widgets/team/widget.php:292
+msgid "Email/Phone Color"
+msgstr ""
+
+#: widgets/team/widget.php:310
+msgid "Overlay Background"
+msgstr ""
+
+#: widgets/team/widget.php:341
+msgid "Social Primary"
+msgstr ""
+
+#: widgets/team/widget.php:360
+msgid "Social Color"
+msgstr ""
+
+#: widgets/team/widget.php:378
+msgid "Social Hover Color"
+msgstr ""
+
+#: widgets/team/widget.php:396
+msgid "Social Secondary"
+msgstr ""
+
+#: widgets/team/widget.php:462
+msgid "Job Title"
+msgstr ""
+
+#: widgets/testimonial/widget.php:69
+msgid "Director"
+msgstr ""
+
+#: widgets/testimonial/widget.php:78
+msgid "Recommended"
+msgstr ""
+
+#: widgets/testimonial/widget.php:79
+msgid "90% Recommended"
+msgstr ""
+
+#: widgets/testimonial/widget.php:91 widgets/testimonial/widget.php:303
+msgid "Review Text"
+msgstr ""
+
+#: widgets/testimonial/widget.php:132
+msgid "Rating Color"
+msgstr ""
+
+#: widgets/testimonial/widget.php:349
+msgid "Quote"
+msgstr ""
+
+#: widgets/testimonial/widget.php:360
+msgid "Quote Color"
+msgstr ""
+
+#: widgets/testimonial/widget.php:375
+msgid "Size"
+msgstr ""
+
+#: widgets/tribe-events-grid/views/template-1.php:112
+#: widgets/tribe-events-grid/views/template-2.php:110
+msgid "Start Date: "
+msgstr ""
+
+#: widgets/tribe-events-grid/views/template-1.php:113
+#: widgets/tribe-events-grid/views/template-2.php:111
+msgid "End Date: "
+msgstr ""
+
+#: widgets/tribe-events-grid/views/template-1.php:145
+#: widgets/tribe-events-grid/views/template-2.php:138
+msgid "Cost:"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:49
+msgid "By Latest Events"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:50
+msgid "By Events Category"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:51
+msgid "By Events Tags"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:52
+msgid "By Events"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:89
+msgid "Events List"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:103
+msgid "Custom Events IDs"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:104
+msgid "Add any product ids of tribe events post types. If multiple use comma to separate them. Example: 1023,201,239"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:159
+msgid "Show Thumbs"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:168
+msgid "Show Date"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:177
+msgid "Show Title"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:186
+msgid "Show Short Description"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:195
+msgid "Show Cost"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:204
+msgid "Show Website"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:213
+msgid "Show Address"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:323
+msgid "Date/Time"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:366
+msgid "Tooltip"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:408
+msgid "Joining Cost"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:449
+msgid "Website/Address"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:457
+msgid "Website Icon Color"
+msgstr ""
+
+#: widgets/tribe-events-grid/widget.php:472
+msgid "Address Icon Color"
+msgstr ""
+
+#: widgets/tutor/widget.php:48
+msgid "By Latest Courses"
+msgstr ""
+
+#: widgets/tutor/widget.php:49
+msgid "By Courses Category"
+msgstr ""
+
+#: widgets/tutor/widget.php:50
+msgid "By Courses Tags"
+msgstr ""
+
+#: widgets/tutor/widget.php:51
+msgid "By Courses"
+msgstr ""
+
+#: widgets/tutor/widget.php:89
+msgid "Courses List"
+msgstr ""
+
+#: widgets/tutor/widget.php:103
+msgid "Custom Courses IDs"
+msgstr ""
+
+#: widgets/tutor/widget.php:104
+msgid "Add any course ids of Tutor LMS post types. If multiple use comma to separate them. Example: 1023,201,239"
+msgstr ""
+
+#: widgets/typewriter/widget.php:53
+msgid "Before Text"
+msgstr ""
+
+#: widgets/typewriter/widget.php:61
+msgid "After Text"
+msgstr ""
+
+#: widgets/typewriter/widget.php:103
+msgid "New Market Expansion"
+msgstr ""
+
+#: widgets/typewriter/widget.php:106
+msgid "Data and Strategy"
+msgstr ""
+
+#: widgets/typewriter/widget.php:109
+msgid "Corporate Development"
+msgstr ""
+
+#: widgets/typewriter/widget.php:129
+msgid "Animation Effects"
+msgstr ""
+
+#: widgets/typewriter/widget.php:133
+msgid "Clip Words"
+msgstr ""
+
+#: widgets/typewriter/widget.php:134
+msgid "Rotate"
+msgstr ""
+
+#: widgets/typewriter/widget.php:135
+msgid "Loading Bar"
+msgstr ""
+
+#: widgets/typewriter/widget.php:136
+msgid "Slide Top"
+msgstr ""
+
+#: widgets/typewriter/widget.php:137
+msgid "Zoom"
+msgstr ""
+
+#: widgets/typewriter/widget.php:138
+msgid "Push"
+msgstr ""
+
+#: widgets/typewriter/widget.php:146
+msgid "Before/After Text"
+msgstr ""
+
+#: widgets/typewriter/widget.php:150
+msgid "Default"
+msgstr ""
+
+#: widgets/typewriter/widget.php:151
+msgid "Before Block"
+msgstr ""
+
+#: widgets/typewriter/widget.php:152
+msgid "After Block"
+msgstr ""
+
+#: widgets/typewriter/widget.php:153
+msgid "Before/After Block"
+msgstr ""

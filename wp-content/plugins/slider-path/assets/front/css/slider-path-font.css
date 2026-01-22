@@ -1,0 +1,703 @@
+@font-face {
+    font-family: 'slider-path';
+    src: url('../fonts/slider-path.eot?w118d');
+    src: url('../fonts/slider-path.eot?#iefixw118d') format('embedded-opentype'),
+    url('../fonts/slider-path.woff2?w118d') format('woff2'),
+    url('../fonts/slider-path.woff?w118d') format('woff'),
+    url('../fonts/slider-path.ttf?w118d') format('truetype'),
+    url('../fonts/slider-path.svg?w118d#slider-path') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="sliderpath-icofont"], [class*=" sliderpath-icofont"] {
+    font-family: 'slider-path' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: 600;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.sliderpath-icofont-home:before {
+    content: "\e800";
+}
+
+.sliderpath-icofont-apartment:before {
+    content: "\e801";
+}
+
+.sliderpath-icofont-pencil:before {
+    content: "\e802";
+}
+
+.sliderpath-icofont-magic-wand:before {
+    content: "\e803";
+}
+
+.sliderpath-icofont-drop:before {
+    content: "\e804";
+}
+
+.sliderpath-icofont-lighter:before {
+    content: "\e805";
+}
+
+.sliderpath-icofont-poop:before {
+    content: "\e806";
+}
+
+.sliderpath-icofont-sun:before {
+    content: "\e807";
+}
+
+.sliderpath-icofont-moon:before {
+    content: "\e808";
+}
+
+.sliderpath-icofont-cloud:before {
+    content: "\e809";
+}
+
+.sliderpath-icofont-cloud-upload:before {
+    content: "\e80a";
+}
+
+.sliderpath-icofont-cloud-download:before {
+    content: "\e80b";
+}
+
+.sliderpath-icofont-cloud-sync:before {
+    content: "\e80c";
+}
+
+.sliderpath-icofont-cloud-check:before {
+    content: "\e80d";
+}
+
+.sliderpath-icofont-database:before {
+    content: "\e80e";
+}
+
+.sliderpath-icofont-lock:before {
+    content: "\e80f";
+}
+
+.sliderpath-icofont-cog:before {
+    content: "\e810";
+}
+
+.sliderpath-icofont-trash:before {
+    content: "\e811";
+}
+
+.sliderpath-icofont-dice:before {
+    content: "\e812";
+}
+
+.sliderpath-icofont-heart:before {
+    content: "\e813";
+}
+
+.sliderpath-icofont-star:before {
+    content: "\e814";
+}
+
+.sliderpath-icofont-star-half:before {
+    content: "\e815";
+}
+
+.sliderpath-icofont-star-empty:before {
+    content: "\e816";
+}
+
+.sliderpath-icofont-flag:before {
+    content: "\e817";
+}
+
+.sliderpath-icofont-envelope:before {
+    content: "\e818";
+}
+
+.sliderpath-icofont-paperclip:before {
+    content: "\e819";
+}
+
+.sliderpath-icofont-inbox:before {
+    content: "\e81a";
+}
+
+.sliderpath-icofont-eye:before {
+    content: "\e81b";
+}
+
+.sliderpath-icofont-printer:before {
+    content: "\e81c";
+}
+
+.sliderpath-icofont-file-empty:before {
+    content: "\e81d";
+}
+
+.sliderpath-icofont-file-add:before {
+    content: "\e81e";
+}
+
+.sliderpath-icofont-enter:before {
+    content: "\e81f";
+}
+
+.sliderpath-icofont-exit:before {
+    content: "\e820";
+}
+
+.sliderpath-icofont-graduation-hat:before {
+    content: "\e821";
+}
+
+.sliderpath-icofont-license:before {
+    content: "\e822";
+}
+
+.sliderpath-icofont-music-note:before {
+    content: "\e823";
+}
+
+.sliderpath-icofont-film-play:before {
+    content: "\e824";
+}
+
+.sliderpath-icofont-camera-video:before {
+    content: "\e825";
+}
+
+.sliderpath-icofont-camera:before {
+    content: "\e826";
+}
+
+.sliderpath-icofont-picture:before {
+    content: "\e827";
+}
+
+.sliderpath-icofont-book:before {
+    content: "\e828";
+}
+
+.sliderpath-icofont-bookmark:before {
+    content: "\e829";
+}
+
+.sliderpath-icofont-user:before {
+    content: "\e82a";
+}
+
+.sliderpath-icofont-users:before {
+    content: "\e82b";
+}
+
+.sliderpath-icofont-shirt:before {
+    content: "\e82c";
+}
+
+.sliderpath-icofont-store:before {
+    content: "\e82d";
+}
+
+.sliderpath-icofont-cart:before {
+    content: "\e82e";
+}
+
+.sliderpath-icofont-tag:before {
+    content: "\e82f";
+}
+
+.sliderpath-icofont-phone-handset:before {
+    content: "\e830";
+}
+
+.sliderpath-icofont-phone:before {
+    content: "\e831";
+}
+
+.sliderpath-icofont-pushpin:before {
+    content: "\e832";
+}
+
+.sliderpath-icofont-map-marker:before {
+    content: "\e833";
+}
+
+.sliderpath-icofont-map:before {
+    content: "\e834";
+}
+
+.sliderpath-icofont-location:before {
+    content: "\e835";
+}
+
+.sliderpath-icofont-calendar-full:before {
+    content: "\e836";
+}
+
+.sliderpath-icofont-keyboard:before {
+    content: "\e837";
+}
+
+.sliderpath-icofont-spell-check:before {
+    content: "\e838";
+}
+
+.sliderpath-icofont-screen:before {
+    content: "\e839";
+}
+
+.sliderpath-icofont-smartphone:before {
+    content: "\e83a";
+}
+
+.sliderpath-icofont-tablet:before {
+    content: "\e83b";
+}
+
+.sliderpath-icofont-laptop:before {
+    content: "\e83c";
+}
+
+.sliderpath-icofont-laptop-phone:before {
+    content: "\e83d";
+}
+
+.sliderpath-icofont-power-switch:before {
+    content: "\e83e";
+}
+
+.sliderpath-icofont-bubble:before {
+    content: "\e83f";
+}
+
+.sliderpath-icofont-heart-pulse:before {
+    content: "\e840";
+}
+
+.sliderpath-icofont-construction:before {
+    content: "\e841";
+}
+
+.sliderpath-icofont-pie-chart:before {
+    content: "\e842";
+}
+
+.sliderpath-icofont-chart-bars:before {
+    content: "\e843";
+}
+
+.sliderpath-icofont-gift:before {
+    content: "\e844";
+}
+
+.sliderpath-icofont-diamond:before {
+    content: "\e845";
+}
+
+.sliderpath-icofont-linearicons:before {
+    content: "\e846";
+}
+
+.sliderpath-icofont-dinner:before {
+    content: "\e847";
+}
+
+.sliderpath-icofont-coffee-cup:before {
+    content: "\e848";
+}
+
+.sliderpath-icofont-leaf:before {
+    content: "\e849";
+}
+
+.sliderpath-icofont-paw:before {
+    content: "\e84a";
+}
+
+.sliderpath-icofont-rocket:before {
+    content: "\e84b";
+}
+
+.sliderpath-icofont-briefcase:before {
+    content: "\e84c";
+}
+
+.sliderpath-icofont-bus:before {
+    content: "\e84d";
+}
+
+.sliderpath-icofont-car:before {
+    content: "\e84e";
+}
+
+.sliderpath-icofont-train:before {
+    content: "\e84f";
+}
+
+.sliderpath-icofont-bicycle:before {
+    content: "\e850";
+}
+
+.sliderpath-icofont-wheelchair:before {
+    content: "\e851";
+}
+
+.sliderpath-icofont-select:before {
+    content: "\e852";
+}
+
+.sliderpath-icofont-earth:before {
+    content: "\e853";
+}
+
+.sliderpath-icofont-smile:before {
+    content: "\e854";
+}
+
+.sliderpath-icofont-sad:before {
+    content: "\e855";
+}
+
+.sliderpath-icofont-neutral:before {
+    content: "\e856";
+}
+
+.sliderpath-icofont-mustache:before {
+    content: "\e857";
+}
+
+.sliderpath-icofont-alarm:before {
+    content: "\e858";
+}
+
+.sliderpath-icofont-bullhorn:before {
+    content: "\e859";
+}
+
+.sliderpath-icofont-volume-high:before {
+    content: "\e85a";
+}
+
+.sliderpath-icofont-volume-medium:before {
+    content: "\e85b";
+}
+
+.sliderpath-icofont-volume-low:before {
+    content: "\e85c";
+}
+
+.sliderpath-icofont-volume:before {
+    content: "\e85d";
+}
+
+.sliderpath-icofont-mic:before {
+    content: "\e85e";
+}
+
+.sliderpath-icofont-hourglass:before {
+    content: "\e85f";
+}
+
+.sliderpath-icofont-undo:before {
+    content: "\e860";
+}
+
+.sliderpath-icofont-redo:before {
+    content: "\e861";
+}
+
+.sliderpath-icofont-sync:before {
+    content: "\e862";
+}
+
+.sliderpath-icofont-history:before {
+    content: "\e863";
+}
+
+.sliderpath-icofont-clock:before {
+    content: "\e864";
+}
+
+.sliderpath-icofont-download:before {
+    content: "\e865";
+}
+
+.sliderpath-icofont-upload:before {
+    content: "\e866";
+}
+
+.sliderpath-icofont-enter-down:before {
+    content: "\e867";
+}
+
+.sliderpath-icofont-exit-up:before {
+    content: "\e868";
+}
+
+.sliderpath-icofont-bug:before {
+    content: "\e869";
+}
+
+.sliderpath-icofont-code:before {
+    content: "\e86a";
+}
+
+.sliderpath-icofont-link:before {
+    content: "\e86b";
+}
+
+.sliderpath-icofont-unlink:before {
+    content: "\e86c";
+}
+
+.sliderpath-icofont-thumbs-up:before {
+    content: "\e86d";
+}
+
+.sliderpath-icofont-thumbs-down:before {
+    content: "\e86e";
+}
+
+.sliderpath-icofont-magnifier:before {
+    content: "\e86f";
+}
+
+.sliderpath-icofont-cross:before {
+    content: "\e870";
+}
+
+.sliderpath-icofont-menu:before {
+    content: "\e871";
+}
+
+.sliderpath-icofont-list:before {
+    content: "\e872";
+}
+
+.sliderpath-icofont-chevron-up:before {
+    content: "\e873";
+}
+
+.sliderpath-icofont-chevron-down:before {
+    content: "\e874";
+}
+
+.sliderpath-icofont-chevron-left:before {
+    content: "\e875";
+}
+
+.sliderpath-icofont-chevron-right:before {
+    content: "\e876";
+}
+
+.sliderpath-icofont-arrow-up:before {
+    content: "\e877";
+}
+
+.sliderpath-icofont-arrow-down:before {
+    content: "\e878";
+}
+
+.sliderpath-icofont-arrow-left:before {
+    content: "\e879";
+}
+
+.sliderpath-icofont-arrow-right:before {
+    content: "\e87a";
+}
+
+.sliderpath-icofont-move:before {
+    content: "\e87b";
+}
+
+.sliderpath-icofont-warning:before {
+    content: "\e87c";
+}
+
+.sliderpath-icofont-question-circle:before {
+    content: "\e87d";
+}
+
+.sliderpath-icofont-menu-circle:before {
+    content: "\e87e";
+}
+
+.sliderpath-icofont-checkmark-circle:before {
+    content: "\e87f";
+}
+
+.sliderpath-icofont-cross-circle:before {
+    content: "\e880";
+}
+
+.sliderpath-icofont-plus-circle:before {
+    content: "\e881";
+}
+
+.sliderpath-icofont-circle-minus:before {
+    content: "\e882";
+}
+
+.sliderpath-icofont-arrow-up-circle:before {
+    content: "\e883";
+}
+
+.sliderpath-icofont-arrow-down-circle:before {
+    content: "\e884";
+}
+
+.sliderpath-icofont-arrow-left-circle:before {
+    content: "\e885";
+}
+
+.sliderpath-icofont-arrow-right-circle:before {
+    content: "\e886";
+}
+
+.sliderpath-icofont-chevron-up-circle:before {
+    content: "\e887";
+}
+
+.sliderpath-icofont-chevron-down-circle:before {
+    content: "\e888";
+}
+
+.sliderpath-icofont-chevron-left-circle:before {
+    content: "\e889";
+}
+
+.sliderpath-icofont-chevron-right-circle:before {
+    content: "\e88a";
+}
+
+.sliderpath-icofont-crop:before {
+    content: "\e88b";
+}
+
+.sliderpath-icofont-frame-expand:before {
+    content: "\e88c";
+}
+
+.sliderpath-icofont-frame-contract:before {
+    content: "\e88d";
+}
+
+.sliderpath-icofont-layers:before {
+    content: "\e88e";
+}
+
+.sliderpath-icofont-funnel:before {
+    content: "\e88f";
+}
+
+.sliderpath-icofont-text-format:before {
+    content: "\e890";
+}
+
+.sliderpath-icofont-text-format-remove:before {
+    content: "\e891";
+}
+
+.sliderpath-icofont-text-size:before {
+    content: "\e892";
+}
+
+.sliderpath-icofont-bold:before {
+    content: "\e893";
+}
+
+.sliderpath-icofont-italic:before {
+    content: "\e894";
+}
+
+.sliderpath-icofont-underline:before {
+    content: "\e895";
+}
+
+.sliderpath-icofont-strikethrough:before {
+    content: "\e896";
+}
+
+.sliderpath-icofont-highlight:before {
+    content: "\e897";
+}
+
+.sliderpath-icofont-text-align-left:before {
+    content: "\e898";
+}
+
+.sliderpath-icofont-text-align-center:before {
+    content: "\e899";
+}
+
+.sliderpath-icofont-text-align-right:before {
+    content: "\e89a";
+}
+
+.sliderpath-icofont-text-align-justify:before {
+    content: "\e89b";
+}
+
+.sliderpath-icofont-line-spacing:before {
+    content: "\e89c";
+}
+
+.sliderpath-icofont-indent-increase:before {
+    content: "\e89d";
+}
+
+.sliderpath-icofont-indent-decrease:before {
+    content: "\e89e";
+}
+
+.sliderpath-icofont-pilcrow:before {
+    content: "\e89f";
+}
+
+.sliderpath-icofont-direction-ltr:before {
+    content: "\e8a0";
+}
+
+.sliderpath-icofont-direction-rtl:before {
+    content: "\e8a1";
+}
+
+.sliderpath-icofont-page-break:before {
+    content: "\e8a2";
+}
+
+.sliderpath-icofont-sort-alpha-asc:before {
+    content: "\e8a3";
+}
+
+.sliderpath-icofont-sort-amount-asc:before {
+    content: "\e8a4";
+}
+
+.sliderpath-icofont-hand:before {
+    content: "\e8a5";
+}
+
+.sliderpath-icofont-pointer-up:before {
+    content: "\e8a6";
+}
+
+.sliderpath-icofont-pointer-right:before {
+    content: "\e8a7";
+}
+
+.sliderpath-icofont-pointer-down:before {
+    content: "\e8a8";
+}
+
+.sliderpath-icofont-pointer-left:before {
+    content: "\e8a9";
+}

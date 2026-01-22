@@ -1,0 +1,80 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 28/11/2019 11:39
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-telephone:before { content: "\f100"; }
+.flaticon-magnifying-glass:before { content: "\f101"; }
+.flaticon-search:before { content: "\f102"; }
+.flaticon-supermarket:before { content: "\f103"; }
+.flaticon-drop-leaf-table:before { content: "\f104"; }
+.flaticon-water:before { content: "\f105"; }
+.flaticon-teardrop:before { content: "\f106"; }
+.flaticon-water-barrel:before { content: "\f107"; }
+.flaticon-online-shop:before { content: "\f108"; }
+.flaticon-play-button-arrowhead:before { content: "\f109"; }
+.flaticon-right:before { content: "\f10a"; }
+.flaticon-back:before { content: "\f10b"; }
+.flaticon-user:before { content: "\f10c"; }
+.flaticon-comment-white-oval-bubble:before { content: "\f10d"; }
+.flaticon-movie:before { content: "\f10e"; }
+.flaticon-water-1:before { content: "\f10f"; }
+.flaticon-water-2:before { content: "\f110"; }
+.flaticon-top:before { content: "\f111"; }
+.flaticon-water-4:before { content: "\f112"; }
+.flaticon-water-3:before { content: "\f113"; }
+    
+    $font-Flaticon-telephone: "\f100";
+    $font-Flaticon-magnifying-glass: "\f101";
+    $font-Flaticon-search: "\f102";
+    $font-Flaticon-supermarket: "\f103";
+    $font-Flaticon-drop-leaf-table: "\f104";
+    $font-Flaticon-water: "\f105";
+    $font-Flaticon-teardrop: "\f106";
+    $font-Flaticon-water-barrel: "\f107";
+    $font-Flaticon-online-shop: "\f108";
+    $font-Flaticon-play-button-arrowhead: "\f109";
+    $font-Flaticon-right: "\f10a";
+    $font-Flaticon-back: "\f10b";
+    $font-Flaticon-user: "\f10c";
+    $font-Flaticon-comment-white-oval-bubble: "\f10d";
+    $font-Flaticon-movie: "\f10e";
+    $font-Flaticon-water-1: "\f10f";
+    $font-Flaticon-water-2: "\f110";
+    $font-Flaticon-top: "\f111";
+    $font-Flaticon-water-4: "\f112";
+    $font-Flaticon-water-3: "\f113";
