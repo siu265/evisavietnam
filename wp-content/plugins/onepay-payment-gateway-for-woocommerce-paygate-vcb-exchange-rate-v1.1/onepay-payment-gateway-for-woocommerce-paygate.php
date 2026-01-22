@@ -897,7 +897,7 @@ add_action( 'woocommerce_blocks_loaded', function() {
 			);
 		}
 		
-		protected function get_supported_features() {
+		public function get_supported_features() {
 			$gateway = WC()->payment_gateways()->payment_gateways()['onepay'] ?? null;
 			
 			if ( ! $gateway ) {
