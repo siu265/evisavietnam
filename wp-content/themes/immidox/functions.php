@@ -475,3 +475,21 @@ function immigro_debug_checkout_payment_gateways() {
 		@file_put_contents( $log_file, $log_message, FILE_APPEND | LOCK_EX );
 	}
 }
+
+// DEBUG: Log khi payment section được render (hook woocommerce_checkout_order_review)
+add_action( 'woocommerce_checkout_order_review', 'immigro_debug_payment_section_render', 5 );
+function immigro_debug_payment_section_render() {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+	
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_msg = "\n[PAYMENT SECTION RENDER] " . date( 'Y-m-d H:i:s' ) . "\n";
+	$log_msg .= "Hook: woocommerce_checkout_order_review được gọi\n";
+	
+	$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
+	$log_msg .= "Available gateways tại thời điểm render: " . implode( ', ', array_keys( $available_gateways ) ) . "\n";
+	$log_msg .= "OnePay có trong available_gateways: " . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) . "\n\n";
+	
+	@file_put_contents( $log_file, $log_msg, FILE_APPEND | LOCK_EX );
+}
