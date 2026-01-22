@@ -564,7 +564,7 @@ class Visa_Wizard_V2_5 {
                             'X-Requested-With': 'XMLHttpRequest'
                         },
                         success: function(response) {
-                            console.log("Checkout response:", response);
+                            // console.log("Checkout response:", response);
                             var redirectUrl = null;
                             // WordPress format: { success: true, data: { redirect: "..." } }
                             if (response && response.success && response.data && response.data.redirect) {
