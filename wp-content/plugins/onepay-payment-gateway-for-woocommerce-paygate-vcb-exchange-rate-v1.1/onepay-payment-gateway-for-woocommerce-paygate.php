@@ -51,8 +51,15 @@ function woocommerce_onepay_init()
 			$this->init_form_fields();
 			$this->init_settings();
 
+			// DEBUG: Log settings trước khi set enabled
+			error_log('OnePay Gateway Debug - Constructor: settings[enabled] = ' . (isset($this->settings['enabled']) ? var_export($this->settings['enabled'], true) : 'NOT SET'));
+			error_log('OnePay Gateway Debug - Constructor: All settings keys = ' . print_r(array_keys($this->settings ?? array()), true));
+
 			// Đảm bảo enabled được set từ settings (parent init_settings đã set, nhưng set lại để chắc chắn)
 			$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
+			
+			// DEBUG: Log sau khi set enabled
+			error_log('OnePay Gateway Debug - Constructor: Final $this->enabled = "' . $this->enabled . '"');
 
 			$this->title = $this->settings['title'];
 			$this->description = $this->settings['description'];
@@ -170,6 +177,21 @@ function woocommerce_onepay_init()
 		public function admin_options()
 		{
 			echo '<h3>' . __('Onepay Payment Gateway', 'monepayus') . '</h3>';
+			
+			// DEBUG: Hiển thị thông tin debug
+			echo '<div style="background: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">';
+			echo '<h4 style="margin-top: 0;">🔍 Debug Information</h4>';
+			echo '<table style="width: 100%; border-collapse: collapse;">';
+			echo '<tr><td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>Gateway ID:</strong></td><td style="padding: 8px; border-bottom: 1px solid #ddd;">' . esc_html($this->id) . '</td></tr>';
+			echo '<tr><td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>$this->enabled:</strong></td><td style="padding: 8px; border-bottom: 1px solid #ddd;">' . esc_html(var_export($this->enabled, true)) . ' (type: ' . gettype($this->enabled) . ')</td></tr>';
+			echo '<tr><td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>settings[\'enabled\']:</strong></td><td style="padding: 8px; border-bottom: 1px solid #ddd;">' . (isset($this->settings['enabled']) ? esc_html(var_export($this->settings['enabled'], true)) : '<span style="color: red;">NOT SET</span>') . '</td></tr>';
+			echo '<tr><td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>is_available():</strong></td><td style="padding: 8px; border-bottom: 1px solid #ddd;">' . ($this->is_available() ? '<span style="color: green;">✅ TRUE (Gateway sẽ hiển thị)</span>' : '<span style="color: red;">❌ FALSE (Gateway KHÔNG hiển thị)</span>') . '</td></tr>';
+			echo '<tr><td style="padding: 8px; border-bottom: 1px solid #ddd;"><strong>parent::is_available():</strong></td><td style="padding: 8px; border-bottom: 1px solid #ddd;">' . (parent::is_available() ? '<span style="color: green;">✅ TRUE</span>' : '<span style="color: red;">❌ FALSE</span>') . '</td></tr>';
+			echo '<tr><td style="padding: 8px;"><strong>All Settings Keys:</strong></td><td style="padding: 8px;"><code>' . esc_html(implode(', ', array_keys($this->settings ?? array()))) . '</code></td></tr>';
+			echo '</table>';
+			echo '<p style="margin-bottom: 0; font-size: 12px; color: #666;">💡 Xem log chi tiết trong <code>wp-content/debug.log</code> hoặc WooCommerce logs</p>';
+			echo '</div>';
+			
 			echo '<table class="form-table">';
 			// Generate the HTML For the settings form.
 			$this->generate_settings_html();
@@ -193,13 +215,34 @@ function woocommerce_onepay_init()
 		 */
 		public function is_available()
 		{
+			// DEBUG: Log thông tin để kiểm tra
+			$debug_info = array(
+				'gateway_id' => $this->id,
+				'enabled' => $this->enabled,
+				'enabled_type' => gettype($this->enabled),
+				'settings_enabled' => isset($this->settings['enabled']) ? $this->settings['enabled'] : 'NOT SET',
+				'settings_enabled_type' => isset($this->settings['enabled']) ? gettype($this->settings['enabled']) : 'N/A',
+				'parent_available' => parent::is_available(),
+			);
+			
+			// Log luôn (không cần bật debug mode) để debug
+			error_log('OnePay Gateway Debug - is_available() called: ' . print_r($debug_info, true));
+			
 			// Kiểm tra enabled trước tiên
 			if ( $this->enabled !== 'yes' ) {
+				error_log('OnePay Gateway Debug - Gateway NOT available: enabled = "' . $this->enabled . '" (expected "yes")');
 				return false;
 			}
 
 			// Gọi parent để kiểm tra các điều kiện khác (max_amount, etc.)
-			return parent::is_available();
+			$parent_result = parent::is_available();
+			if (!$parent_result) {
+				error_log('OnePay Gateway Debug - Gateway NOT available: parent::is_available() returned false');
+			} else {
+				error_log('OnePay Gateway Debug - Gateway IS available');
+			}
+			
+			return $parent_result;
 		}
 
 		/**

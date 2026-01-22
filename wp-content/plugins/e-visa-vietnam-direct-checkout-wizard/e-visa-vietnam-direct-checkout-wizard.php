@@ -334,6 +334,7 @@ class Visa_Wizard_V2_5 {
                                 <div class="review-item"><span>Arrival:</span> <span class="review-value" id="rev_date">--</span></div>
                                 <div class="review-item"><span>Name:</span> <span class="review-value" id="rev_name">--</span></div>
                                 <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
+                                <div class="review-item"><span>Phone:</span> <span class="review-value" id="rev_phone">--</span></div>
                                 <div class="review-item review-total">
                                     <span>Total:</span> <span class="review-value" id="rev_price">--</span>
                                 </div>

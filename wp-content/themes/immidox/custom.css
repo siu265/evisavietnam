@@ -6,3 +6,26 @@
  .header-style-one .header-lower .menu-area .main-menu {
     margin-right: 300px;
  }
+
+ .wc-block-components-checkout-place-order-button {
+   padding: 16px 48px;
+   min-width: 160px;
+   font-weight: 700;
+   text-transform: uppercase;
+   color: #fff;
+   background: #ffaa17;
+   border: none;
+   cursor: pointer;
+   border-radius: 8px;
+   font-size: 15px;
+   transition: all 0.3s ease;
+   text-align: center;
+   box-shadow: none !important;
+   outline: none !important;
+ }
+ .wc-block-components-checkout-place-order-button:hover {
+   background: #041E42;
+   color: #fff;
+   outline: none;
+   box-shadow: none;
+ }

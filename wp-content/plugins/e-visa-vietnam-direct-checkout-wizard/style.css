@@ -312,7 +312,7 @@
 
 .visa-wizard-container .btn-1:hover,
 .visa-wizard-container .btn-1:focus {
-    background: #222;
+    background: #041E42;
     color: #fff;
     outline: none;
     box-shadow: none;
@@ -335,7 +335,7 @@
 .visa-wizard-container .btn-back:active {
     background: #f0f0f0;
     border-color: #ccc;
-    color: #222;
+    color: #041E42;
     outline: none !important;
     box-shadow: none !important;
 }
@@ -389,7 +389,7 @@
 @keyframes visaSlideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
 .visa-close { position: absolute; right: 18px; top: 14px; color: #999; font-size: 28px; font-weight: bold; cursor: pointer; }
-.visa-close:hover { color: #222; }
+.visa-close:hover { color: #041E42; }
 .visa-modal-body { max-height: 70vh; overflow-y: auto; margin-top: 12px; font-size: 15px; line-height: 1.65; color: #333; }
 .visa-link { color: #ffaa17; text-decoration: underline; cursor: pointer; font-weight: 600; }
 
