@@ -174,7 +174,7 @@ class Visa_Wizard_V2_4 {
                 setTimeout(function(){
                     var btn = $('.wc-block-components-checkout-return-to-cart-button');
                     if(btn.length > 0) {
-                        btn.text('← Start Over'); 
+                        btn.text('← Change Selection'); 
                         btn.attr('href', 'javascript:history.back()'); 
                     }
                 }, 1000);
