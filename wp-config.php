@@ -82,11 +82,11 @@ $table_prefix = 'img_';
 define( 'WP_DEBUG', true );
 
 define( 'WP_DEBUG_LOG', true );
-define( 'WP_DEBUG_DISPLAY', false );
+define( 'WP_DEBUG_DISPLAY', true );
 
-ini_set( 'display_errors', 0 );
-ini_set( 'display_startup_errors', 0 );
-error_reporting( 0 );
+ini_set( 'display_errors', 1 );
+ini_set( 'display_startup_errors', 1 );
+error_reporting( 1 );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
