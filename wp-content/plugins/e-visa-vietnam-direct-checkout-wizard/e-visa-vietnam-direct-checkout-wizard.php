@@ -930,8 +930,18 @@ class Visa_Wizard_V2_5 {
     }
     
     public function ajax_process_checkout() {
+        // Log bắt đầu
+        $log_data = array(
+            'action' => 'ajax_process_checkout_start',
+            'time' => current_time( 'mysql' ),
+            'cart_items' => WC()->cart->get_cart_contents_count(),
+            'cart_total' => WC()->cart->get_total(),
+        );
+        error_log( '[VISA CHECKOUT] ' . print_r( $log_data, true ) );
+        
         // Đảm bảo cart không rỗng
         if ( WC()->cart->is_empty() ) {
+            error_log( '[VISA CHECKOUT ERROR] Cart is empty' );
             wp_send_json_error( array( 'messages' => __( 'Your cart is empty.', 'woocommerce' ) ) );
         }
         
@@ -939,14 +949,21 @@ class Visa_Wizard_V2_5 {
         $nonce_value = isset( $_POST['woocommerce-process-checkout-nonce'] ) ? $_POST['woocommerce-process-checkout-nonce'] : '';
         
         if ( ! wp_verify_nonce( $nonce_value, 'woocommerce-process_checkout' ) ) {
+            error_log( '[VISA CHECKOUT ERROR] Nonce verification failed. Nonce: ' . substr( $nonce_value, 0, 10 ) . '...' );
             wp_send_json_error( array( 'messages' => __( 'Security check failed. Please refresh the page and try again.', 'woocommerce' ) ) );
         }
         
         // Kiểm tra payment method được chọn
         $payment_method = isset( $_POST['payment_method'] ) ? sanitize_text_field( $_POST['payment_method'] ) : '';
         if ( empty( $payment_method ) ) {
+            error_log( '[VISA CHECKOUT ERROR] Payment method not selected. POST data: ' . print_r( array_keys( $_POST ), true ) );
             wp_send_json_error( array( 'messages' => __( 'Please select a payment method.', 'woocommerce' ) ) );
         }
+        
+        // Log POST data (trừ sensitive)
+        $post_data_log = $_POST;
+        unset( $post_data_log['woocommerce-process-checkout-nonce'] );
+        error_log( '[VISA CHECKOUT] POST data: ' . print_r( $post_data_log, true ) );
         
         // Đảm bảo có woocommerce_checkout_place_order
         $_POST['woocommerce_checkout_place_order'] = '1';
@@ -961,6 +978,7 @@ class Visa_Wizard_V2_5 {
         $redirect_url = null;
         add_filter( 'woocommerce_checkout_redirect', function( $url ) use ( &$redirect_url ) {
             $redirect_url = $url;
+            error_log( '[VISA CHECKOUT] Redirect URL captured: ' . $url );
             return false; // Prevent redirect
         }, 999 );
         
@@ -968,7 +986,14 @@ class Visa_Wizard_V2_5 {
         $order_id = null;
         add_action( 'woocommerce_checkout_order_processed', function( $id ) use ( &$order_id ) {
             $order_id = $id;
+            error_log( '[VISA CHECKOUT] Order processed, ID: ' . $id );
         }, 10, 1 );
+        
+        // Kiểm tra notices trước khi process
+        $notices_before = wc_get_notices();
+        if ( ! empty( $notices_before ) ) {
+            error_log( '[VISA CHECKOUT] Notices before process: ' . print_r( $notices_before, true ) );
+        }
         
         // Capture output
         ob_start();
@@ -976,13 +1001,25 @@ class Visa_Wizard_V2_5 {
         try {
             // Process checkout
             $checkout = WC()->checkout();
+            error_log( '[VISA CHECKOUT] Starting process_checkout()' );
             $checkout->process_checkout();
+            error_log( '[VISA CHECKOUT] process_checkout() completed' );
             
             // Lấy output trước khi clean (có thể chứa redirect HTML)
             $output = ob_get_clean();
+            if ( ! empty( $output ) ) {
+                error_log( '[VISA CHECKOUT] Output buffer length: ' . strlen( $output ) );
+                if ( strlen( $output ) < 500 ) {
+                    error_log( '[VISA CHECKOUT] Output content: ' . $output );
+                }
+            }
             
             // Kiểm tra WooCommerce notices/errors sau khi process
             $notices = wc_get_notices( 'error' );
+            $all_notices = wc_get_notices();
+            error_log( '[VISA CHECKOUT] All notices after process: ' . print_r( $all_notices, true ) );
+            error_log( '[VISA CHECKOUT] Error notices: ' . print_r( $notices, true ) );
+            
             if ( ! empty( $notices ) ) {
                 // Có lỗi từ WooCommerce
                 $error_messages = array();
@@ -996,11 +1033,17 @@ class Visa_Wizard_V2_5 {
                 // Clear notices để tránh hiển thị lại
                 wc_clear_notices();
                 $error_msg = ! empty( $error_messages ) ? implode( ' ', $error_messages ) : __( 'Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.', 'woocommerce' );
+                error_log( '[VISA CHECKOUT ERROR] WooCommerce errors: ' . $error_msg );
                 wp_send_json_error( array( 'messages' => $error_msg ) );
             }
             
+            // Log trạng thái sau process
+            error_log( '[VISA CHECKOUT] After process - redirect_url: ' . ( $redirect_url ? $redirect_url : 'null' ) );
+            error_log( '[VISA CHECKOUT] After process - order_id: ' . ( $order_id ? $order_id : 'null' ) );
+            
             // Nếu có redirect URL, sử dụng nó
             if ( $redirect_url ) {
+                error_log( '[VISA CHECKOUT SUCCESS] Redirecting to: ' . $redirect_url );
                 wp_send_json_success( array( 'redirect' => $redirect_url ) );
             } 
             // Nếu có order ID, tạo redirect URL
@@ -1008,26 +1051,33 @@ class Visa_Wizard_V2_5 {
                 $order = wc_get_order( $order_id );
                 if ( $order ) {
                     $redirect_url = $order->get_checkout_order_received_url();
+                    error_log( '[VISA CHECKOUT SUCCESS] Order found, redirecting to: ' . $redirect_url );
                     wp_send_json_success( array( 'redirect' => $redirect_url ) );
                 } else {
+                    error_log( '[VISA CHECKOUT ERROR] Order ID exists but order object is null. Order ID: ' . $order_id );
                     wp_send_json_error( array( 'messages' => __( 'Order created but unable to get redirect URL.', 'woocommerce' ) ) );
                 }
             } 
             // Fallback: tìm order mới nhất
             else {
                 $order_id = WC()->session->get( 'order_awaiting_payment' );
+                error_log( '[VISA CHECKOUT] Fallback - order_awaiting_payment: ' . ( $order_id ? $order_id : 'null' ) );
                 if ( $order_id ) {
                     $order = wc_get_order( $order_id );
                     if ( $order ) {
                         $redirect_url = $order->get_checkout_order_received_url();
+                        error_log( '[VISA CHECKOUT SUCCESS] Fallback order found, redirecting to: ' . $redirect_url );
                         wp_send_json_success( array( 'redirect' => $redirect_url ) );
                     }
                 }
+                error_log( '[VISA CHECKOUT ERROR] No order ID or redirect URL found. Session data: ' . print_r( WC()->session->get( 'order_awaiting_payment' ), true ) );
                 wp_send_json_error( array( 'messages' => __( 'Checkout processed but unable to determine redirect URL.', 'woocommerce' ) ) );
             }
             
         } catch ( Exception $e ) {
             ob_end_clean();
+            error_log( '[VISA CHECKOUT EXCEPTION] ' . $e->getMessage() );
+            error_log( '[VISA CHECKOUT EXCEPTION] Stack trace: ' . $e->getTraceAsString() );
             wp_send_json_error( array( 'messages' => $e->getMessage() ) );
         }
     }
