@@ -32,3 +32,7 @@
  #add_payment_method #payment, .woocommerce-cart #payment, .woocommerce-checkout #payment {
    background-color: unset;
  }
+ .elementor-icon-list-icon svg {
+   width: 20px;
+   height: 20px;
+ }

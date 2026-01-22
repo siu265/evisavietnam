@@ -467,16 +467,16 @@ class Visa_Wizard_V2_5 {
             }
             
             function loadCheckoutForm() {
-                $("#visa_checkout_wrapper").html('<div style="text-align:center;padding:20px;">Loading checkout form...</div>');
+                var $wrap = $("#visa_checkout_wrapper");
+                $wrap.addClass("visa-checkout-loading").removeClass("visa-checkout-loaded");
+                $wrap.html('<div style="text-align:center;padding:20px;">Loading checkout form...</div>');
                 $.post("<?php echo admin_url('admin-ajax.php'); ?>", {
                     action: "visa_load_checkout"
                 }, function(res){
                     if(res.success) {
-                        $("#visa_checkout_wrapper").html(res.data.html);
-                        
+                        $wrap.html(res.data.html);
                         setTimeout(function() {
                             var $checkoutForm = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper form");
-                            
                             if($checkoutForm.length > 0) {
                                 $checkoutForm.attr("action", "javascript:void(0);");
                                 $checkoutForm.attr("onsubmit", "return false;");
@@ -493,10 +493,15 @@ class Visa_Wizard_V2_5 {
                             } else {
                                 setTimeout(function() { bindCheckoutFormSubmit(); }, 300);
                             }
+                            $wrap.removeClass("visa-checkout-loading").addClass("visa-checkout-loaded");
                         }, 200);
                     } else {
-                        $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
+                        $wrap.removeClass("visa-checkout-loading").addClass("visa-checkout-loaded");
+                        $wrap.html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
                     }
+                }).fail(function() {
+                    $wrap.removeClass("visa-checkout-loading").addClass("visa-checkout-loaded");
+                    $wrap.html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
                 });
             }
             
@@ -562,45 +567,54 @@ class Visa_Wizard_V2_5 {
                         },
                         success: function(response) {
                             console.log("Checkout response:", response);
-                            if(response && response.success) {
-                                // Redirect đến trang order received
-                                if(response.data && response.data.redirect) {
-                                    window.location.href = response.data.redirect;
-                                } else {
-                                    // Fallback: redirect đến thank you page
-                                    var thankYouUrl = "<?php echo esc_url( wc_get_endpoint_url( 'order-received', '', wc_get_checkout_url() ) ); ?>";
-                                    window.location.href = thankYouUrl;
-                                }
+                            var redirectUrl = null;
+                            // WordPress format: { success: true, data: { redirect: "..." } }
+                            if (response && response.success && response.data && response.data.redirect) {
+                                redirectUrl = response.data.redirect;
+                            }
+                            // WooCommerce format: { result: "success", redirect: "...", order_id: ... }
+                            if (!redirectUrl && response && response.result === 'success' && response.redirect) {
+                                redirectUrl = response.redirect;
+                            }
+                            if (redirectUrl) {
+                                window.location.href = redirectUrl;
+                                return;
+                            }
+                            // Hiển thị lỗi
+                            var errorMsg = "Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.";
+                            if (response && response.data && response.data.messages) {
+                                errorMsg = response.data.messages;
+                                $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
+                            } else if (response && response.data && response.data.message) {
+                                errorMsg = response.data.message;
+                                $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
+                            } else if (response && response.messages) {
+                                errorMsg = response.messages;
+                                $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
                             } else {
-                                // Hiển thị lỗi
-                                var errorMsg = "Có lỗi xảy ra khi xử lý đơn hàng. Vui lòng thử lại.";
-                                if(response && response.data && response.data.messages) {
-                                    errorMsg = response.data.messages;
-                                    $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
-                                } else if(response && response.data && response.data.message) {
-                                    errorMsg = response.data.message;
-                                    $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
-                                } else {
-                                    alert(errorMsg);
-                                }
-                                $submitBtn.prop("disabled", false);
-                                if($submitBtn.is("button")) {
-                                    $submitBtn.text(originalText);
-                                } else {
-                                    $submitBtn.val(originalText);
-                                }
+                                alert(errorMsg);
+                            }
+                            $submitBtn.prop("disabled", false);
+                            if ($submitBtn.is("button")) {
+                                $submitBtn.text(originalText);
+                            } else {
+                                $submitBtn.val(originalText);
                             }
                         },
                         error: function(xhr, status, error) {
                             var responseText = xhr.responseText || "";
                             try {
                                 var jsonResponse = JSON.parse(responseText);
-                                if(jsonResponse && jsonResponse.success && jsonResponse.data && jsonResponse.data.redirect) {
+                                if (jsonResponse && jsonResponse.result === 'success' && jsonResponse.redirect) {
+                                    window.location.href = jsonResponse.redirect;
+                                    return;
+                                }
+                                if (jsonResponse && jsonResponse.success && jsonResponse.data && jsonResponse.data.redirect) {
                                     window.location.href = jsonResponse.data.redirect;
                                     return;
                                 }
-                                if(jsonResponse && jsonResponse.success === false) {
-                                    var errorMsg = jsonResponse.data && jsonResponse.data.messages ? jsonResponse.data.messages : "Có lỗi xảy ra khi xử lý đơn hàng.";
+                                if (jsonResponse && (jsonResponse.success === false || jsonResponse.result === 'failure')) {
+                                    var errorMsg = (jsonResponse.data && jsonResponse.data.messages) || jsonResponse.messages || "Có lỗi xảy ra khi xử lý đơn hàng.";
                                     $form.prepend('<div class="woocommerce-error" role="alert">' + errorMsg + '</div>');
                                     $submitBtn.prop("disabled", false);
                                     if($submitBtn.is("button")) $submitBtn.text(originalText); else $submitBtn.val(originalText);
