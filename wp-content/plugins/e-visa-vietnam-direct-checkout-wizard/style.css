@@ -677,7 +677,7 @@ body.woocommerce-order-received .woocommerce-order-overview {
 }
 
 .woocommerce ul.order_details li {
-    border-right: unset;
+    border-right: unset !important;
 }
 
 body.woocommerce-order-received .woocommerce-order-overview li {
