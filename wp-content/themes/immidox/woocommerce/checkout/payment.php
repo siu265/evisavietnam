@@ -17,6 +17,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// DEBUG: Log ngay đầu file để xác nhận template được load
+error_log( '[PAYMENT TEMPLATE] Template payment.php được load - ' . date( 'Y-m-d H:i:s' ) );
+
 if ( ! is_ajax() ) {
 	do_action( 'woocommerce_review_order_before_payment' );
 }
@@ -26,32 +29,30 @@ if ( ! isset( $available_gateways ) ) {
 	$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
 }
 
-// DEBUG: Debug chi tiết ở trang checkout
-if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-	$all_gateways = WC()->payment_gateways()->payment_gateways();
-	$available_gateway_ids = array_keys( $available_gateways );
-	$all_gateway_ids = array_keys( $all_gateways );
-	
-	error_log( '=== CHECKOUT PAYMENT TEMPLATE DEBUG ===' );
-	error_log( 'All registered gateways: ' . implode( ', ', $all_gateway_ids ) );
-	error_log( 'Available gateways count: ' . count( $available_gateways ) );
-	error_log( 'Available gateway IDs: ' . implode( ', ', $available_gateway_ids ) );
-	
-	// Kiểm tra OnePay cụ thể
-	if ( isset( $all_gateways['onepay'] ) ) {
-		$onepay = $all_gateways['onepay'];
-		error_log( 'OnePay Gateway Found:' );
-		error_log( '  - ID: ' . $onepay->id );
-		error_log( '  - Enabled: ' . ( isset( $onepay->enabled ) ? $onepay->enabled : 'NOT SET' ) );
-		error_log( '  - is_available(): ' . ( $onepay->is_available() ? 'TRUE' : 'FALSE' ) );
-		error_log( '  - In available_gateways: ' . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) );
-	} else {
-		error_log( 'OnePay Gateway NOT FOUND in registered gateways!' );
-	}
-	
-	error_log( 'Cart needs payment: ' . ( WC()->cart->needs_payment() ? 'YES' : 'NO' ) );
-	error_log( '======================================' );
+// DEBUG: Debug chi tiết ở trang checkout (luôn chạy, không cần WP_DEBUG)
+$all_gateways = WC()->payment_gateways()->payment_gateways();
+$available_gateway_ids = array_keys( $available_gateways );
+$all_gateway_ids = array_keys( $all_gateways );
+
+error_log( '=== CHECKOUT PAYMENT TEMPLATE DEBUG ===' );
+error_log( 'All registered gateways: ' . implode( ', ', $all_gateway_ids ) );
+error_log( 'Available gateways count: ' . count( $available_gateways ) );
+error_log( 'Available gateway IDs: ' . implode( ', ', $available_gateway_ids ) );
+
+// Kiểm tra OnePay cụ thể
+if ( isset( $all_gateways['onepay'] ) ) {
+	$onepay = $all_gateways['onepay'];
+	error_log( 'OnePay Gateway Found:' );
+	error_log( '  - ID: ' . $onepay->id );
+	error_log( '  - Enabled: ' . ( isset( $onepay->enabled ) ? $onepay->enabled : 'NOT SET' ) );
+	error_log( '  - is_available(): ' . ( $onepay->is_available() ? 'TRUE' : 'FALSE' ) );
+	error_log( '  - In available_gateways: ' . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) );
+} else {
+	error_log( 'OnePay Gateway NOT FOUND in registered gateways!' );
 }
+
+error_log( 'Cart needs payment: ' . ( WC()->cart->needs_payment() ? 'YES' : 'NO' ) );
+error_log( '======================================' );
 ?>
 <div id="payment" class="woocommerce-checkout-payment">
 	<?php if ( WC()->cart->needs_payment() ) : ?>
@@ -98,42 +99,40 @@ if ( ! is_ajax() ) {
 	do_action( 'woocommerce_review_order_after_payment' );
 }
 
-// DEBUG: Log payment gateways vào file debug.log
-if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-	$all_gateways = WC()->payment_gateways()->payment_gateways();
-	
-	error_log( '=== CHECKOUT PAYMENT GATEWAYS DEBUG (Frontend) ===' );
-	error_log( 'Available gateways count: ' . count( $available_gateways ) );
-	error_log( 'Available gateway IDs: ' . implode( ', ', array_keys( $available_gateways ) ) );
-	
-	// Log chi tiết từng available gateway
-	foreach ( $available_gateways as $gateway_id => $gateway ) {
-		error_log( 'Gateway: ' . $gateway_id );
-		error_log( '  - Title: ' . ( isset( $gateway->title ) ? $gateway->title : 'N/A' ) );
-		error_log( '  - Method Title: ' . ( isset( $gateway->method_title ) ? $gateway->method_title : 'N/A' ) );
-		error_log( '  - Enabled: ' . ( isset( $gateway->enabled ) ? $gateway->enabled : 'NOT SET' ) );
-		error_log( '  - is_available(): ' . ( $gateway->is_available() ? 'TRUE' : 'FALSE' ) );
-	}
-	
-	// Kiểm tra OnePay cụ thể
-	if ( isset( $all_gateways['onepay'] ) ) {
-		$onepay = $all_gateways['onepay'];
-		error_log( 'OnePay Gateway Details:' );
-		error_log( '  - ID: ' . $onepay->id );
-		error_log( '  - Enabled: ' . ( isset( $onepay->enabled ) ? $onepay->enabled : 'NOT SET' ) );
-		error_log( '  - is_available(): ' . ( $onepay->is_available() ? 'TRUE' : 'FALSE' ) );
-		error_log( '  - In available_gateways: ' . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) );
-		
-		if ( ! isset( $available_gateways['onepay'] ) ) {
-			error_log( '  ⚠️ OnePay is registered but NOT in available_gateways!' );
-			error_log( '  - Checking is_available() result: ' . ( $onepay->is_available() ? 'TRUE (should be available)' : 'FALSE (not available)' ) );
-		}
-	} else {
-		error_log( '❌ OnePay Gateway NOT FOUND in registered gateways!' );
-		error_log( 'All registered gateway IDs: ' . implode( ', ', array_keys( $all_gateways ) ) );
-	}
-	
-	error_log( 'Cart needs payment: ' . ( WC()->cart->needs_payment() ? 'YES' : 'NO' ) );
-	error_log( 'Cart total: ' . WC()->cart->get_total() );
-	error_log( '===================================================' );
+// DEBUG: Log payment gateways vào file debug.log (luôn chạy)
+$all_gateways_detail = WC()->payment_gateways()->payment_gateways();
+
+error_log( '=== CHECKOUT PAYMENT GATEWAYS DEBUG (Frontend) ===' );
+error_log( 'Available gateways count: ' . count( $available_gateways ) );
+error_log( 'Available gateway IDs: ' . implode( ', ', array_keys( $available_gateways ) ) );
+
+// Log chi tiết từng available gateway
+foreach ( $available_gateways as $gateway_id => $gateway ) {
+	error_log( 'Gateway: ' . $gateway_id );
+	error_log( '  - Title: ' . ( isset( $gateway->title ) ? $gateway->title : 'N/A' ) );
+	error_log( '  - Method Title: ' . ( isset( $gateway->method_title ) ? $gateway->method_title : 'N/A' ) );
+	error_log( '  - Enabled: ' . ( isset( $gateway->enabled ) ? $gateway->enabled : 'NOT SET' ) );
+	error_log( '  - is_available(): ' . ( $gateway->is_available() ? 'TRUE' : 'FALSE' ) );
 }
+
+// Kiểm tra OnePay cụ thể
+if ( isset( $all_gateways_detail['onepay'] ) ) {
+	$onepay = $all_gateways_detail['onepay'];
+	error_log( 'OnePay Gateway Details:' );
+	error_log( '  - ID: ' . $onepay->id );
+	error_log( '  - Enabled: ' . ( isset( $onepay->enabled ) ? $onepay->enabled : 'NOT SET' ) );
+	error_log( '  - is_available(): ' . ( $onepay->is_available() ? 'TRUE' : 'FALSE' ) );
+	error_log( '  - In available_gateways: ' . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) );
+	
+	if ( ! isset( $available_gateways['onepay'] ) ) {
+		error_log( '  ⚠️ OnePay is registered but NOT in available_gateways!' );
+		error_log( '  - Checking is_available() result: ' . ( $onepay->is_available() ? 'TRUE (should be available)' : 'FALSE (not available)' ) );
+	}
+} else {
+	error_log( '❌ OnePay Gateway NOT FOUND in registered gateways!' );
+	error_log( 'All registered gateway IDs: ' . implode( ', ', array_keys( $all_gateways_detail ) ) );
+}
+
+error_log( 'Cart needs payment: ' . ( WC()->cart->needs_payment() ? 'YES' : 'NO' ) );
+error_log( 'Cart total: ' . WC()->cart->get_total() );
+error_log( '===================================================' );

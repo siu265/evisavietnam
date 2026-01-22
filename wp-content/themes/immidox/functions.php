@@ -413,3 +413,65 @@ if( immigro_set($options, 'boxed_wrapper') ){
 		return $classes;
 	} );
 }
+
+// DEBUG: Log payment gateways khi checkout page load
+add_action( 'wp', 'immigro_debug_checkout_payment_gateways' );
+function immigro_debug_checkout_payment_gateways() {
+	if ( ! is_checkout() ) {
+		return;
+	}
+	
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+	
+	// Log vào file woo.log
+	$log_file = WP_CONTENT_DIR . '/woo.log';
+	$log_message = "\n" . str_repeat( '=', 60 ) . "\n";
+	$log_message .= '[CHECKOUT PAGE DEBUG] ' . date( 'Y-m-d H:i:s' ) . "\n";
+	$log_message .= str_repeat( '=', 60 ) . "\n";
+	
+	// Lấy payment gateways
+	$all_gateways = WC()->payment_gateways()->payment_gateways();
+	$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
+	
+	$log_message .= "All registered gateways: " . implode( ', ', array_keys( $all_gateways ) ) . "\n";
+	$log_message .= "Available gateways count: " . count( $available_gateways ) . "\n";
+	$log_message .= "Available gateway IDs: " . implode( ', ', array_keys( $available_gateways ) ) . "\n\n";
+	
+	// Log chi tiết từng available gateway
+	foreach ( $available_gateways as $gateway_id => $gateway ) {
+		$log_message .= "Gateway: {$gateway_id}\n";
+		$log_message .= "  - Title: " . ( isset( $gateway->title ) ? $gateway->title : 'N/A' ) . "\n";
+		$log_message .= "  - Method Title: " . ( isset( $gateway->method_title ) ? $gateway->method_title : 'N/A' ) . "\n";
+		$log_message .= "  - Enabled: " . ( isset( $gateway->enabled ) ? $gateway->enabled : 'NOT SET' ) . "\n";
+		$log_message .= "  - is_available(): " . ( $gateway->is_available() ? 'TRUE' : 'FALSE' ) . "\n\n";
+	}
+	
+	// Kiểm tra OnePay cụ thể
+	if ( isset( $all_gateways['onepay'] ) ) {
+		$onepay = $all_gateways['onepay'];
+		$log_message .= "OnePay Gateway Details:\n";
+		$log_message .= "  - ID: {$onepay->id}\n";
+		$log_message .= "  - Enabled: " . ( isset( $onepay->enabled ) ? $onepay->enabled : 'NOT SET' ) . "\n";
+		$log_message .= "  - is_available(): " . ( $onepay->is_available() ? 'TRUE' : 'FALSE' ) . "\n";
+		$log_message .= "  - In available_gateways: " . ( isset( $available_gateways['onepay'] ) ? 'YES' : 'NO' ) . "\n";
+		
+		if ( ! isset( $available_gateways['onepay'] ) ) {
+			$log_message .= "  ⚠️ OnePay is registered but NOT in available_gateways!\n";
+			$log_message .= "  - Checking is_available() result: " . ( $onepay->is_available() ? 'TRUE (should be available)' : 'FALSE (not available)' ) . "\n";
+		}
+	} else {
+		$log_message .= "❌ OnePay Gateway NOT FOUND in registered gateways!\n";
+		$log_message .= "All registered gateway IDs: " . implode( ', ', array_keys( $all_gateways ) ) . "\n";
+	}
+	
+	$log_message .= "\nCart needs payment: " . ( WC()->cart->needs_payment() ? 'YES' : 'NO' ) . "\n";
+	$log_message .= "Cart total: " . WC()->cart->get_total() . "\n";
+	$log_message .= str_repeat( '=', 60 ) . "\n\n";
+	
+	// Ghi trực tiếp vào file woo.log
+	if ( is_writable( WP_CONTENT_DIR ) ) {
+		@file_put_contents( $log_file, $log_message, FILE_APPEND | LOCK_EX );
+	}
+}
