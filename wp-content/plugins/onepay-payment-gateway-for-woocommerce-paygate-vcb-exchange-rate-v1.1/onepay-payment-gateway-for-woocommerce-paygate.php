@@ -871,10 +871,25 @@ add_action( 'woocommerce_blocks_loaded', function() {
 		
 		public function initialize() {
 			$this->settings = get_option( 'woocommerce_onepay_settings', array() );
+			
+			// Log để debug
+			$log_file = WP_CONTENT_DIR . '/woo.log';
+			$log_msg = "[BLOCKS INTEGRATION] initialize() called - Settings loaded: " . (empty($this->settings) ? 'NO' : 'YES') . "\n";
+			if (!empty($this->settings['enabled'])) {
+				$log_msg .= "Enabled setting: " . $this->settings['enabled'] . "\n";
+			}
+			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
 		}
 		
 		public function is_active() {
-			return ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+			$is_active = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+			
+			// Log để debug
+			$log_file = WP_CONTENT_DIR . '/woo.log';
+			$log_msg = "[BLOCKS INTEGRATION] is_active() called - enabled: " . (isset($this->settings['enabled']) ? $this->settings['enabled'] : 'NOT SET') . ", result: " . ($is_active ? 'TRUE' : 'FALSE') . "\n";
+			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
+			
+			return $is_active;
 		}
 		
 		public function get_payment_method_script_handles() {
@@ -883,18 +898,39 @@ add_action( 'woocommerce_blocks_loaded', function() {
 		}
 		
 		public function get_payment_method_data() {
+			$log_file = WP_CONTENT_DIR . '/woo.log';
+			$log_msg = "\n[BLOCKS INTEGRATION] get_payment_method_data() called\n";
+			
 			$gateway = WC()->payment_gateways()->payment_gateways()['onepay'] ?? null;
 			
 			if ( ! $gateway ) {
+				$log_msg .= "❌ Gateway 'onepay' NOT FOUND in payment_gateways()\n";
+				$all_gateways = WC()->payment_gateways()->payment_gateways();
+				$log_msg .= "Available gateway IDs: " . implode(', ', array_keys($all_gateways)) . "\n";
+				@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
 				return array();
 			}
 			
-			return array(
-				'title'       => $gateway->get_title(),
-				'description' => $gateway->get_description(),
-				'supports'    => $this->get_supported_features(),
-				'icon'        => $gateway->get_icon(),
+			$title = $gateway->get_title();
+			$description = $gateway->get_description();
+			$supports = $this->get_supported_features();
+			$icon = $gateway->get_icon();
+			
+			$data = array(
+				'title'       => $title,
+				'description' => $description,
+				'supports'    => $supports,
+				'icon'        => $icon,
 			);
+			
+			$log_msg .= "Gateway found - Title: {$title}\n";
+			$log_msg .= "Description: {$description}\n";
+			$log_msg .= "Supports: " . implode(', ', $supports) . "\n";
+			$log_msg .= "Icon: " . (is_string($icon) ? $icon : 'HTML') . "\n";
+			$log_msg .= "Returning data: " . json_encode($data, JSON_UNESCAPED_UNICODE) . "\n\n";
+			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
+			
+			return $data;
 		}
 		
 		public function get_supported_features() {
@@ -925,11 +961,19 @@ add_action( 'woocommerce_blocks_loaded', function() {
 	add_action(
 		'woocommerce_blocks_payment_method_type_registration',
 		function( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
-			$payment_method_registry->register( new WC_Onepay_Blocks_Integration() );
+			$integration = new WC_Onepay_Blocks_Integration();
 			
-			// Log để debug
+			// Gọi initialize() để load settings
+			$integration->initialize();
+			
+			// Kiểm tra is_active() trước khi đăng ký
+			$is_active = $integration->is_active();
 			$log_file = WP_CONTENT_DIR . '/woo.log';
-			$log_msg = "[BLOCKS INTEGRATION] OnePay Blocks Integration đã được đăng ký - " . date('Y-m-d H:i:s') . "\n";
+			$log_msg = "[BLOCKS INTEGRATION] Before register - is_active(): " . ($is_active ? 'TRUE' : 'FALSE') . "\n";
+			
+			$payment_method_registry->register( $integration );
+			
+			$log_msg .= "[BLOCKS INTEGRATION] OnePay Blocks Integration đã được đăng ký - " . date('Y-m-d H:i:s') . "\n";
 			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
 		}
 	);
