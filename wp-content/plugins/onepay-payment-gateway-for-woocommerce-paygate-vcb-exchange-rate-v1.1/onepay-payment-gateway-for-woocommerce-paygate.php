@@ -51,6 +51,7 @@ function woocommerce_onepay_init()
 			$this->init_form_fields();
 			$this->init_settings();
 
+			$this->enabled = $this->get_option('enabled');
 			$this->title = $this->settings['title'];
 			$this->description = $this->settings['description'];
 			$this->exchange_rate_config = $this->settings['exchange_rate_config'] ?? '';
@@ -180,6 +181,30 @@ function woocommerce_onepay_init()
 		{
 			if ($this->description)
 				echo wpautop(wptexturize(__($this->description, 'monepayus')));
+		}
+
+		/**
+		 * Check if the gateway is available for use
+		 * 
+		 * @return bool
+		 */
+		public function is_available()
+		{
+			// Kiểm tra gateway có được kích hoạt không
+			if ($this->enabled !== 'yes') {
+				return false;
+			}
+
+			// Kiểm tra các thông tin cấu hình bắt buộc
+			if (empty($this->merchant_id) || 
+				empty($this->merchant_access_code) || 
+				empty($this->secure_secret) || 
+				empty($this->onepay_url)) {
+				return false;
+			}
+
+			// Gọi method is_available() của parent class để kiểm tra các điều kiện khác
+			return parent::is_available();
 		}
 
 		/**
