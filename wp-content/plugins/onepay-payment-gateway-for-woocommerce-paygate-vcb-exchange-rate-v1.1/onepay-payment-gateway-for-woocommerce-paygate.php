@@ -47,6 +47,16 @@ function woocommerce_onepay_init()
 			$this->id = 'onepay';
 			$this->method_title = 'OnePay-Paygate-VCB-Exchange-Rate';
 			$this->has_fields = false;
+			
+			// Hỗ trợ Block checkout (WooCommerce Blocks)
+			$this->supports = array(
+				'products',
+			);
+			
+			// Thêm support cho Block checkout nếu WooCommerce Blocks đang active
+			if ( class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+				$this->supports[] = 'block';
+			}
 
 			$this->init_form_fields();
 			$this->init_settings();
@@ -802,4 +812,42 @@ function woocommerce_onepay_init()
 	}
 
 	add_filter('woocommerce_payment_gateways', 'woocommerce_add_onepay_gateway');
+	
+	// Hỗ trợ Block checkout: Đảm bảo OnePay được include trong Block checkout
+	add_filter('woocommerce_gateway_title', function($title, $gateway_id) {
+		if ($gateway_id === 'onepay') {
+			// Log để debug
+			$log_file = WP_CONTENT_DIR . '/woo.log';
+			$log_msg = "[ONEPAY GATEWAY] Filter woocommerce_gateway_title được gọi cho onepay - " . date('Y-m-d H:i:s') . "\n";
+			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
+		}
+		return $title;
+	}, 10, 2);
+	
+	// Filter để đảm bảo OnePay có trong available payment gateways cho Block checkout
+	add_filter('woocommerce_available_payment_gateways', function($available_gateways) {
+		$log_file = WP_CONTENT_DIR . '/woo.log';
+		$log_msg = "\n[BLOCK CHECKOUT FILTER] woocommerce_available_payment_gateways - " . date('Y-m-d H:i:s') . "\n";
+		$log_msg .= "Available gateways: " . implode(', ', array_keys($available_gateways)) . "\n";
+		
+		// Kiểm tra xem OnePay có trong available_gateways không
+		if (!isset($available_gateways['onepay'])) {
+			$all_gateways = WC()->payment_gateways()->payment_gateways();
+			if (isset($all_gateways['onepay'])) {
+				$onepay = $all_gateways['onepay'];
+				if ($onepay->is_available()) {
+					$log_msg .= "⚠️ OnePay có trong all_gateways và is_available()=TRUE nhưng KHÔNG có trong available_gateways!\n";
+					$log_msg .= "Thêm OnePay vào available_gateways...\n";
+					$available_gateways['onepay'] = $onepay;
+				}
+			}
+		} else {
+			$log_msg .= "✓ OnePay đã có trong available_gateways\n";
+		}
+		
+		$log_msg .= "Sau filter - Available gateways: " . implode(', ', array_keys($available_gateways)) . "\n\n";
+		@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
+		
+		return $available_gateways;
+	}, 999); // Priority cao để chạy sau các filter khác
 }
