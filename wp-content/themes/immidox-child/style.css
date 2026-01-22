@@ -5,3 +5,7 @@
 * Template: immidox
 * Version: 1.0.0
 */
+
+.header-style-one .header-lower .menu-area .main-menu {
+    margin-right: 100px;
+}
