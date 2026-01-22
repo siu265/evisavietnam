@@ -20,6 +20,16 @@ defined( 'ABSPATH' ) || exit;
 if ( ! is_ajax() ) {
 	do_action( 'woocommerce_review_order_before_payment' );
 }
+
+// FIX: Lấy available gateways nếu biến chưa được truyền vào (tương thích với WooCommerce mới)
+if ( ! isset( $available_gateways ) ) {
+	$available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
+}
+// DEBUG: Log để kiểm tra
+if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+	error_log( 'Payment Template Debug - Available gateways count: ' . count( $available_gateways ) );
+	error_log( 'Payment Template Debug - Gateway IDs: ' . implode( ', ', array_keys( $available_gateways ) ) );
+}
 ?>
 <div id="payment" class="woocommerce-checkout-payment">
 	<?php if ( WC()->cart->needs_payment() ) : ?>
@@ -48,7 +58,13 @@ if ( ! is_ajax() ) {
 
 		<?php do_action( 'woocommerce_review_order_before_submit' ); ?>
 
-		<?php echo apply_filters( 'woocommerce_order_button_html', '<button type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr( $order_button_text ) . '" data-value="' . esc_attr( $order_button_text ) . '">' . esc_html( $order_button_text ) . '</button>' ); // @codingStandardsIgnoreLine ?>
+		<?php
+		// FIX: Lấy order button text nếu biến chưa được truyền vào
+		if ( ! isset( $order_button_text ) ) {
+			$order_button_text = apply_filters( 'woocommerce_order_button_text', __( 'Place order', 'woocommerce' ) );
+		}
+		echo apply_filters( 'woocommerce_order_button_html', '<button type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="' . esc_attr( $order_button_text ) . '" data-value="' . esc_attr( $order_button_text ) . '">' . esc_html( $order_button_text ) . '</button>' ); // @codingStandardsIgnoreLine
+		?>
 
 		<?php do_action( 'woocommerce_review_order_after_submit' ); ?>
 
