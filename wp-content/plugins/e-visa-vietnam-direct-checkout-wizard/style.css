@@ -18,10 +18,15 @@
     box-shadow: 0px 30px 70px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 15px 15px;
     overflow: hidden;
+    margin: 30px 0;
 }
 
 .visa-wizard-container .form-inner {
-    padding: 0 40px 40px;
+    padding: 0 0 40px;
+}
+
+.visa_form {
+    padding: 0 40px;
 }
 
 /* ========== Progress bar – ON TOP, FULL WIDTH ========== */
