@@ -11,8 +11,8 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce/Templates
- * @version 3.5.3
+ * @package WooCommerce\Templates
+ * @version 9.8.0
  */
 
 defined( 'ABSPATH' ) || exit;

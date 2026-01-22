@@ -11,7 +11,7 @@
  *
  * @see 	    http://docs.woothemes.com/document/template-structure/
  * @author 		WooThemes
- * @package 	WooCommerce/Templates
+ * @package 	WooCommerce\Templates
  * @version     3.6.0
  */
 ?>

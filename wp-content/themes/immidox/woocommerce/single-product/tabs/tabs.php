@@ -3,8 +3,8 @@
  * Single Product tabs
  *
  * @author  WooThemes
- * @package WooCommerce/Templates
- * @version 3.8.0
+ * @package WooCommerce\Templates
+ * @version 9.8.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
