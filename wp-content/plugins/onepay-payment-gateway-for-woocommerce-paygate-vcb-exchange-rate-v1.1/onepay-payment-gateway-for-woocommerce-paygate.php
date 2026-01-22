@@ -10,6 +10,13 @@
  * License: GPL2
  */
 
+// Khai báo hỗ trợ WooCommerce Blocks
+add_action('before_woocommerce_init', function() {
+	if (class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('cart_checkout_blocks', __FILE__, true);
+	}
+});
+
 add_action('plugins_loaded', 'woocommerce_onepay_init', 0);
 
 function woocommerce_onepay_init()
@@ -850,4 +857,81 @@ function woocommerce_onepay_init()
 		
 		return $available_gateways;
 	}, 999); // Priority cao để chạy sau các filter khác
+}
+
+// Đăng ký integration với WooCommerce Blocks
+add_action( 'woocommerce_blocks_loaded', function() {
+	if ( ! class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+		return;
+	}
+	
+	// Định nghĩa class integration khi Blocks đã load
+	class WC_Onepay_Blocks_Integration extends \Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType {
+		protected $name = 'onepay';
+		
+		public function initialize() {
+			$this->settings = get_option( 'woocommerce_onepay_settings', array() );
+		}
+		
+		public function is_active() {
+			return ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'];
+		}
+		
+		public function get_payment_method_script_handles() {
+			// Không cần custom script, dùng default của WooCommerce Blocks
+			return array();
+		}
+		
+		public function get_payment_method_data() {
+			$gateway = WC()->payment_gateways()->payment_gateways()['onepay'] ?? null;
+			
+			if ( ! $gateway ) {
+				return array();
+			}
+			
+			return array(
+				'title'       => $gateway->get_title(),
+				'description' => $gateway->get_description(),
+				'supports'    => $this->get_supported_features(),
+				'icon'        => $gateway->get_icon(),
+			);
+		}
+		
+		protected function get_supported_features() {
+			$gateway = WC()->payment_gateways()->payment_gateways()['onepay'] ?? null;
+			
+			if ( ! $gateway ) {
+				return array();
+			}
+			
+			$supports = array();
+			
+			// Kiểm tra các features được hỗ trợ
+			if ( method_exists( $gateway, 'supports' ) ) {
+				$features = array( 'products' );
+				foreach ( $features as $feature ) {
+					if ( $gateway->supports( $feature ) ) {
+						$supports[] = $feature;
+					}
+				}
+			} else {
+				$supports = array( 'products' );
+			}
+			
+			return $supports;
+		}
+	}
+	
+	add_action(
+		'woocommerce_blocks_payment_method_type_registration',
+		function( \Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+			$payment_method_registry->register( new WC_Onepay_Blocks_Integration() );
+			
+			// Log để debug
+			$log_file = WP_CONTENT_DIR . '/woo.log';
+			$log_msg = "[BLOCKS INTEGRATION] OnePay Blocks Integration đã được đăng ký - " . date('Y-m-d H:i:s') . "\n";
+			@file_put_contents($log_file, $log_msg, FILE_APPEND | LOCK_EX);
+		}
+	);
+});
 }
