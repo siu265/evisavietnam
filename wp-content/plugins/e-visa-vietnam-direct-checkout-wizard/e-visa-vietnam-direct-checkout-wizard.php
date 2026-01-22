@@ -455,23 +455,33 @@ class Visa_Wizard_V2_5 {
                     if(res.success) {
                         $("#visa_checkout_wrapper").html(res.data.html);
                         
-                        // Bind event handler cho form checkout sau khi form được load
-                        bindCheckoutFormSubmit();
-                        
-                        // Trigger WooCommerce checkout scripts
-                        if(typeof jQuery !== 'undefined') {
-                            jQuery('body').trigger('update_checkout');
-                            // Đảm bảo WooCommerce checkout scripts được load
-                            if(typeof wc_checkout_params === 'undefined') {
-                                // Load WooCommerce checkout scripts nếu chưa có
-                                var script = document.createElement('script');
-                                script.src = '<?php echo WC()->plugin_url(); ?>/assets/js/frontend/checkout.js';
-                                script.onload = function() {
-                                    jQuery('body').trigger('update_checkout');
-                                };
-                                document.head.appendChild(script);
+                        // Đợi một chút để form được render xong
+                        setTimeout(function() {
+                            // Đảm bảo form không submit bình thường - thay đổi action và onsubmit
+                            var $checkoutForm = $("#visa_checkout_wrapper form.checkout");
+                            if($checkoutForm.length) {
+                                $checkoutForm.attr("action", "javascript:void(0);");
+                                $checkoutForm.attr("onsubmit", "return false;");
                             }
-                        }
+                            
+                            // Bind event handler cho form checkout sau khi form được load
+                            bindCheckoutFormSubmit();
+                            
+                            // Trigger WooCommerce checkout scripts
+                            if(typeof jQuery !== 'undefined') {
+                                jQuery('body').trigger('update_checkout');
+                                // Đảm bảo WooCommerce checkout scripts được load
+                                if(typeof wc_checkout_params === 'undefined') {
+                                    // Load WooCommerce checkout scripts nếu chưa có
+                                    var script = document.createElement('script');
+                                    script.src = '<?php echo WC()->plugin_url(); ?>/assets/js/frontend/checkout.js';
+                                    script.onload = function() {
+                                        jQuery('body').trigger('update_checkout');
+                                    };
+                                    document.head.appendChild(script);
+                                }
+                            }
+                        }, 200);
                     } else {
                         $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
                     }
@@ -480,16 +490,28 @@ class Visa_Wizard_V2_5 {
             
             function bindCheckoutFormSubmit() {
                 // Unbind event cũ trước (nếu có)
-                $("#visa_checkout_wrapper form.checkout").off("submit");
+                $("#visa_checkout_wrapper form.checkout").off("submit.visaCheckout");
                 
-                // Bind event mới
-                $("#visa_checkout_wrapper form.checkout").on("submit", function(e){
-                    e.preventDefault();
-                    e.stopPropagation();
+                // Đảm bảo form không submit bình thường
+                var $form = $("#visa_checkout_wrapper form.checkout");
+                if($form.length) {
+                    $form.attr("action", "javascript:void(0);");
+                    $form.attr("onsubmit", "return false;");
                     
-                    let $form = $(this);
-                    let $submitBtn = $form.find("#place_order");
-                    let originalText = $submitBtn.val() || $submitBtn.text();
+                    // Bind event mới với namespace và priority cao
+                    $form.on("submit.visaCheckout", function(e){
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        
+                        let $form = $(this);
+                        
+                        let $submitBtn = $form.find("#place_order");
+                        if($submitBtn.length === 0) {
+                            console.error("Place order button not found!");
+                            return false;
+                        }
+                        let originalText = $submitBtn.val() || $submitBtn.text();
                     
                     // Disable button và show loading
                     $submitBtn.prop("disabled", true);
@@ -616,7 +638,10 @@ class Visa_Wizard_V2_5 {
                     });
                     
                     return false;
-                });
+                    });
+                } else {
+                    console.error("Checkout form not found!");
+                }
             }
 
             function validateStep(step) {
@@ -939,8 +964,8 @@ class Visa_Wizard_V2_5 {
         if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
             echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
         } else {
-            // Sử dụng trang hiện tại để submit form
-            echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="' . esc_url( wc_get_checkout_url() ) . '" enctype="multipart/form-data">';
+            // Sử dụng javascript:void(0) để ngăn form submit bình thường, sẽ xử lý bằng AJAX
+            echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="javascript:void(0);" enctype="multipart/form-data" onsubmit="return false;">';
             
             if ( $checkout->get_checkout_fields() ) {
                 do_action( 'woocommerce_checkout_before_customer_details' );
