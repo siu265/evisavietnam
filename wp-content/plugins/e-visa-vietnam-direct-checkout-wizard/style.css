@@ -123,6 +123,10 @@
     border-top: 1px solid #dedede !important;
 }
 
+.select2-container.select2-container--open .select2-dropdown--above {
+    border-bottom: 1px solid #dedede !important;
+}
+
 .visa-wizard-container .form-group { margin-bottom: 24px; text-align: left; }
 .visa-step-inner .form-group { text-align: center; }
 .visa-wizard-container .form-group:last-child { margin-bottom: 0; }
