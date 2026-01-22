@@ -44,6 +44,7 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'save_order_meta' ), 10, 4 );
         add_action( 'template_redirect', array( $this, 'redirect_cart_page' ) );
+        add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 5, 1 );
         
         // Đảm bảo WooCommerce trả về JSON khi submit từ AJAX
         add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'fix_checkout_endpoint' ), 10, 2 );
@@ -142,6 +143,36 @@ class Visa_Wizard_V2_5 {
             if ( $term && ! is_wp_error( $term ) ) return $term->name;
         }
         return ucwords( str_replace( '-', ' ', $slug ) );
+    }
+
+    /**
+     * Lấy danh sách term slugs theo đúng thứ tự admin (term_order / menu_order / name).
+     * $limit_to_slugs: chỉ giữ lại các slug có trong mảng (vd. từ variation attributes).
+     */
+    private function get_ordered_attribute_term_slugs( $taxonomy, $limit_to_slugs = [] ) {
+        if ( ! taxonomy_exists( $taxonomy ) ) {
+            return [];
+        }
+        $try_orderby = array( 'term_order', 'menu_order', 'term_id', 'name' );
+        foreach ( $try_orderby as $orderby ) {
+            $args = array(
+                'taxonomy'   => $taxonomy,
+                'hide_empty' => false,
+                'orderby'    => $orderby,
+                'order'      => 'ASC',
+            );
+            $terms = get_terms( $args );
+            if ( is_wp_error( $terms ) || empty( $terms ) ) {
+                continue;
+            }
+            $slugs = array_map( function( $t ) { return $t->slug; }, $terms );
+            if ( ! empty( $limit_to_slugs ) ) {
+                $slugs = array_intersect( $slugs, $limit_to_slugs );
+                $slugs = array_values( $slugs );
+            }
+            return $slugs;
+        }
+        return [];
     }
 
     public function enqueue_assets() {
@@ -266,6 +297,16 @@ class Visa_Wizard_V2_5 {
                         </div>
                     </div>
 
+                    <?php
+                    $type_slugs = isset( $attributes[ $slug_type ] ) ? $this->get_ordered_attribute_term_slugs( $slug_type, $attributes[ $slug_type ] ) : [];
+                    if ( empty( $type_slugs ) && isset( $attributes[ $slug_type ] ) ) {
+                        $type_slugs = array_values( $attributes[ $slug_type ] );
+                    }
+                    $time_slugs = isset( $attributes[ $slug_time ] ) ? $this->get_ordered_attribute_term_slugs( $slug_time, $attributes[ $slug_time ] ) : [];
+                    if ( empty( $time_slugs ) && isset( $attributes[ $slug_time ] ) ) {
+                        $time_slugs = array_values( $attributes[ $slug_time ] );
+                    }
+                    ?>
                     <div class="step-content" data-step="2">
                         <div class="visa-step-inner">
                             <h3 class="step-title"><span class="visa-step-badge">2</span>Visa Type</h3>
@@ -273,10 +314,10 @@ class Visa_Wizard_V2_5 {
                             <div class="form-group">
                                 <select name="visa_type" class="form-control price-trigger required-field select2-enable" id="select_visa_type" data-placeholder="Select visa type">
                                     <option value="">Select visa type</option>
-                                    <?php if(isset($attributes[$slug_type])): foreach($attributes[$slug_type] as $term_slug): 
-                                        $term_label = $this->get_attribute_label($term_slug, $slug_type); ?>
-                                        <option value="<?php echo esc_attr($term_slug); ?>" data-label="<?php echo esc_attr($term_label); ?>"><?php echo esc_html($term_label); ?></option>
-                                    <?php endforeach; endif; ?>
+                                    <?php foreach ( $type_slugs as $term_slug ):
+                                        $term_label = $this->get_attribute_label( $term_slug, $slug_type ); ?>
+                                        <option value="<?php echo esc_attr( $term_slug ); ?>" data-label="<?php echo esc_attr( $term_label ); ?>"><?php echo esc_html( $term_label ); ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -289,13 +330,13 @@ class Visa_Wizard_V2_5 {
                             <div class="form-group">
                                 <select name="processing_time" class="form-control price-trigger required-field select2-enable" id="select_processing_time" data-placeholder="Select processing time">
                                     <option value="">Select processing time</option>
-                                    <?php if(isset($attributes[$slug_time])): foreach($attributes[$slug_time] as $term_slug): 
-                                        $term_label = $this->get_attribute_label($term_slug, $slug_time); ?>
-                                        <option value="<?php echo esc_attr($term_slug); ?>" data-label="<?php echo esc_attr($term_label); ?>"><?php echo esc_html($term_label); ?></option>
-                                    <?php endforeach; endif; ?>
+                                    <?php foreach ( $time_slugs as $term_slug ):
+                                        $term_label = $this->get_attribute_label( $term_slug, $slug_time ); ?>
+                                        <option value="<?php echo esc_attr( $term_slug ); ?>" data-label="<?php echo esc_attr( $term_label ); ?>"><?php echo esc_html( $term_label ); ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
-                            <p class="visa-step-note">Working hours: <?php echo esc_html($work_start . ' – ' . $work_end . ' (' . $work_days_str . ')'); ?></p>
+                            <p class="visa-step-note">Working hours: <?php echo esc_html( $work_start . ' – ' . $work_end . ' (' . $work_days_str . ')' ); ?></p>
                         </div>
                     </div>
 
@@ -1136,6 +1177,16 @@ class Visa_Wizard_V2_5 {
             WC()->cart->empty_cart();
         }
         $this->visa_log( 'Session cleared: visa_draft_data, checkout, order_awaiting_payment, cart emptied' );
+    }
+
+    /** Hook: clear session khi xem trang order-received (đảm bảo clear dù checkout xử lý bởi WC hay plugin) */
+    public function clear_visa_session_on_thankyou( $order_id ) {
+        if ( ! $order_id || ! WC()->session ) {
+            return;
+        }
+        WC()->session->__unset( 'visa_draft_data' );
+        WC()->session->__unset( 'checkout' );
+        WC()->session->__unset( 'order_awaiting_payment' );
     }
 
     public function save_order_meta($item, $key, $values, $order) {
