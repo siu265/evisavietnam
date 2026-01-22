@@ -51,6 +51,9 @@ function woocommerce_onepay_init()
 			$this->init_form_fields();
 			$this->init_settings();
 
+			// Đảm bảo enabled được set từ settings (parent init_settings đã set, nhưng set lại để chắc chắn)
+			$this->enabled = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
+
 			$this->title = $this->settings['title'];
 			$this->description = $this->settings['description'];
 			$this->exchange_rate_config = $this->settings['exchange_rate_config'] ?? '';
@@ -180,6 +183,23 @@ function woocommerce_onepay_init()
 		{
 			if ($this->description)
 				echo wpautop(wptexturize(__($this->description, 'monepayus')));
+		}
+
+		/**
+		 * Check if the gateway is available for use.
+		 * Override để đảm bảo gateway hiển thị khi enabled = 'yes'
+		 *
+		 * @return bool
+		 */
+		public function is_available()
+		{
+			// Kiểm tra enabled trước tiên
+			if ( $this->enabled !== 'yes' ) {
+				return false;
+			}
+
+			// Gọi parent để kiểm tra các điều kiện khác (max_amount, etc.)
+			return parent::is_available();
 		}
 
 		/**

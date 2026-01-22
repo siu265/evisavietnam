@@ -1,17 +1,17 @@
 <?php
 /*
 Plugin Name: E-Visa Vietnam Direct Checkout Wizard
-Description: Hệ thống Booking Visa V2.4 (Fix lỗi 404 Ajax URL & Critical Checkout).
-Version: 2.4
+Description: Hệ thống Booking Visa V2.5 (Fix Postcode Hiding & Price Display on Return).
+Version: 2.5
 Author: DuyViet
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class Visa_Wizard_V2_4 {
+class Visa_Wizard_V2_5 {
 
     public function __construct() {
-        // Assets & Logic
+        // Frontend Assets & Logic
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
         add_shortcode( 'visa_wizard_form', array( $this, 'render_wizard' ) );
         add_action( 'wp_footer', array( $this, 'render_modals_in_footer' ) );
@@ -32,9 +32,10 @@ class Visa_Wizard_V2_4 {
         add_action( 'wp_ajax_visa_checkout', array( $this, 'ajax_checkout' ) );
         add_action( 'wp_ajax_nopriv_visa_checkout', array( $this, 'ajax_checkout' ) );
 
-        // Woo
+        // Woo Hooks (Postcode Removal Logic)
         add_filter( 'woocommerce_checkout_fields', array( $this, 'clean_checkout_fields' ), 9999 );
         add_filter( 'woocommerce_default_address_fields', array( $this, 'clean_default_address_fields' ), 9999 );
+        
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'save_order_meta' ), 10, 4 );
         add_action( 'template_redirect', array( $this, 'redirect_cart_page' ) );
     }
@@ -152,6 +153,8 @@ class Visa_Wizard_V2_4 {
             .error-message { background: #fff3cd; color: #856404; padding: 15px; margin-bottom: 20px; border: 1px solid #ffeeba; border-radius: 5px; display: none; }
             .input-error { border: 1px solid #ff3b30 !important; }
             .select2-container .select2-selection.input-error { border: 1px solid #ff3b30 !important; }
+            
+            /* MODAL STYLES */
             .visa-modal { display: none; position: fixed; z-index: 999999; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px); align-items: center; justify-content: center; }
             .visa-modal-content { background-color: #fff; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 700px; border-radius: 8px; box-shadow: 0 15px 50px rgba(0,0,0,0.5); position: relative; animation: slideDown 0.3s; }
             @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -159,6 +162,9 @@ class Visa_Wizard_V2_4 {
             .visa-close:hover { color: #000; }
             .visa-modal-body { max-height: 70vh; overflow-y: auto; margin-top: 10px; font-size: 14px; line-height: 1.6; color: #333; }
             .visa-link { color: #ffaa17; text-decoration: underline; cursor: pointer; font-weight: 600; }
+
+            /* FIX: POSTCODE HIDE FORCEFULLY (CSS FALLBACK) */
+            #billing_postcode_field, .billing_postcode_field { display: none !important; }
         ' );
     }
 
@@ -343,7 +349,7 @@ class Visa_Wizard_V2_4 {
                                     <div class="phone-code-wrap">
                                         <select name="phone_code" class="form-control select2-enable">
                                             <?php foreach($phone_codes as $code => $label): ?>
-                                                <option value="<?php echo $code; ?>" <?php selected('+84', $code); ?>><?php echo $label; ?></option>
+                                                <option value="<?php echo $code; ?>" <?php selected($prefill['phone_code'] ?? '+84', $code); ?>><?php echo $label; ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -399,6 +405,7 @@ class Visa_Wizard_V2_4 {
             let currentStep = 1; const totalSteps = 7;
             $(".select2-enable").select2({ width: "100%" });
 
+            // Restore Values (Prefill)
             <?php if(!empty($prefill['visa_type'])): ?>
                 $("select[name='visa_type']").val("<?php echo esc_js($prefill['visa_type']); ?>").trigger("change");
             <?php endif; ?>
@@ -408,6 +415,15 @@ class Visa_Wizard_V2_4 {
             <?php if(!empty($prefill['phone_code'])): ?>
                 $("select[name='phone_code']").val("<?php echo esc_js($prefill['phone_code']); ?>").trigger("change");
             <?php endif; ?>
+
+            // FIX: AUTO TRIGGER PRICE CALCULATION AFTER PREFILL
+            setTimeout(function(){
+                let pType = $("select[name='visa_type']").val();
+                let pTime = $("select[name='processing_time']").val();
+                if(pType && pTime) {
+                    $(".price-trigger").first().trigger("change");
+                }
+            }, 500); // Đợi 500ms để chắc chắn Select2 đã load xong
 
             // Modal
             $(document).on("click", ".visa-link", function(e){
@@ -461,7 +477,7 @@ class Visa_Wizard_V2_4 {
             $("#btn_next").click(function(e){ e.preventDefault(); if(validateStep(currentStep)) { currentStep++; showStep(currentStep); } });
             $("#btn_back").click(function(e){ e.preventDefault(); currentStep--; showStep(currentStep); });
 
-            // SMART PRICE CALCULATION (V2.4 Correct URL Fix)
+            // SMART PRICE CALCULATION
             $(".price-trigger").change(function(){
                 let type = $("select[name=\"visa_type\"]").val();
                 let time = $("select[name=\"processing_time\"]").val();
@@ -490,7 +506,6 @@ class Visa_Wizard_V2_4 {
                 $(id).change(function(){
                     let fd = new FormData(); fd.append("file", this.files[0]); fd.append("action", "visa_upload_file");
                     $(msg_id).text("Uploading...").css("color","#ffaa17");
-                    // FIX: Output proper URL with PHP echo
                     $.ajax({
                         url: "<?php echo admin_url('admin-ajax.php'); ?>", type: "POST", contentType: false, processData: false, data: fd,
                         success: function(res){
@@ -526,7 +541,6 @@ class Visa_Wizard_V2_4 {
                 }
 
                 let btn = $(this); btn.text("Processing...").prop("disabled", true);
-                // FIX: Output proper URL with PHP echo
                 $.post("<?php echo admin_url('admin-ajax.php'); ?>", { action: "visa_checkout", data: $("#visa_form").serialize() }, function(res){
                     if(res.success) window.location.href = res.data.redirect;
                     else { alert(res.data.message); btn.text("PAY NOW").prop("disabled", false); }
@@ -538,7 +552,7 @@ class Visa_Wizard_V2_4 {
         return ob_get_clean();
     }
 
-    // --- BACKEND FUNCTIONS (V2.4 ROBUST FIX) --- //
+    // --- BACKEND FUNCTIONS --- //
     public function ajax_get_price() {
         $pid = intval($_POST['product_id']);
         $selected_type = sanitize_text_field($_POST['type']);
@@ -621,14 +635,22 @@ class Visa_Wizard_V2_4 {
         }
     }
 
+    // REMOVE FIELDS AGGRESSIVELY (Priority 9999)
     public function clean_checkout_fields($fields) {
-        unset($fields['billing']['billing_company'], $fields['billing']['billing_address_1'], $fields['billing']['billing_address_2'], $fields['billing']['billing_city'], $fields['billing']['billing_postcode'], $fields['billing']['billing_state'], $fields['shipping']);
+        unset($fields['billing']['billing_company']);
+        unset($fields['billing']['billing_address_1']);
+        unset($fields['billing']['billing_address_2']);
+        unset($fields['billing']['billing_city']);
+        unset($fields['billing']['billing_postcode']); // Standard Unset
+        unset($fields['billing']['billing_state']);
+        unset($fields['shipping']);
         return $fields;
     }
+    // Also remove from default address fields to prevent validation errors
     public function clean_default_address_fields($fields) {
         unset($fields['postcode']);
         return $fields;
     }
 }
 
-new Visa_Wizard_V2_4();
+new Visa_Wizard_V2_5();
