@@ -455,10 +455,23 @@ class Visa_Wizard_V2_5 {
                     if(res.success) {
                         $("#visa_checkout_wrapper").html(res.data.html);
                         
+                        // Debug: Log HTML được render
+                        console.log("Checkout HTML loaded:", $("#visa_checkout_wrapper").html().substring(0, 500));
+                        
                         // Đợi một chút để form được render xong và DOM được update
                         setTimeout(function() {
-                            // Tìm form checkout với nhiều selector khác nhau
-                            var $checkoutForm = $("#visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form");
+                            // Debug: Kiểm tra wrapper có tồn tại không
+                            var $wrapper = $("#visa_checkout_wrapper");
+                            console.log("Wrapper exists:", $wrapper.length > 0);
+                            console.log("Wrapper HTML length:", $wrapper.html().length);
+                            
+                            // Tìm form checkout với nhiều selector khác nhau, ưu tiên ID
+                            var $checkoutForm = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper .visa-checkout-form form, #visa_checkout_wrapper form");
+                            
+                            console.log("Forms found:", $checkoutForm.length);
+                            if($checkoutForm.length > 0) {
+                                console.log("Form HTML:", $checkoutForm[0].outerHTML.substring(0, 300));
+                            }
                             
                             if($checkoutForm.length > 0) {
                                 console.log("Found checkout form, binding submit handler");
@@ -486,12 +499,13 @@ class Visa_Wizard_V2_5 {
                                 }
                             } else {
                                 console.error("Checkout form not found in DOM. Retrying...");
+                                console.log("Wrapper content:", $("#visa_checkout_wrapper").html().substring(0, 1000));
                                 // Retry sau 500ms nếu form chưa có
                                 setTimeout(function() {
                                     bindCheckoutFormSubmit();
                                 }, 500);
                             }
-                        }, 300);
+                        }, 500);
                     } else {
                         $("#visa_checkout_wrapper").html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
                     }
@@ -499,11 +513,19 @@ class Visa_Wizard_V2_5 {
             }
             
             function bindCheckoutFormSubmit() {
-                // Tìm form checkout với nhiều selector khác nhau
-                var $form = $("#visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper form");
+                // Tìm form checkout với nhiều selector khác nhau, ưu tiên ID
+                var $form = $("#visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper .visa-checkout-form form, #visa_checkout_wrapper form");
+                
+                // Debug: Log tất cả forms trong wrapper
+                var $allForms = $("#visa_checkout_wrapper").find("form");
+                console.log("All forms in wrapper:", $allForms.length);
+                $allForms.each(function(i) {
+                    console.log("Form " + i + ":", $(this).attr("id"), $(this).attr("class"), $(this).attr("name"));
+                });
                 
                 if($form.length === 0) {
-                    console.error("Checkout form not found! Selectors tried: #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form");
+                    console.error("Checkout form not found! Selectors tried: #visa_checkout_form, #visa_checkout_wrapper form.checkout, #visa_checkout_wrapper form[name='checkout'], #visa_checkout_wrapper .woocommerce-checkout form, #visa_checkout_wrapper .visa-checkout-form form");
+                    console.log("Wrapper HTML:", $("#visa_checkout_wrapper").html().substring(0, 1000));
                     return false;
                 }
                 
@@ -980,7 +1002,7 @@ class Visa_Wizard_V2_5 {
             echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
         } else {
             // Sử dụng javascript:void(0) để ngăn form submit bình thường, sẽ xử lý bằng AJAX
-            echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="javascript:void(0);" enctype="multipart/form-data" onsubmit="return false;">';
+            echo '<form name="checkout" method="post" class="checkout woocommerce-checkout" action="javascript:void(0);" enctype="multipart/form-data" onsubmit="return false;" id="visa_checkout_form">';
             
             if ( $checkout->get_checkout_fields() ) {
                 do_action( 'woocommerce_checkout_before_customer_details' );
