@@ -58,15 +58,51 @@
     border-bottom: 1px solid #e3e3e3;
 }
 
-.visa-step-info { font-size: 14px; font-weight: 600; color: #6E6E6E; text-transform: uppercase; letter-spacing: 1px; }
-.visa-step-info span { color: #222; }
-.visa-total-price { font-size: 22px; color: #ffaa17; font-weight: 800; }
-.visa-total-price bdi { display: inline-flex; align-items: center; }
+.visa-step-info {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6E6E6E;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.visa-step-info span {
+    color: #222;
+}
+
+.visa-total-price {
+    font-size: 22px;
+    color: #ffaa17;
+    font-weight: 800;
+}
+
+.visa-total-price bdi {
+    display: inline-flex;
+    align-items: center;
+}
 
 /* ========== Step content ========== */
-#visa_wizard .step-content { display: none !important; padding-top: 30px; }
-#visa_wizard .step-content.active { display: block !important; animation: visaFadeIn 0.4s ease; }
-@keyframes visaFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+#visa_wizard .step-content {
+    display: none !important;
+    padding-top: 30px;
+}
+
+#visa_wizard .step-content.active {
+    display: block !important;
+    animation: visaFadeIn 0.4s ease;
+}
+
+@keyframes visaFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .visa-step-inner {
     max-width: 560px;
@@ -127,9 +163,18 @@
     border-bottom: 1px solid #dedede !important;
 }
 
-.visa-wizard-container .form-group { margin-bottom: 24px; text-align: left; }
-.visa-step-inner .form-group { text-align: center; }
-.visa-wizard-container .form-group:last-child { margin-bottom: 0; }
+.visa-wizard-container .form-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.visa-step-inner .form-group {
+    text-align: center;
+}
+
+.visa-wizard-container .form-group:last-child {
+    margin-bottom: 0;
+}
 
 .visa-wizard-container .phone-group {
     display: flex;
@@ -140,20 +185,30 @@
     margin: 0 auto;
 }
 
-.visa-wizard-container .phone-code-wrap { flex: 0 0 140px; }
-.visa-wizard-container .phone-number-wrap { flex: 1; min-width: 0; }
+.visa-wizard-container .phone-code-wrap {
+    flex: 0 0 140px;
+}
+
+.visa-wizard-container .phone-number-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
 .visa-wizard-container .phone-number-wrap .form-control {
     border: none;
     border-bottom: 2px solid #e0e0e0;
     border-radius: 0;
 }
+
 .visa-wizard-container .phone-number-wrap .form-control:focus {
     border-bottom-color: #ffaa17;
     outline: none;
     box-shadow: none;
 }
 
-.visa-step-inner .form-control { text-align: center !important; }
+.visa-step-inner .form-control {
+    text-align: center !important;
+}
 
 .visa-wizard-container .form-control {
     display: block !important;
@@ -178,14 +233,30 @@
     box-shadow: none;
 }
 
-.visa-wizard-container .form-control::placeholder { color: #999; }
+.visa-wizard-container .form-control::placeholder {
+    color: #999;
+}
 
-.visa-wizard-container input[type="date"] { text-align: center; cursor: pointer; }
-.visa-wizard-container input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
+.visa-wizard-container input[type="date"] {
+    text-align: center;
+    cursor: pointer;
+}
+
+.visa-wizard-container input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.6;
+}
 
 /* ========== Select2 ========== */
-.visa-step-inner .select2-container { max-width: 400px !important; margin-left: auto !important; margin-right: auto !important; }
-.visa-wizard-container .select2-container { width: 100% !important; }
+.visa-step-inner .select2-container {
+    max-width: 400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.visa-wizard-container .select2-container {
+    width: 100% !important;
+}
 
 .visa-wizard-container .select2-container .select2-selection--single {
     height: 50px !important;
@@ -204,7 +275,11 @@
     box-shadow: none !important;
 }
 
-.visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__arrow { height: 50px !important; right: 12px; }
+.visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 50px !important;
+    right: 12px;
+}
+
 .visa-wizard-container .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #333 !important;
     padding-left: 0 !important;
@@ -222,17 +297,53 @@
     text-align: center;
 }
 
-.visa-upload-grid .form-group { margin-bottom: 0; }
-.visa-upload-grid .form-control { max-width: 100%; border-bottom: 2px solid #e0e0e0; cursor: pointer; }
-.visa-upload-grid .form-control:focus { border-bottom-color: #ffaa17; }
+.visa-upload-grid .form-group {
+    margin-bottom: 0;
+}
 
-.file-upload-wrapper input[type="file"] { padding: 12px; font-size: 14px; cursor: pointer; }
-.upload-status { font-size: 13px; margin-top: 6px; color: #666; text-align: center; }
-.upload-preview-box { margin-top: 12px; display: none; text-align: center; }
-.upload-preview-box img { height: 100px; border-radius: 8px; border: 1px solid #e0e0e0; max-width: 100%; }
+.visa-upload-grid .form-control {
+    max-width: 100%;
+    border-bottom: 2px solid #e0e0e0;
+    cursor: pointer;
+}
+
+.visa-upload-grid .form-control:focus {
+    border-bottom-color: #ffaa17;
+}
+
+.file-upload-wrapper input[type="file"] {
+    padding: 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.upload-status {
+    font-size: 13px;
+    margin-top: 6px;
+    color: #666;
+    text-align: center;
+}
+
+.upload-preview-box {
+    margin-top: 12px;
+    display: none;
+    text-align: center;
+}
+
+.upload-preview-box img {
+    height: 100px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    max-width: 100%;
+}
 
 /* ========== Review box ========== */
-.visa-step-inner .review-box { max-width: 560px; margin: 0 auto 32px; text-align: left; }
+.visa-step-inner .review-box {
+    max-width: 560px;
+    margin: 0 auto 32px;
+    text-align: left;
+}
+
 .review-box {
     background: #F9F9F9;
     padding: 28px 32px;
@@ -251,7 +362,10 @@
     line-height: 1.5;
 }
 
-.review-item:last-of-type { border-bottom: none; }
+.review-item:last-of-type {
+    border-bottom: none;
+}
+
 .review-item.review-total {
     border-top: 1px solid #ddd;
     padding-top: 14px;
@@ -260,15 +374,20 @@
     font-size: 18px;
 }
 
-.review-item.review-total .review-value { color: #ffaa17; font-size: 22px; }
-.review-value { 
-    font-weight: 700; 
-    color: #222; 
-    text-align: right; 
+.review-item.review-total .review-value {
+    color: #ffaa17;
+    font-size: 22px;
+}
+
+.review-value {
+    font-weight: 700;
+    color: #222;
+    text-align: right;
     flex: 1;
     margin-left: 16px;
     word-break: break-word;
 }
+
 .review-item span:first-child {
     font-weight: 600;
     color: #555;
@@ -277,7 +396,10 @@
 }
 
 /* Terms – step 7 */
-.visa-terms-wrap { margin-top: 20px !important; }
+.visa-terms-wrap {
+    margin-top: 20px !important;
+}
+
 .visa-terms-label {
     cursor: pointer;
     display: flex;
@@ -291,7 +413,12 @@
     margin: 0 auto;
 }
 
-.visa-terms-label input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; }
+.visa-terms-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
 
 /* ========== Actions – Back (←) | Next (→) ========== */
 .visa-actions {
@@ -355,7 +482,9 @@
     box-shadow: none !important;
 }
 
-.visa-actions .visa-btn-spacer { flex: 1; }
+.visa-actions .visa-btn-spacer {
+    flex: 1;
+}
 
 /* ========== Error ========== */
 #global_error {
@@ -370,9 +499,21 @@
     text-align: center;
 }
 
-.input-error { border-color: #e8161b !important; border-bottom-color: #e8161b !important; }
-.visa-wizard-container .select2-container .select2-selection.input-error { border-bottom-color: #e8161b !important; }
-.visa-terms-label.input-error { border: 1px solid #e8161b !important; padding: 12px; border-radius: 8px; background: #fff8e6; }
+.input-error {
+    border-color: #e8161b !important;
+    border-bottom-color: #e8161b !important;
+}
+
+.visa-wizard-container .select2-container .select2-selection.input-error {
+    border-bottom-color: #e8161b !important;
+}
+
+.visa-terms-label.input-error {
+    border: 1px solid #e8161b !important;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff8e6;
+}
 
 /* ========== Modal ========== */
 .visa-modal {
@@ -402,23 +543,62 @@
     animation: visaSlideDown 0.3s ease;
 }
 
-@keyframes visaSlideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes visaSlideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
 
-.visa-close { position: absolute; right: 18px; top: 14px; color: #999; font-size: 28px; font-weight: bold; cursor: pointer; }
-.visa-close:hover { color: #041E42; }
-.visa-modal-body { max-height: 70vh; overflow-y: auto; margin-top: 12px; font-size: 15px; line-height: 1.65; color: #333; }
-.visa-link { color: #ffaa17; text-decoration: underline; cursor: pointer; font-weight: 600; }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.visa-close {
+    position: absolute;
+    right: 18px;
+    top: 14px;
+    color: #999;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.visa-close:hover {
+    color: #041E42;
+}
+
+.visa-modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #333;
+}
+
+.visa-link {
+    color: #ffaa17;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+}
 
 /* ========== Checkout – ẩn Contact / Billing ========== */
 #billing_postcode_field,
-.billing_postcode_field { display: none !important; }
+.billing_postcode_field {
+    display: none !important;
+}
 
 .wp-block-woocommerce-checkout-contact-information-block,
 [data-block-name="woocommerce/checkout-contact-information-block"],
 .wp-block-woocommerce-checkout-billing-address-block,
 [data-block-name="woocommerce/checkout-billing-address-block"],
 .wc-block-components-checkout-contact-information-block,
-.wc-block-components-checkout-billing-address-block { display: none !important; }
+.wc-block-components-checkout-billing-address-block {
+    display: none !important;
+}
 
 /* ========== Checkout Form Styling trong Step 7 ========== */
 /* Checkout form: mờ khi đang load, rõ khi load xong */
@@ -454,8 +634,8 @@
 .visa-checkout-form #billing_state_field,
 .visa-checkout-form .woocommerce-shipping-fields,
 .visa-checkout-form #shipping_country_field,
-.visa-checkout-form #order_comments_field { 
-    display: none !important; 
+.visa-checkout-form #order_comments_field {
+    display: none !important;
 }
 
 /* Style cho payment methods */
@@ -514,8 +694,8 @@
     cursor: pointer;
 }
 
-.visa-checkout-form .wc_payment_methods input[type="radio"]:checked + label,
-.visa-checkout-form .wc_payment_methods li.wc_payment_method > input[type="radio"]:checked ~ label {
+.visa-checkout-form .wc_payment_methods input[type="radio"]:checked+label,
+.visa-checkout-form .wc_payment_methods li.wc_payment_method>input[type="radio"]:checked~label {
     border-bottom-color: #ffaa17;
     color: #ffaa17;
 }
@@ -623,7 +803,8 @@
     flex-shrink: 0;
 }
 
-.woocommerce-additional-fields, #order_review_heading {
+.woocommerce-additional-fields,
+#order_review_heading {
     display: none !important;
 }
 
@@ -634,7 +815,7 @@
         padding: 14px 32px;
         font-size: 14px;
     }
-    
+
     .visa-checkout-form .woocommerce-checkout-review-order {
         padding: 20px 16px;
     }
@@ -646,7 +827,7 @@ body.woocommerce-order-received .woocommerce-order {
     margin: 0 auto;
     padding: 32px 24px 40px;
     background: #fff;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
     border-radius: 0 0 15px 15px;
     border: 1px solid #e8e8e8;
     text-align: center;
@@ -801,24 +982,89 @@ body.woocommerce-order-received .woocommerce-customer-details address {
     line-height: 1.6;
 }
 
-#add_payment_method #payment ul.payment_methods li img, .woocommerce-cart #payment ul.payment_methods li img, .woocommerce-checkout #payment ul.payment_methods li img {
+#add_payment_method #payment ul.payment_methods li img,
+.woocommerce-cart #payment ul.payment_methods li img,
+.woocommerce-checkout #payment ul.payment_methods li img {
     max-width: 250px;
 }
 
 /* ========== Responsive ========== */
 @media (max-width: 576px) {
-    .visa-step-inner { padding: 0 16px; }
-    .visa-step-desc { font-size: 14px; margin-bottom: 22px; }
-    .visa-wizard-container .phone-group { flex-direction: column; max-width: 100%; }
-    .visa-wizard-container .phone-code-wrap { flex: 1 1 auto; }
-    .visa-upload-grid { grid-template-columns: 1fr; max-width: 100%; }
-    .visa-wizard-container .form-control { max-width: 100%; }
-    .visa-step-inner .select2-container { max-width: 100% !important; }
-    .visa-step-inner .review-box { max-width: 100%; }
-    .visa_form { padding-left: 20px; padding-right: 20px; }
-    .visa-sticky-header { padding-left: 20px; padding-right: 20px; flex-wrap: wrap; gap: 10px; }
-    .visa-actions { flex-wrap: wrap; }
-    .visa-wizard-container .btn-1 { padding: 14px 32px; min-width: 140px; font-size: 14px; }
-    body.woocommerce-order-received .woocommerce-order { padding: 24px 16px 32px; }
-    body.woocommerce-order-received .woocommerce-order-overview { flex-direction: column; align-items: flex-start; flex-direction: column; }
+    .visa-step-inner {
+        padding: 0 16px;
+    }
+
+    .visa-step-desc {
+        font-size: 14px;
+        margin-bottom: 22px;
+    }
+
+    .visa-wizard-container .phone-group {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .visa-wizard-container .phone-code-wrap {
+        flex: 1 1 auto;
+    }
+
+    .visa-upload-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+
+    .visa-wizard-container .form-control {
+        max-width: 100%;
+    }
+
+    .visa-step-inner .select2-container {
+        max-width: 100% !important;
+    }
+
+    .visa-step-inner .review-box {
+        max-width: 100%;
+    }
+
+    .visa_form {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .visa-sticky-header {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .visa-actions {
+        flex-wrap: wrap;
+    }
+
+    .visa-wizard-container .btn-1 {
+        padding: 14px 32px;
+        min-width: 140px;
+        font-size: 14px;
+    }
+
+    body.woocommerce-order-received .woocommerce-order {
+        padding: 24px 16px 32px;
+    }
+
+    body.woocommerce-order-received .woocommerce-order-overview {
+        flex-direction: column;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    body.woocommerce-order-received .woocommerce-order-overview {
+        margin-right: 0;
+        padding-right: 0;
+    }
+
+    #add_payment_method #payment ul.payment_methods li img,
+    .woocommerce-cart #payment ul.payment_methods li img,
+    .woocommerce-checkout #payment ul.payment_methods li img {
+        max-width: 180px;
+    }
 }
