@@ -1,0 +1,108 @@
+2026-01-22T15:03:06+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 923335000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202601221503061440839788
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8271
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8271/?key=wc_order_r5jv5QWquzHbW
+    [vpc_TicketNo] => 125.212.159.253
+    [vpc_Version] => 2
+)
+2026-01-22T15:04:33+00:00 INFO process_onepay_ipn - Order ID: 8271 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 923335000
+    [vpc_Card] => 970436
+    [vpc_CardNum] => 970436xxxxxxxxx0002
+    [vpc_CardUid] => INS-OMHnwB6yURTgY3BYJAqMFA
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202601221503061440839788
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8271
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => 234F4CAB51C3AA47A05B665E02B43FD209E7CABC8BB005212E6A6C80BA435D4D
+    [vpc_TransactionNo] => PAY-8f7N_7rFQJCruNIsIWdbhg
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-01-22T15:05:55+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 923335000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202601221505551313977497
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8272
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8272/?key=wc_order_cvZmMGfQqB8Ni
+    [vpc_TicketNo] => 125.212.159.253
+    [vpc_Version] => 2
+)
+2026-01-22T15:06:21+00:00 INFO process_onepay_ipn - Order ID: 8272 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 923335000
+    [vpc_Card] => 970436
+    [vpc_CardNum] => 970436xxxxxxxxx0002
+    [vpc_CardUid] => INS-OMHnwB6yURTgY3BYJAqMFA
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202601221505551313977497
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8272
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => 8DF4C66DE6413ADFC0ECCDABC8E9623E29C0338CF3FA35F44BECAD962B7D8F60
+    [vpc_TransactionNo] => PAY-v29IOV_XTAyLJE2PMz3Rrg
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-01-22T15:28:26+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 923335000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 20260122152826655573821
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8274
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8274/?key=wc_order_QHkWFpFwbTwiM
+    [vpc_TicketNo] => 125.212.159.253
+    [vpc_Version] => 2
+)
+2026-01-22T15:28:56+00:00 INFO process_onepay_ipn - Order ID: 8274 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 923335000
+    [vpc_Card] => 970436
+    [vpc_CardNum] => 970436xxxxxxxxx0002
+    [vpc_CardUid] => INS-OMHnwB6yURTgY3BYJAqMFA
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 20260122152826655573821
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8274
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => D6E159AE9B2AD87D31C55071DE894A267704266CDCB080DED1D1E9ABEE4756B7
+    [vpc_TransactionNo] => PAY-zEAEavz_Rq6cuB_Fb0SvBQ
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)

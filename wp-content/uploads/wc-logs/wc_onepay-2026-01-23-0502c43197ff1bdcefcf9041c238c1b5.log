@@ -1,0 +1,31 @@
+2026-01-23T05:21:50+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 659525000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202601230521501152748262
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8276
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8276/?key=wc_order_l8o4IjspkPAMf
+    [vpc_TicketNo] => 14.241.69.84
+    [vpc_Version] => 2
+)
+2026-01-23T05:54:05+00:00 INFO process_onepay_ipn - Order ID: 8276 - Order Note: WC_onepay Gateway Info | Code: 253 | Message: Giao dịch không thành công. Quá thời gian thanh toán. Vui lòng thực hiện thanh toán lại  - http_args: Array
+(
+    [vpc_Amount] => 659525000
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202601230521501152748262
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Expired
+    [vpc_OrderInfo] => 8276
+    [vpc_SecureHash] => 6DFAAFC42C2226A891BA474AD39E941ABFFFDA1CDBA4DB4E58B543E94F14C41D
+    [vpc_TxnResponseCode] => 253
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
