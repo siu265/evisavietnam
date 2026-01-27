@@ -437,8 +437,8 @@ class Visa_Wizard_V2_5 {
                 <!-- Step 8 ĐẶT NGOÀI form để tránh form lồng form (checkout form có thẻ <form> riêng) -->
                 <div class="step-content" data-step="8">
                     <div class="visa-step-inner">
-                        <h3 class="step-title"><span class="visa-step-badge">8</span>Review & Payment</h3>
-                        <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
+                        <h3 class="step-title"><span class="visa-step-badge">8</span>Review</h3>
+                        <p class="visa-step-desc">Review your application details and proceed to secure payment to finalize.</p>
                         
                         <div class="review-box" id="review_summary">
                             <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
@@ -572,9 +572,6 @@ class Visa_Wizard_V2_5 {
                     html += '<h4 style="margin:20px 0 12px; font-size:16px; color:#222;">Traveler ' + i + '</h4>';
                     html += '<div class="form-group">';
                     html += '<input type="text" name="contact_name_' + i + '" class="form-control required-field" placeholder="Contact Name" value="">';
-                    html += '</div>';
-                    html += '<div class="form-group">';
-                    html += '<input type="text" name="fullname_' + i + '" class="form-control required-field" placeholder="Full name" value="">';
                     html += '</div>';
                     html += '<div class="form-group">';
                     html += '<input type="email" name="email_' + i + '" class="form-control required-field" placeholder="Email address" value="">';
@@ -966,13 +963,14 @@ class Visa_Wizard_V2_5 {
             });
             $("#btn_back").click(function(e){ e.preventDefault(); currentStep--; showStep(currentStep); });
 
-            // SMART PRICE CALCULATION
-            $(".price-trigger").change(function(){
+            // Hàm tính và hiển thị giá (nhân với số người)
+            function calculateAndDisplayPrice() {
                 let type = $("select[name=\"visa_type\"]").val();
                 let time = $("select[name=\"processing_time\"]").val();
+                let numTravelers = parseInt($("#number_of_travelers").val()) || 1;
+                
                 if(type && time) {
                     $("#header_price_display").css("opacity", "0.5");
-                    // FIX: Output proper URL with PHP echo
                     $.post("<?php echo admin_url('admin-ajax.php'); ?>", {
                         action: "visa_get_price", 
                         product_id: $("input[name=\"product_id\"]").val(), 
@@ -981,14 +979,45 @@ class Visa_Wizard_V2_5 {
                     }, function(res){
                         $("#header_price_display").css("opacity", "1");
                         if(res.success) { 
-                            $("#header_price_display").html(res.data.price_html); 
-                            $("#variation_id").val(res.data.variation_id); 
+                            // Lưu variation_id
+                            $("#variation_id").val(res.data.variation_id);
+                            
+                            // Tính giá tổng = giá gốc * số người
+                            if(res.data.raw_price) {
+                                let basePrice = parseFloat(res.data.raw_price);
+                                let totalPrice = basePrice * numTravelers;
+                                let currency = res.data.currency || "$";
+                                
+                                // Format số với dấu phẩy ngăn cách hàng nghìn
+                                let formattedPrice = totalPrice.toFixed(2);
+                                formattedPrice = formattedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                
+                                // Hiển thị giá
+                                if(numTravelers > 1) {
+                                    $("#header_price_display").html(currency + formattedPrice + " <small style='color:#888; font-size:0.85em;'>(<?php echo esc_js(__('for', 'woocommerce')); ?> " + numTravelers + " <?php echo esc_js(__('traveler(s)', 'woocommerce')); ?>)</small>");
+                                } else {
+                                    $("#header_price_display").html(currency + formattedPrice);
+                                }
+                            } else {
+                                // Fallback: dùng price_html nếu không có raw_price
+                                $("#header_price_display").html(res.data.price_html);
+                            }
                         } else { 
                             $("#header_price_display").text("--"); 
                             $("#variation_id").val("");
                         }
                     });
                 }
+            }
+
+            // SMART PRICE CALCULATION
+            $(".price-trigger").change(function(){
+                calculateAndDisplayPrice();
+            });
+            
+            // Khi số người thay đổi, tính lại giá
+            $(document).on("change", "#number_of_travelers", function(){
+                calculateAndDisplayPrice();
             });
 
             // Upload handlers đã được bind trong generateTravelersUpload()
@@ -1024,7 +1053,6 @@ class Visa_Wizard_V2_5 {
                 let travelersHtml = "";
                 for(var i = 1; i <= numTravelers; i++) {
                     let contactName = $("input[name=\"contact_name_" + i + "\"]").val() || "--";
-                    let fullName = $("input[name=\"fullname_" + i + "\"]").val() || "--";
                     let email = $("input[name=\"email_" + i + "\"]").val() || "--";
                     let phoneCode = $("select[name=\"phone_code_" + i + "\"]").val() || "";
                     let phoneNumber = $("input[name=\"phone_number_" + i + "\"]").val() || "";
@@ -1035,7 +1063,6 @@ class Visa_Wizard_V2_5 {
                     travelersHtml += "<div style=\"margin-top:12px; padding-top:12px; border-top:1px solid #eee; font-size:13px; line-height:1.6;\">";
                     travelersHtml += "<strong style=\"color:#222;\">Traveler " + i + ":</strong><br>";
                     travelersHtml += "Contact Name: " + contactName + "<br>";
-                    travelersHtml += "Full Name: " + fullName + "<br>";
                     travelersHtml += "Email: " + email + "<br>";
                     travelersHtml += "Phone: " + phone + "<br>";
                     travelersHtml += "Passport: " + (passportUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--") + "<br>";
@@ -1089,6 +1116,8 @@ class Visa_Wizard_V2_5 {
         $variations = $product->get_available_variations();
         $matched_vid = 0;
         $price_html = '';
+        $raw_price = 0;
+        $currency = get_woocommerce_currency_symbol();
 
         foreach ($variations as $variation) {
             $is_match = true;
@@ -1105,12 +1134,22 @@ class Visa_Wizard_V2_5 {
             if ($is_match) {
                 $matched_vid = $variation['variation_id'];
                 $price_html = $variation['price_html'];
+                // Lấy giá số từ variation
+                $variation_obj = wc_get_product($matched_vid);
+                if ($variation_obj) {
+                    $raw_price = floatval($variation_obj->get_price());
+                }
                 break;
             }
         }
 
         if ($matched_vid) {
-            wp_send_json_success(['variation_id' => $matched_vid, 'price_html' => $price_html]);
+            wp_send_json_success([
+                'variation_id' => $matched_vid, 
+                'price_html' => $price_html,
+                'raw_price' => $raw_price,
+                'currency' => $currency
+            ]);
         } else {
             wp_send_json_error(['message' => 'No price found. Please check attributes.']);
         }
@@ -1143,7 +1182,6 @@ class Visa_Wizard_V2_5 {
             
             $travelers_data[] = [
                 'contact_name' => isset($form['contact_name_' . $i]) ? $form['contact_name_' . $i] : '',
-                'fullname' => isset($form['fullname_' . $i]) ? $form['fullname_' . $i] : '',
                 'email' => isset($form['email_' . $i]) ? $form['email_' . $i] : '',
                 'phone' => $full_phone,
                 'phone_code' => $phone_code,
@@ -1161,7 +1199,7 @@ class Visa_Wizard_V2_5 {
                 'arrival' => isset($form['arrival_date']) ? $form['arrival_date'] : '',
                 'number_of_travelers' => $num_travelers,
                 'travelers' => $travelers_data,
-                'fullname' => $first_traveler['fullname'],
+                'contact_name' => $first_traveler['contact_name'],
                 'email' => $first_traveler['email'],
                 'phone' => $first_traveler['phone'],
                 'phone_code' => $first_traveler['phone_code'],
@@ -1173,9 +1211,10 @@ class Visa_Wizard_V2_5 {
             wp_send_json_error(['message' => 'Missing Price/Variation ID. Please re-select options.']);
         }
 
-        if(WC()->cart->add_to_cart( $form['product_id'], 1, $form['variation_id'], [], $custom_data )) {
+        // Thêm vào cart với số lượng = số người
+        if(WC()->cart->add_to_cart( $form['product_id'], $num_travelers, $form['variation_id'], [], $custom_data )) {
             $c = WC()->customer;
-            $c->set_billing_first_name($first_traveler['fullname']);
+            $c->set_billing_first_name($first_traveler['contact_name']);
             $c->set_billing_email($first_traveler['email']);
             $c->set_billing_phone($first_traveler['phone']);
             $c->set_billing_country('VN');
@@ -1399,7 +1438,6 @@ class Visa_Wizard_V2_5 {
                 foreach($d['travelers'] as $idx => $traveler) {
                     $num = $idx + 1;
                     $item->add_meta_data("Traveler {$num} - Contact Name", $traveler['contact_name'] ?? '');
-                    $item->add_meta_data("Traveler {$num} - Full Name", $traveler['fullname'] ?? '');
                     $item->add_meta_data("Traveler {$num} - Email", $traveler['email'] ?? '');
                     $item->add_meta_data("Traveler {$num} - Phone", $traveler['phone'] ?? '');
                     $item->add_meta_data("Traveler {$num} - Passport Link", $traveler['passport'] ?? '');
