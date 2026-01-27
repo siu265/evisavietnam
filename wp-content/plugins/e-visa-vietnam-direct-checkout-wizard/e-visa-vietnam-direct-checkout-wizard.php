@@ -44,7 +44,11 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'save_order_meta' ), 10, 4 );
         add_action( 'template_redirect', array( $this, 'redirect_cart_page' ) );
-        add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 99, 1 );
+        // Tạm thời disable để test - nếu vẫn trắng thì không phải do hook này
+        // add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 99, 1 );
+        
+        // Thay vào đó clear session khi order được tạo (an toàn hơn)
+        add_action( 'woocommerce_checkout_order_processed', array( $this, 'clear_visa_session_after_order' ), 999, 1 );
         
         // Đảm bảo WooCommerce trả về JSON khi submit từ AJAX
         add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'fix_checkout_endpoint' ), 10, 2 );
@@ -305,7 +309,7 @@ class Visa_Wizard_V2_5 {
             </div>
             <div class="form-inner">
                 <div class="visa-sticky-header">
-                    <div class="visa-step-info">Step <span id="current_step_num">1</span> of 7</div>
+                    <div class="visa-step-info">Step <span id="current_step_num">1</span> of 8</div>
                     <div class="visa-total-price" id="header_price_display">--</div>
                 </div>
                 <div id="global_error" class="error-message">Please fill in all required fields.</div>
@@ -1437,40 +1441,38 @@ class Visa_Wizard_V2_5 {
         $this->visa_log( 'Session cleared: visa_draft_data, checkout, order_awaiting_payment, cart emptied' );
     }
 
-    /** Hook: clear session khi xem trang order-received (đảm bảo clear dù checkout xử lý bởi WC hay plugin) */
-    public function clear_visa_session_on_thankyou( $order_id ) {
-        // Chỉ chạy khi đang ở trang order-received và có order_id hợp lệ
-        if ( ! $order_id || ! is_wc_endpoint_url( 'order-received' ) ) {
+    /** Clear session sau khi order được tạo thành công (an toàn, không ảnh hưởng trang thankyou) */
+    public function clear_visa_session_after_order( $order_id ) {
+        if ( ! $order_id || ! is_numeric( $order_id ) ) {
             return;
         }
         
         try {
-            // Kiểm tra WooCommerce và session có tồn tại không
-            if ( ! function_exists( 'WC' ) || ! WC() ) {
+            if ( ! function_exists( 'WC' ) ) {
                 return;
             }
             
-            if ( ! WC()->session ) {
+            $wc = WC();
+            if ( ! $wc || ! isset( $wc->session ) || ! $wc->session ) {
                 return;
             }
             
-            // Clear session data một cách an toàn - không output gì cả
-            if ( method_exists( WC()->session, '__unset' ) ) {
-                @WC()->session->__unset( 'visa_draft_data' );
-                @WC()->session->__unset( 'checkout' );
-                @WC()->session->__unset( 'order_awaiting_payment' );
+            $session = $wc->session;
+            if ( is_object( $session ) && method_exists( $session, '__unset' ) ) {
+                $session->__unset( 'visa_draft_data' );
+                $session->__unset( 'checkout' );
+                $session->__unset( 'order_awaiting_payment' );
             }
-        } catch ( Exception $e ) {
-            // Log lỗi nhưng không throw để không làm crash trang
-            if ( function_exists( 'error_log' ) ) {
-                @error_log( 'Visa plugin error in clear_visa_session_on_thankyou: ' . $e->getMessage() );
-            }
-        } catch ( Error $e ) {
-            // Bắt cả Error (PHP 7+) và Exception
-            if ( function_exists( 'error_log' ) ) {
-                @error_log( 'Visa plugin fatal error in clear_visa_session_on_thankyou: ' . $e->getMessage() );
-            }
+        } catch ( Throwable $e ) {
+            // Silent fail
+            return;
         }
+    }
+    
+    /** Hook: clear session khi xem trang order-received (đã disable để tránh lỗi trang trắng) */
+    public function clear_visa_session_on_thankyou( $order_id ) {
+        // Đã disable - không dùng nữa
+        return;
     }
 
     public function save_order_meta($item, $key, $values, $order) {
