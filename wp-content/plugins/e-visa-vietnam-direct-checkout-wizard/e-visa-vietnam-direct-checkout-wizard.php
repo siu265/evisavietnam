@@ -44,11 +44,7 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'save_order_meta' ), 10, 4 );
         add_action( 'template_redirect', array( $this, 'redirect_cart_page' ) );
-        // Tạm thời disable để test - nếu vẫn trắng thì không phải do hook này
-        // add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 99, 1 );
-        
-        // Thay vào đó clear session khi order được tạo (an toàn hơn)
-        add_action( 'woocommerce_checkout_order_processed', array( $this, 'clear_visa_session_after_order' ), 999, 1 );
+        add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 5, 1 );
         
         // Đảm bảo WooCommerce trả về JSON khi submit từ AJAX
         add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'fix_checkout_endpoint' ), 10, 2 );
@@ -441,8 +437,8 @@ class Visa_Wizard_V2_5 {
                 <!-- Step 8 ĐẶT NGOÀI form để tránh form lồng form (checkout form có thẻ <form> riêng) -->
                 <div class="step-content" data-step="8">
                     <div class="visa-step-inner">
-                        <h3 class="step-title"><span class="visa-step-badge">8</span>Review</h3>
-                        <p class="visa-step-desc">Review your application details and proceed to secure payment to finalize.</p>
+                        <h3 class="step-title"><span class="visa-step-badge">8</span>Review & Payment</h3>
+                        <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
                         
                         <div class="review-box" id="review_summary">
                             <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
@@ -578,6 +574,9 @@ class Visa_Wizard_V2_5 {
                     html += '<input type="text" name="contact_name_' + i + '" class="form-control required-field" placeholder="Contact Name" value="">';
                     html += '</div>';
                     html += '<div class="form-group">';
+                    html += '<input type="text" name="fullname_' + i + '" class="form-control required-field" placeholder="Full name" value="">';
+                    html += '</div>';
+                    html += '<div class="form-group">';
                     html += '<input type="email" name="email_' + i + '" class="form-control required-field" placeholder="Email address" value="">';
                     html += '</div>';
                     html += '<div class="form-group phone-group">';
@@ -625,31 +624,9 @@ class Visa_Wizard_V2_5 {
                 return true;
             }
 
-            // Terms checkbox với scroll box - phân tách rõ từng mục
-            var termsContent = <?php echo json_encode( wpautop( get_option('visa_terms_content', '') ) ); ?>;
-            var privacyContent = <?php echo json_encode( wpautop( get_option('visa_privacy_content', '') ) ); ?>;
-            var refundContent = <?php echo json_encode( wpautop( get_option('visa_refund_content', '') ) ); ?>;
-            
-            var scrollBoxHtml = '';
-            if(termsContent && termsContent.trim()) {
-                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:24px; padding-bottom:20px; border-bottom:2px solid #ddd;">';
-                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Terms of Service</h4>';
-                scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + termsContent + '</div>';
-                scrollBoxHtml += '</div>';
-            }
-            if(privacyContent && privacyContent.trim()) {
-                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:24px; padding-bottom:20px; border-bottom:2px solid #ddd;">';
-                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Privacy Policy</h4>';
-                scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + privacyContent + '</div>';
-                scrollBoxHtml += '</div>';
-            }
-            if(refundContent && refundContent.trim()) {
-                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">';
-                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Refund Policy</h4>';
-                scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + refundContent + '</div>';
-                scrollBoxHtml += '</div>';
-            }
-            $("#terms_content_display").html(scrollBoxHtml);
+            // Terms checkbox với scroll box
+            var termsContent = <?php echo json_encode( wpautop( get_option('visa_terms_content', '') ) . wpautop( get_option('visa_privacy_content', '') ) . wpautop( get_option('visa_refund_content', '') ) ); ?>;
+            $("#terms_content_display").html(termsContent);
             
             // Replace text với links từ visa-terms-label
             var termsText = $("#terms_checkbox_text").html();
@@ -1079,6 +1056,7 @@ class Visa_Wizard_V2_5 {
                 let travelersHtml = "";
                 for(var i = 1; i <= numTravelers; i++) {
                     let contactName = $("input[name=\"contact_name_" + i + "\"]").val() || "--";
+                    let fullName = $("input[name=\"fullname_" + i + "\"]").val() || "--";
                     let email = $("input[name=\"email_" + i + "\"]").val() || "--";
                     let phoneCode = $("select[name=\"phone_code_" + i + "\"]").val() || "";
                     let phoneNumber = $("input[name=\"phone_number_" + i + "\"]").val() || "";
@@ -1089,6 +1067,7 @@ class Visa_Wizard_V2_5 {
                     travelersHtml += "<div style=\"margin-top:12px; padding-top:12px; border-top:1px solid #eee; font-size:13px; line-height:1.6;\">";
                     travelersHtml += "<strong style=\"color:#222;\">Traveler " + i + ":</strong><br>";
                     travelersHtml += "Contact Name: " + contactName + "<br>";
+                    travelersHtml += "Full Name: " + fullName + "<br>";
                     travelersHtml += "Email: " + email + "<br>";
                     travelersHtml += "Phone: " + phone + "<br>";
                     travelersHtml += "Passport: " + (passportUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--") + "<br>";
@@ -1208,6 +1187,7 @@ class Visa_Wizard_V2_5 {
             
             $travelers_data[] = [
                 'contact_name' => isset($form['contact_name_' . $i]) ? $form['contact_name_' . $i] : '',
+                'fullname' => isset($form['fullname_' . $i]) ? $form['fullname_' . $i] : '',
                 'email' => isset($form['email_' . $i]) ? $form['email_' . $i] : '',
                 'phone' => $full_phone,
                 'phone_code' => $phone_code,
@@ -1225,7 +1205,7 @@ class Visa_Wizard_V2_5 {
                 'arrival' => isset($form['arrival_date']) ? $form['arrival_date'] : '',
                 'number_of_travelers' => $num_travelers,
                 'travelers' => $travelers_data,
-                'contact_name' => $first_traveler['contact_name'],
+                'fullname' => $first_traveler['fullname'],
                 'email' => $first_traveler['email'],
                 'phone' => $first_traveler['phone'],
                 'phone_code' => $first_traveler['phone_code'],
@@ -1240,7 +1220,7 @@ class Visa_Wizard_V2_5 {
         // Thêm vào cart với số lượng = số người
         if(WC()->cart->add_to_cart( $form['product_id'], $num_travelers, $form['variation_id'], [], $custom_data )) {
             $c = WC()->customer;
-            $c->set_billing_first_name($first_traveler['contact_name']);
+            $c->set_billing_first_name($first_traveler['fullname']);
             $c->set_billing_email($first_traveler['email']);
             $c->set_billing_phone($first_traveler['phone']);
             $c->set_billing_country('VN');
@@ -1441,68 +1421,40 @@ class Visa_Wizard_V2_5 {
         $this->visa_log( 'Session cleared: visa_draft_data, checkout, order_awaiting_payment, cart emptied' );
     }
 
-    /** Clear session sau khi order được tạo thành công (an toàn, không ảnh hưởng trang thankyou) */
-    public function clear_visa_session_after_order( $order_id ) {
-        if ( ! $order_id || ! is_numeric( $order_id ) ) {
-            return;
-        }
-        
-        try {
-            if ( ! function_exists( 'WC' ) ) {
-                return;
-            }
-            
-            $wc = WC();
-            if ( ! $wc || ! isset( $wc->session ) || ! $wc->session ) {
-                return;
-            }
-            
-            $session = $wc->session;
-            if ( is_object( $session ) && method_exists( $session, '__unset' ) ) {
-                $session->__unset( 'visa_draft_data' );
-                $session->__unset( 'checkout' );
-                $session->__unset( 'order_awaiting_payment' );
-            }
-        } catch ( Throwable $e ) {
-            // Silent fail
-            return;
-        }
-    }
-    
-    /** Hook: clear session khi xem trang order-received (đã disable để tránh lỗi trang trắng) */
+    /** Hook: clear session khi xem trang order-received (đảm bảo clear dù checkout xử lý bởi WC hay plugin) */
     public function clear_visa_session_on_thankyou( $order_id ) {
-        // Đã disable - không dùng nữa
-        return;
+        if ( ! $order_id || ! WC()->session ) {
+            return;
+        }
+        WC()->session->__unset( 'visa_draft_data' );
+        WC()->session->__unset( 'checkout' );
+        WC()->session->__unset( 'order_awaiting_payment' );
     }
 
     public function save_order_meta($item, $key, $values, $order) {
-        try {
-            if(isset($values['visa_full_info'])) {
-                $d = $values['visa_full_info'];
-                $item->add_meta_data('Nationality', $d['nationality'] ?? '');
-                $item->add_meta_data('Arrival Date', $d['arrival'] ?? '');
-                
-                // Lưu thông tin nhiều người
-                if(isset($d['travelers']) && is_array($d['travelers'])) {
-                    $num_travelers = count($d['travelers']);
-                    $item->add_meta_data('Number of Travelers', $num_travelers);
-                    foreach($d['travelers'] as $idx => $traveler) {
-                        $num = $idx + 1;
-                        $item->add_meta_data("Traveler {$num} - Contact Name", $traveler['contact_name'] ?? '');
-                        $item->add_meta_data("Traveler {$num} - Email", $traveler['email'] ?? '');
-                        $item->add_meta_data("Traveler {$num} - Phone", $traveler['phone'] ?? '');
-                        $item->add_meta_data("Traveler {$num} - Passport Link", $traveler['passport'] ?? '');
-                        $item->add_meta_data("Traveler {$num} - Photo Link", $traveler['photo'] ?? '');
-                    }
-                } else {
-                    // Fallback cho single traveler (backward compatibility)
-                    $item->add_meta_data('Passport Link', $d['passport'] ?? '');
-                    $item->add_meta_data('Photo Link', $d['photo'] ?? '');
+        if(isset($values['visa_full_info'])) {
+            $d = $values['visa_full_info'];
+            $item->add_meta_data('Nationality', $d['nationality'] ?? '');
+            $item->add_meta_data('Arrival Date', $d['arrival'] ?? '');
+            
+            // Lưu thông tin nhiều người
+            if(isset($d['travelers']) && is_array($d['travelers'])) {
+                $num_travelers = count($d['travelers']);
+                $item->add_meta_data('Number of Travelers', $num_travelers);
+                foreach($d['travelers'] as $idx => $traveler) {
+                    $num = $idx + 1;
+                    $item->add_meta_data("Traveler {$num} - Contact Name", $traveler['contact_name'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Full Name", $traveler['fullname'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Email", $traveler['email'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Phone", $traveler['phone'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Passport Link", $traveler['passport'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Photo Link", $traveler['photo'] ?? '');
                 }
+            } else {
+                // Fallback cho single traveler (backward compatibility)
+                $item->add_meta_data('Passport Link', $d['passport'] ?? '');
+                $item->add_meta_data('Photo Link', $d['photo'] ?? '');
             }
-        } catch ( Exception $e ) {
-            $this->visa_log( 'Error in save_order_meta: ' . $e->getMessage() );
-            error_log( 'Visa plugin error in save_order_meta: ' . $e->getMessage() );
         }
     }
 
