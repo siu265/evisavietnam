@@ -44,7 +44,7 @@ class Visa_Wizard_V2_5 {
         
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'save_order_meta' ), 10, 4 );
         add_action( 'template_redirect', array( $this, 'redirect_cart_page' ) );
-        add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 5, 1 );
+        add_action( 'woocommerce_thankyou', array( $this, 'clear_visa_session_on_thankyou' ), 99, 1 );
         
         // Đảm bảo WooCommerce trả về JSON khi submit từ AJAX
         add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'fix_checkout_endpoint' ), 10, 2 );
@@ -621,9 +621,31 @@ class Visa_Wizard_V2_5 {
                 return true;
             }
 
-            // Terms checkbox với scroll box
-            var termsContent = <?php echo json_encode( wpautop( get_option('visa_terms_content', '') ) . wpautop( get_option('visa_privacy_content', '') ) . wpautop( get_option('visa_refund_content', '') ) ); ?>;
-            $("#terms_content_display").html(termsContent);
+            // Terms checkbox với scroll box - phân tách rõ từng mục
+            var termsContent = <?php echo json_encode( wpautop( get_option('visa_terms_content', '') ) ); ?>;
+            var privacyContent = <?php echo json_encode( wpautop( get_option('visa_privacy_content', '') ) ); ?>;
+            var refundContent = <?php echo json_encode( wpautop( get_option('visa_refund_content', '') ) ); ?>;
+            
+            var scrollBoxHtml = '';
+            if(termsContent && termsContent.trim()) {
+                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:24px; padding-bottom:20px; border-bottom:2px solid #ddd;">';
+                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Terms of Service</h4>';
+                scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + termsContent + '</div>';
+                scrollBoxHtml += '</div>';
+            }
+            if(privacyContent && privacyContent.trim()) {
+                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:24px; padding-bottom:20px; border-bottom:2px solid #ddd;">';
+                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Privacy Policy</h4>';
+                scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + privacyContent + '</div>';
+                scrollBoxHtml += '</div>';
+            }
+            if(refundContent && refundContent.trim()) {
+                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">';
+                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Refund Policy</h4>';
+                scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + refundContent + '</div>';
+                scrollBoxHtml += '</div>';
+            }
+            $("#terms_content_display").html(scrollBoxHtml);
             
             // Replace text với links từ visa-terms-label
             var termsText = $("#terms_checkbox_text").html();
@@ -1417,37 +1439,68 @@ class Visa_Wizard_V2_5 {
 
     /** Hook: clear session khi xem trang order-received (đảm bảo clear dù checkout xử lý bởi WC hay plugin) */
     public function clear_visa_session_on_thankyou( $order_id ) {
-        if ( ! $order_id || ! WC()->session ) {
+        // Chỉ chạy khi đang ở trang order-received và có order_id hợp lệ
+        if ( ! $order_id || ! is_wc_endpoint_url( 'order-received' ) ) {
             return;
         }
-        WC()->session->__unset( 'visa_draft_data' );
-        WC()->session->__unset( 'checkout' );
-        WC()->session->__unset( 'order_awaiting_payment' );
+        
+        try {
+            // Kiểm tra WooCommerce và session có tồn tại không
+            if ( ! function_exists( 'WC' ) || ! WC() ) {
+                return;
+            }
+            
+            if ( ! WC()->session ) {
+                return;
+            }
+            
+            // Clear session data một cách an toàn - không output gì cả
+            if ( method_exists( WC()->session, '__unset' ) ) {
+                @WC()->session->__unset( 'visa_draft_data' );
+                @WC()->session->__unset( 'checkout' );
+                @WC()->session->__unset( 'order_awaiting_payment' );
+            }
+        } catch ( Exception $e ) {
+            // Log lỗi nhưng không throw để không làm crash trang
+            if ( function_exists( 'error_log' ) ) {
+                @error_log( 'Visa plugin error in clear_visa_session_on_thankyou: ' . $e->getMessage() );
+            }
+        } catch ( Error $e ) {
+            // Bắt cả Error (PHP 7+) và Exception
+            if ( function_exists( 'error_log' ) ) {
+                @error_log( 'Visa plugin fatal error in clear_visa_session_on_thankyou: ' . $e->getMessage() );
+            }
+        }
     }
 
     public function save_order_meta($item, $key, $values, $order) {
-        if(isset($values['visa_full_info'])) {
-            $d = $values['visa_full_info'];
-            $item->add_meta_data('Nationality', $d['nationality'] ?? '');
-            $item->add_meta_data('Arrival Date', $d['arrival'] ?? '');
-            
-            // Lưu thông tin nhiều người
-            if(isset($d['travelers']) && is_array($d['travelers'])) {
-                $num_travelers = count($d['travelers']);
-                $item->add_meta_data('Number of Travelers', $num_travelers);
-                foreach($d['travelers'] as $idx => $traveler) {
-                    $num = $idx + 1;
-                    $item->add_meta_data("Traveler {$num} - Contact Name", $traveler['contact_name'] ?? '');
-                    $item->add_meta_data("Traveler {$num} - Email", $traveler['email'] ?? '');
-                    $item->add_meta_data("Traveler {$num} - Phone", $traveler['phone'] ?? '');
-                    $item->add_meta_data("Traveler {$num} - Passport Link", $traveler['passport'] ?? '');
-                    $item->add_meta_data("Traveler {$num} - Photo Link", $traveler['photo'] ?? '');
+        try {
+            if(isset($values['visa_full_info'])) {
+                $d = $values['visa_full_info'];
+                $item->add_meta_data('Nationality', $d['nationality'] ?? '');
+                $item->add_meta_data('Arrival Date', $d['arrival'] ?? '');
+                
+                // Lưu thông tin nhiều người
+                if(isset($d['travelers']) && is_array($d['travelers'])) {
+                    $num_travelers = count($d['travelers']);
+                    $item->add_meta_data('Number of Travelers', $num_travelers);
+                    foreach($d['travelers'] as $idx => $traveler) {
+                        $num = $idx + 1;
+                        $item->add_meta_data("Traveler {$num} - Contact Name", $traveler['contact_name'] ?? '');
+                        $item->add_meta_data("Traveler {$num} - Email", $traveler['email'] ?? '');
+                        $item->add_meta_data("Traveler {$num} - Phone", $traveler['phone'] ?? '');
+                        $item->add_meta_data("Traveler {$num} - Passport Link", $traveler['passport'] ?? '');
+                        $item->add_meta_data("Traveler {$num} - Photo Link", $traveler['photo'] ?? '');
+                    }
+                } else {
+                    // Fallback cho single traveler (backward compatibility)
+                    $item->add_meta_data('Passport Link', $d['passport'] ?? '');
+                    $item->add_meta_data('Photo Link', $d['photo'] ?? '');
                 }
-            } else {
-                // Fallback cho single traveler (backward compatibility)
-                $item->add_meta_data('Passport Link', $d['passport'] ?? '');
-                $item->add_meta_data('Photo Link', $d['photo'] ?? '');
             }
+        } catch ( Exception $e ) {
+            $this->visa_log( 'Error in save_order_meta: ' . $e->getMessage() );
+            error_log( 'Visa plugin error in save_order_meta: ' . $e->getMessage() );
         }
     }
 
