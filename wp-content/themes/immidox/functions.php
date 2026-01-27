@@ -413,14 +413,3 @@ if( immigro_set($options, 'boxed_wrapper') ){
 		return $classes;
 	} );
 }
-
-
-add_action( 'woocommerce_thankyou', function() {
-    die('Kết nối trang Thankyou thành công!');
-}, 1 );
-
-add_action( 'init', function() {
-    if ( is_order_received_page() ) {
-        die('Hook tại Init đã chạy');
-    }
-}, 1 );
