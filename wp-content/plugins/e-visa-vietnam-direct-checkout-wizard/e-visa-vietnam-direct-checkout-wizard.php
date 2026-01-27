@@ -80,9 +80,14 @@ class Visa_Wizard_V2_5 {
         register_setting( 'visa_group', 'visa_work_days' );
         register_setting( 'visa_group', 'visa_work_start' );
         register_setting( 'visa_group', 'visa_work_end' );
+        register_setting( 'visa_group', 'visa_schedule_note' );
+        register_setting( 'visa_group', 'visa_pricing_notes' );
+        register_setting( 'visa_group', 'visa_date_from' );
+        register_setting( 'visa_group', 'visa_date_to' );
         register_setting( 'visa_group', 'visa_terms_content' );
         register_setting( 'visa_group', 'visa_privacy_content' );
         register_setting( 'visa_group', 'visa_refund_content' );
+        register_setting( 'visa_group', 'visa_terms_checkbox_text' );
     }
 
     public function admin_styles() {
@@ -104,6 +109,11 @@ class Visa_Wizard_V2_5 {
                 $days = get_option('visa_work_days', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
                 $start = get_option('visa_work_start', '08:30');
                 $end = get_option('visa_work_end', '16:30');
+                $schedule_note = get_option('visa_schedule_note', 'Show info: Processing time counts from the time the application is confirmed, not submitted, during working hours from {time_from} to {time_to} Vietnam Local Time from {date_from} to {date_to}, except Public Holidays');
+                $pricing_notes = get_option('visa_pricing_notes', '');
+                $date_from = get_option('visa_date_from', '');
+                $date_to = get_option('visa_date_to', '');
+                $terms_checkbox_text = get_option('visa_terms_checkbox_text', 'Click to agree: By submitting payment, I acknowledge that I have read and accept the EVISAS VIETNAM Terms of Service, Privacy Policy, and Refund Policy.');
                 $current_list = get_option( 'visa_nationalities_list', '' );
                 if ( empty( $current_list ) ) $current_list = "Japan\nSouth Korea\nAustralia\nUnited States\nCanada\nChina\nTaiwan\nFrance\nGermany\nNew Zealand";
                 ?>
@@ -113,13 +123,23 @@ class Visa_Wizard_V2_5 {
                         <table class="form-table">
                             <tr><th>Days</th><td><?php $all_days = ['Mon'=>'Mon','Tue'=>'Tue','Wed'=>'Wed','Thu'=>'Thu','Fri'=>'Fri','Sat'=>'Sat','Sun'=>'Sun']; foreach($all_days as $key => $label): ?><label style="margin-right:15px;"><input type="checkbox" name="visa_work_days[]" value="<?php echo $key; ?>" <?php if(in_array($key,(array)$days)) echo 'checked'; ?>> <?php echo $label; ?></label><?php endforeach; ?></td></tr>
                             <tr><th>Hours</th><td><input type="time" name="visa_work_start" value="<?php echo esc_attr($start); ?>"> to <input type="time" name="visa_work_end" value="<?php echo esc_attr($end); ?>"></td></tr>
+                            <tr><th>Date From</th><td><input type="date" name="visa_date_from" value="<?php echo esc_attr($date_from); ?>" class="regular-text"></td></tr>
+                            <tr><th>Date To</th><td><input type="date" name="visa_date_to" value="<?php echo esc_attr($date_to); ?>" class="regular-text"></td></tr>
+                            <tr><th>Schedule Note</th><td><textarea name="visa_schedule_note" rows="3" class="large-text code"><?php echo esc_textarea($schedule_note); ?></textarea><p class="description">Use placeholders: {time_from}, {time_to}, {date_from}, {date_to}</p></td></tr>
+                        </table>
+                    </div>
+                    <div class="visa-card">
+                        <h2>Pricing Notes</h2>
+                        <table class="form-table">
+                            <tr><th>Pricing Notes</th><td><textarea name="visa_pricing_notes" rows="5" class="large-text"><?php echo esc_textarea($pricing_notes); ?></textarea></td></tr>
                         </table>
                     </div>
                     <div class="visa-card">
                         <h2>Policies</h2>
                         <div style="margin-bottom:20px;"><label>Terms</label><?php wp_editor( get_option('visa_terms_content'), 'visa_terms_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                         <div style="margin-bottom:20px;"><label>Privacy</label><?php wp_editor( get_option('visa_privacy_content'), 'visa_privacy_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
-                        <div><label>Refund</label><?php wp_editor( get_option('visa_refund_content'), 'visa_refund_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
+                        <div style="margin-bottom:20px;"><label>Refund</label><?php wp_editor( get_option('visa_refund_content'), 'visa_refund_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
+                        <div><label>Terms Checkbox Text</label><textarea name="visa_terms_checkbox_text" rows="2" class="large-text"><?php echo esc_textarea($terms_checkbox_text); ?></textarea></div>
                     </div>
                 </div>
                 <div class="visa-tab-panel" id="tab-nationality" style="<?php echo $active_tab !== 'nationality' ? 'display:none;' : ''; ?>">
@@ -261,6 +281,18 @@ class Visa_Wizard_V2_5 {
         $work_start = get_option('visa_work_start', '08:30');
         $work_end = get_option('visa_work_end', '16:30');
         $work_days_str = (count($work_days) == 5 && in_array('Mon',$work_days) && in_array('Fri',$work_days)) ? "Mon-Fri" : implode(', ', (array)$work_days);
+        $schedule_note = get_option('visa_schedule_note', 'Show info: Processing time counts from the time the application is confirmed, not submitted, during working hours from {time_from} to {time_to} Vietnam Local Time from {date_from} to {date_to}, except Public Holidays');
+        $pricing_notes = get_option('visa_pricing_notes', '');
+        $date_from = get_option('visa_date_from', '');
+        $date_to = get_option('visa_date_to', '');
+        $terms_checkbox_text = get_option('visa_terms_checkbox_text', 'Click to agree: By submitting payment, I acknowledge that I have read and accept the EVISAS VIETNAM Terms of Service, Privacy Policy, and Refund Policy.');
+        
+        // Replace placeholders in schedule_note
+        $schedule_note_display = str_replace(
+            array('{time_from}', '{time_to}', '{date_from}', '{date_to}'),
+            array($work_start, $work_end, $date_from ? date('d/m/Y', strtotime($date_from)) : '', $date_to ? date('d/m/Y', strtotime($date_to)) : ''),
+            $schedule_note
+        );
 
         $phone_codes = $this->get_all_phone_codes();
         
@@ -336,7 +368,12 @@ class Visa_Wizard_V2_5 {
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <p class="visa-step-note">Working hours: <?php echo esc_html( $work_start . ' – ' . $work_end . ' (' . $work_days_str . ')' ); ?></p>
+                            <?php if ( ! empty( $schedule_note_display ) ): ?>
+                                <p class="visa-step-note"><?php echo esc_html( $schedule_note_display ); ?></p>
+                            <?php endif; ?>
+                            <?php if ( ! empty( $pricing_notes ) ): ?>
+                                <p class="visa-step-note"><?php echo wp_kses_post( nl2br( $pricing_notes ) ); ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -352,56 +389,39 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="5">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">5</span>Upload Documents</h3>
-                            <p class="visa-step-desc">Upload clear photos of your passport data page and a recent portrait.</p>
-                            <div class="visa-upload-grid">
-                                <div class="form-group">
-                                    <div class="file-upload-wrapper">
-                                        <input type="file" id="file_passport" accept="image/*" class="form-control">
-                                        <input type="hidden" name="passport_url" id="passport_url" class="required-field" value="<?php echo esc_attr($prefill['passport_url'] ?? ''); ?>">
-                                    </div>
-                                    <div id="stat_passport" class="upload-status"></div>
-                                    <div class="upload-preview-box" id="prev_passport"><?php if(!empty($prefill['passport_url'])) echo '<img src="'.$prefill['passport_url'].'">'; ?></div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="file-upload-wrapper">
-                                        <input type="file" id="file_photo" accept="image/*" class="form-control">
-                                        <input type="hidden" name="photo_url" id="photo_url" class="required-field" value="<?php echo esc_attr($prefill['photo_url'] ?? ''); ?>">
-                                    </div>
-                                    <div id="stat_photo" class="upload-status"></div>
-                                    <div class="upload-preview-box" id="prev_photo"><?php if(!empty($prefill['photo_url'])) echo '<img src="'.$prefill['photo_url'].'">'; ?></div>
-                                </div>
+                            <h3 class="step-title"><span class="visa-step-badge">5</span>Number of Travelers</h3>
+                            <p class="visa-step-desc">Enter the number of travelers for this visa application.</p>
+                            <div class="form-group">
+                                <input type="number" name="number_of_travelers" id="number_of_travelers" class="form-control required-field" min="1" max="10" value="<?php echo esc_attr($prefill['number_of_travelers'] ?? '1'); ?>" placeholder="Number of travelers (1-10)">
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="6">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">6</span>Contact Information</h3>
-                            <p class="visa-step-desc">Provide your full name, email, and phone number for application updates.</p>
-                            <div class="form-group">
-                                <input type="text" name="fullname" class="form-control required-field" placeholder="Full name" value="<?php echo esc_attr($prefill['fullname'] ?? ''); ?>">
+                            <h3 class="step-title"><span class="visa-step-badge">6</span>Upload Documents</h3>
+                            <p class="visa-step-desc">Upload clear photos of your passport data page and a recent portrait for each traveler.</p>
+                            <div id="travelers_upload_container">
+                                <!-- Upload fields sẽ được generate động bằng JavaScript dựa trên số người -->
                             </div>
-                            <div class="form-group">
-                                <input type="email" name="email" class="form-control required-field" placeholder="Email address" value="<?php echo esc_attr($prefill['email'] ?? ''); ?>">
-                            </div>
-                            <div class="form-group phone-group">
-                                <div class="phone-code-wrap">
-                                    <select name="phone_code" class="form-control select2-enable">
-                                        <?php foreach($phone_codes as $code => $label): ?>
-                                            <option value="<?php echo $code; ?>" <?php selected($prefill['phone_code'] ?? '+84', $code); ?>><?php echo $label; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="phone-number-wrap">
-                                    <input type="tel" name="phone_number" class="form-control required-field" placeholder="Phone number" value="<?php echo esc_attr($prefill['phone_number'] ?? ''); ?>">
-                                </div>
+                        </div>
+                    </div>
+
+                    <div class="step-content" data-step="7">
+                        <div class="visa-step-inner">
+                            <h3 class="step-title"><span class="visa-step-badge">7</span>Contact Information</h3>
+                            <p class="visa-step-desc">Provide contact details for each traveler.</p>
+                            <div id="travelers_contact_container">
+                                <!-- Contact fields sẽ được generate động bằng JavaScript dựa trên số người -->
                             </div>
                             <div class="form-group visa-terms-wrap">
                                 <label class="visa-terms-label">
                                     <input type="checkbox" id="agree_terms" class="required-field">
-                                    <span>I acknowledge that I have read and accept the <span class="visa-link" data-target="modal_terms">Terms of Service</span>, <span class="visa-link" data-target="modal_privacy">Privacy Policy</span>, and <span class="visa-link" data-target="modal_refund">Refund Policy</span>.</span>
+                                    <span id="terms_checkbox_text"><?php echo esc_html( $terms_checkbox_text ); ?></span>
                                 </label>
+                                <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:200px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:4px; background:#f9f9f9;">
+                                    <div id="terms_content_display"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -414,10 +434,10 @@ class Visa_Wizard_V2_5 {
                     </div>
                 </form>
 
-                <!-- Step 7 ĐẶT NGOÀI form để tránh form lồng form (checkout form có thẻ <form> riêng) -->
-                <div class="step-content" data-step="7">
+                <!-- Step 8 ĐẶT NGOÀI form để tránh form lồng form (checkout form có thẻ <form> riêng) -->
+                <div class="step-content" data-step="8">
                     <div class="visa-step-inner">
-                        <h3 class="step-title"><span class="visa-step-badge">7</span>Review & Payment</h3>
+                        <h3 class="step-title"><span class="visa-step-badge">8</span>Review & Payment</h3>
                         <p class="visa-step-desc">Verify your application details and proceed to secure payment to finalize.</p>
                         
                         <div class="review-box" id="review_summary">
@@ -425,11 +445,8 @@ class Visa_Wizard_V2_5 {
                             <div class="review-item"><span>Visa Type:</span> <span class="review-value" id="rev_type">--</span></div>
                             <div class="review-item"><span>Processing Time:</span> <span class="review-value" id="rev_time">--</span></div>
                             <div class="review-item"><span>Arrival Date:</span> <span class="review-value" id="rev_date">--</span></div>
-                            <div class="review-item"><span>Full Name:</span> <span class="review-value" id="rev_name">--</span></div>
-                            <div class="review-item"><span>Email:</span> <span class="review-value" id="rev_email">--</span></div>
-                            <div class="review-item"><span>Phone:</span> <span class="review-value" id="rev_phone">--</span></div>
-                            <div class="review-item"><span>Passport:</span> <span class="review-value" id="rev_passport">--</span></div>
-                            <div class="review-item"><span>Photo:</span> <span class="review-value" id="rev_photo">--</span></div>
+                            <div class="review-item"><span>Number of Travelers:</span> <span class="review-value" id="rev_travelers">--</span></div>
+                            <div class="review-item"><span>Travelers Info:</span> <span class="review-value" id="rev_name" style="text-align:left; display:block; margin-top:8px;"></span></div>
                             <div class="review-item review-total">
                                 <span>Total:</span> <span class="review-value" id="rev_price">--</span>
                             </div>
@@ -445,7 +462,7 @@ class Visa_Wizard_V2_5 {
 
         <script>
         jQuery(document).ready(function($){
-            let currentStep = 1; const totalSteps = 7;
+            let currentStep = 1; const totalSteps = 8;
             $(".select2-enable").each(function(){
                 var ph = $(this).data("placeholder");
                 $(this).select2({ width: "100%", placeholder: ph || "Select..." });
@@ -481,9 +498,157 @@ class Visa_Wizard_V2_5 {
                 if(e.target === this || $(this).hasClass("visa-close")) $(".visa-modal").fadeOut();
             });
 
+            // Generate upload và contact fields dựa trên số người
+            function generateTravelersUpload(num) {
+                num = parseInt(num) || 1;
+                if(num < 1) num = 1;
+                if(num > 10) num = 10;
+                var html = '';
+                for(var i = 1; i <= num; i++) {
+                    html += '<div class="traveler-upload-section" data-traveler="' + i + '">';
+                    html += '<h4 style="margin:20px 0 12px; font-size:16px; color:#222;">Traveler ' + i + '</h4>';
+                    html += '<div class="visa-upload-grid">';
+                    html += '<div class="form-group">';
+                    html += '<label style="display:block; margin-bottom:8px; font-weight:600; color:#555;">Passport</label>';
+                    html += '<div class="file-upload-wrapper">';
+                    html += '<input type="file" id="file_passport_' + i + '" accept="image/*" class="form-control traveler-upload-file" data-traveler="' + i + '" data-type="passport">';
+                    html += '<input type="hidden" name="passport_url_' + i + '" id="passport_url_' + i + '" class="required-field traveler-passport-url">';
+                    html += '</div>';
+                    html += '<div id="stat_passport_' + i + '" class="upload-status"></div>';
+                    html += '<div class="upload-preview-box" id="prev_passport_' + i + '"></div>';
+                    html += '</div>';
+                    html += '<div class="form-group">';
+                    html += '<label style="display:block; margin-bottom:8px; font-weight:600; color:#555;">Photo</label>';
+                    html += '<div class="file-upload-wrapper">';
+                    html += '<input type="file" id="file_photo_' + i + '" accept="image/*" class="form-control traveler-upload-file" data-traveler="' + i + '" data-type="photo">';
+                    html += '<input type="hidden" name="photo_url_' + i + '" id="photo_url_' + i + '" class="required-field traveler-photo-url">';
+                    html += '</div>';
+                    html += '<div id="stat_photo_' + i + '" class="upload-status"></div>';
+                    html += '<div class="upload-preview-box" id="prev_photo_' + i + '"></div>';
+                    html += '</div>';
+                    html += '</div></div>';
+                }
+                $("#travelers_upload_container").html(html);
+                // Bind upload handlers cho tất cả fields mới
+                $(".traveler-upload-file").off("change").on("change", function(){
+                    var traveler = $(this).data("traveler");
+                    var type = $(this).data("type");
+                    var fileInput = this;
+                    var fd = new FormData();
+                    fd.append("file", fileInput.files[0]);
+                    fd.append("action", "visa_upload_file");
+                    var msgId = "#stat_" + type + "_" + traveler;
+                    var hiddenId = "#" + type + "_url_" + traveler;
+                    var prevId = "#prev_" + type + "_" + traveler;
+                    $(msgId).text("Uploading...").css("color","#ffaa17");
+                    $.ajax({
+                        url: "<?php echo admin_url('admin-ajax.php'); ?>",
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        data: fd,
+                        success: function(res){
+                            if(res.success){
+                                $(hiddenId).val(res.data.url);
+                                $(msgId).text("Success").css("color","green");
+                                $(prevId).html("<img src=\""+res.data.url+"\">").fadeIn().show();
+                                $(fileInput).closest(".file-upload-wrapper").find("input[type='file']").css("border-color", "green");
+                            } else {
+                                $(msgId).text("Error").css("color","red");
+                            }
+                        }
+                    });
+                });
+            }
+
+            function generateTravelersContact(num) {
+                num = parseInt(num) || 1;
+                if(num < 1) num = 1;
+                if(num > 10) num = 10;
+                var html = '';
+                var phoneCodes = <?php echo json_encode($phone_codes); ?>;
+                for(var i = 1; i <= num; i++) {
+                    html += '<div class="traveler-contact-section" data-traveler="' + i + '">';
+                    html += '<h4 style="margin:20px 0 12px; font-size:16px; color:#222;">Traveler ' + i + '</h4>';
+                    html += '<div class="form-group">';
+                    html += '<input type="text" name="contact_name_' + i + '" class="form-control required-field" placeholder="Contact Name" value="">';
+                    html += '</div>';
+                    html += '<div class="form-group">';
+                    html += '<input type="text" name="fullname_' + i + '" class="form-control required-field" placeholder="Full name" value="">';
+                    html += '</div>';
+                    html += '<div class="form-group">';
+                    html += '<input type="email" name="email_' + i + '" class="form-control required-field" placeholder="Email address" value="">';
+                    html += '</div>';
+                    html += '<div class="form-group phone-group">';
+                    html += '<div class="phone-code-wrap">';
+                    html += '<select name="phone_code_' + i + '" class="form-control select2-enable traveler-phone-code">';
+                    for(var code in phoneCodes) {
+                        html += '<option value="' + code + '">' + phoneCodes[code] + '</option>';
+                    }
+                    html += '</select>';
+                    html += '</div>';
+                    html += '<div class="phone-number-wrap">';
+                    html += '<input type="tel" name="phone_number_' + i + '" class="form-control required-field traveler-phone-number" placeholder="Phone number" value="">';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                $("#travelers_contact_container").html(html);
+                // Re-init Select2 cho phone codes
+                $(".traveler-phone-code").select2({ width: "100%", placeholder: "Select..." });
+            }
+
+            // Khi số người thay đổi, generate lại fields
+            $(document).on("change", "#number_of_travelers", function(){
+                var num = parseInt($(this).val()) || 1;
+                if(num < 1) {
+                    $(this).val(1);
+                    num = 1;
+                }
+                if(num > 10) {
+                    $(this).val(10);
+                    num = 10;
+                }
+                generateTravelersUpload(num);
+                generateTravelersContact(num);
+            });
+
+            // Validate number of travelers
+            function validateNumberOfTravelers() {
+                var num = parseInt($("#number_of_travelers").val()) || 0;
+                if(num < 1 || num > 10) {
+                    $("#number_of_travelers").addClass("input-error");
+                    return false;
+                }
+                $("#number_of_travelers").removeClass("input-error");
+                return true;
+            }
+
+            // Terms checkbox với scroll box
+            var termsContent = <?php echo json_encode( wpautop( get_option('visa_terms_content', '') ) . wpautop( get_option('visa_privacy_content', '') ) . wpautop( get_option('visa_refund_content', '') ) ); ?>;
+            $("#terms_content_display").html(termsContent);
+            
+            // Replace text với links từ visa-terms-label
+            var termsText = $("#terms_checkbox_text").html();
+            termsText = termsText.replace(/Terms of Service/gi, '<span class="visa-link" data-target="modal_terms">Terms of Service</span>');
+            termsText = termsText.replace(/Privacy Policy/gi, '<span class="visa-link" data-target="modal_privacy">Privacy Policy</span>');
+            termsText = termsText.replace(/Refund Policy/gi, '<span class="visa-link" data-target="modal_refund">Refund Policy</span>');
+            $("#terms_checkbox_text").html(termsText);
+            
+            $(document).on("change", "#agree_terms", function(){
+                if($(this).is(":checked")) {
+                    $("#visa_terms_scroll").slideDown();
+                } else {
+                    $("#visa_terms_scroll").slideUp();
+                }
+            });
+
+            // Khởi tạo với số người mặc định
+            var defaultTravelers = parseInt($("#number_of_travelers").val()) || 1;
+            generateTravelersUpload(defaultTravelers);
+            generateTravelersContact(defaultTravelers);
+
             showStep(1);
-            if($("#passport_url").val()) $("#prev_passport").show();
-            if($("#photo_url").val()) $("#prev_photo").show();
 
             function showStep(step) {
                 $("#global_error").hide();
@@ -686,6 +851,16 @@ class Visa_Wizard_V2_5 {
             function validateStep(step) {
                 let isValid = true;
                 let currentPanel = $(".step-content[data-step=\""+step+"\"]");
+                
+                // Validate step 5: Number of Travelers
+                if(step === 5) {
+                    if(!validateNumberOfTravelers()) {
+                        isValid = false;
+                        $("#global_error").slideDown();
+                        return false;
+                    }
+                }
+                
                 currentPanel.find(".required-field").filter(":input, select").each(function(){
                     // Kiểm tra checkbox
                     if($(this).is(":checkbox")) {
@@ -702,8 +877,8 @@ class Visa_Wizard_V2_5 {
                         isValid = false; $(this).addClass("input-error");
                         if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").addClass("input-error"); }
                     } else { 
-                        // Validate phone number format (step 6 - Contact Information)
-                        if($(this).attr("name") === "phone_number" && step === 6) {
+                        // Validate phone number format (step 7 - Contact Information)
+                        if($(this).hasClass("traveler-phone-number") && step === 7) {
                             if(!validatePhoneNumber($(this).val())) {
                                 isValid = false;
                                 $(this).addClass("input-error");
@@ -735,8 +910,8 @@ class Visa_Wizard_V2_5 {
                 }
             });
 
-            // Phone number validation: chỉ cho phép số
-            $(document).on("input", "input[name='phone_number']", function() {
+            // Phone number validation: chỉ cho phép số (cho tất cả phone number fields)
+            $(document).on("input", "input.traveler-phone-number, input[name='phone_number']", function() {
                 let value = $(this).val();
                 // Chỉ giữ lại số (0-9)
                 let cleaned = value.replace(/[^0-9]/g, '');
@@ -754,8 +929,8 @@ class Visa_Wizard_V2_5 {
             $("#btn_next").click(function(e){ 
                 e.preventDefault(); 
                 if(validateStep(currentStep)) { 
-                    // Nếu đang ở step 6, cần thêm vào cart trước khi chuyển sang step 7
-                    if(currentStep === 6) {
+                    // Nếu đang ở step 7, cần thêm vào cart trước khi chuyển sang step 8
+                    if(currentStep === 7) {
                         // Kiểm tra terms checkbox
                         if(!$("#agree_terms").is(":checked")) { 
                             alert("Please accept terms."); 
@@ -774,7 +949,7 @@ class Visa_Wizard_V2_5 {
                             data: $("#visa_form").serialize() 
                         }, function(res){
                             if(res.success) {
-                                // Thêm vào cart thành công, chuyển sang step 7 và load checkout
+                                // Thêm vào cart thành công, chuyển sang step 8 và load checkout
                                 currentStep++; 
                                 showStep(currentStep);
                                 loadCheckoutForm();
@@ -816,24 +991,7 @@ class Visa_Wizard_V2_5 {
                 }
             });
 
-            function setupUpload(id, hidden_id, msg_id, prev_id) {
-                $(id).change(function(){
-                    let fd = new FormData(); fd.append("file", this.files[0]); fd.append("action", "visa_upload_file");
-                    $(msg_id).text("Uploading...").css("color","#ffaa17");
-                    $.ajax({
-                        url: "<?php echo admin_url('admin-ajax.php'); ?>", type: "POST", contentType: false, processData: false, data: fd,
-                        success: function(res){
-                            if(res.success){
-                                $(hidden_id).val(res.data.url); $(msg_id).text("Success").css("color","green");
-                                $(prev_id).html("<img src=\""+res.data.url+"\">").fadeIn().show();
-                                $(hidden_id).closest(".file-upload-wrapper").find("input").css("border-color", "green");
-                            } else { $(msg_id).text("Error").css("color","red"); }
-                        }
-                    });
-                });
-            }
-            setupUpload("#file_passport", "#passport_url", "#stat_passport", "#prev_passport");
-            setupUpload("#file_photo", "#photo_url", "#stat_photo", "#prev_photo");
+            // Upload handlers đã được bind trong generateTravelersUpload()
 
             function populateReview() {
                 // Nationality
@@ -858,35 +1016,35 @@ class Visa_Wizard_V2_5 {
                 let arrivalDate = $("input[name=\"arrival_date\"]").val() || "--";
                 $("#rev_date").text(arrivalDate);
                 
-                // Full Name
-                let fullName = $("input[name=\"fullname\"]").val() || "--";
-                $("#rev_name").text(fullName);
+                // Number of Travelers
+                let numTravelers = parseInt($("#number_of_travelers").val()) || 1;
+                $("#rev_travelers").text(numTravelers);
                 
-                // Email
-                let email = $("input[name=\"email\"]").val() || "--";
-                $("#rev_email").text(email);
-                
-                // Phone
-                let phoneCode = $("select[name=\"phone_code\"]").val() || "";
-                let phoneNumber = $("input[name=\"phone_number\"]").val() || "";
-                let phone = phoneCode && phoneNumber ? phoneCode + " " + phoneNumber : (phoneNumber || "--");
-                $("#rev_phone").text(phone);
-                
-                // Passport
-                let passportUrl = $("input[name=\"passport_url\"]").val() || "";
-                if(passportUrl) {
-                    $("#rev_passport").html('<span style="color:green;">✓ Uploaded</span>');
-                } else {
-                    $("#rev_passport").text("--");
+                // Travelers info
+                let travelersHtml = "";
+                for(var i = 1; i <= numTravelers; i++) {
+                    let contactName = $("input[name=\"contact_name_" + i + "\"]").val() || "--";
+                    let fullName = $("input[name=\"fullname_" + i + "\"]").val() || "--";
+                    let email = $("input[name=\"email_" + i + "\"]").val() || "--";
+                    let phoneCode = $("select[name=\"phone_code_" + i + "\"]").val() || "";
+                    let phoneNumber = $("input[name=\"phone_number_" + i + "\"]").val() || "";
+                    let phone = phoneCode && phoneNumber ? phoneCode + " " + phoneNumber : (phoneNumber || "--");
+                    let passportUrl = $("input[name=\"passport_url_" + i + "\"]").val() || "";
+                    let photoUrl = $("input[name=\"photo_url_" + i + "\"]").val() || "";
+                    
+                    travelersHtml += "<div style=\"margin-top:12px; padding-top:12px; border-top:1px solid #eee; font-size:13px; line-height:1.6;\">";
+                    travelersHtml += "<strong style=\"color:#222;\">Traveler " + i + ":</strong><br>";
+                    travelersHtml += "Contact Name: " + contactName + "<br>";
+                    travelersHtml += "Full Name: " + fullName + "<br>";
+                    travelersHtml += "Email: " + email + "<br>";
+                    travelersHtml += "Phone: " + phone + "<br>";
+                    travelersHtml += "Passport: " + (passportUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--") + "<br>";
+                    travelersHtml += "Photo: " + (photoUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--");
+                    travelersHtml += "</div>";
                 }
                 
-                // Photo
-                let photoUrl = $("input[name=\"photo_url\"]").val() || "";
-                if(photoUrl) {
-                    $("#rev_photo").html('<span style="color:green;">✓ Uploaded</span>');
-                } else {
-                    $("#rev_photo").text("--");
-                }
+                // Update review display
+                $("#rev_name").html(travelersHtml || "--");
                 
                 // Price
                 let priceHtml = $("#header_price_display").html() || "--";
@@ -896,14 +1054,17 @@ class Visa_Wizard_V2_5 {
             function clearVisaForm() {
                 var $f = $("#visa_form");
                 if ($f.length) $f[0].reset();
-                $("#passport_url").val("");
-                $("#photo_url").val("");
                 $("#variation_id").val("");
+                $("#number_of_travelers").val("1");
                 $("#agree_terms").prop("checked", false);
+                $("#visa_terms_scroll").hide();
                 $("#rev_nation, #rev_type, #rev_time, #rev_date, #rev_name, #rev_email, #rev_phone, #rev_passport, #rev_photo").text("--");
                 $("#rev_price").html("--");
-                $("#prev_passport, #prev_photo").empty().hide();
-                $("#stat_passport, #stat_photo").text("");
+                $(".traveler-passport-url, .traveler-photo-url").val("");
+                $(".upload-preview-box").empty().hide();
+                $(".upload-status").text("");
+                generateTravelersUpload(1);
+                generateTravelersContact(1);
                 if ($(".select2-enable").length && typeof $().select2 === "function") {
                     $(".select2-enable").val(null).trigger("change");
                 }
@@ -968,13 +1129,43 @@ class Visa_Wizard_V2_5 {
         if ( WC()->session ) { WC()->session->set( 'visa_draft_data', $form ); }
 
         WC()->cart->empty_cart();
-        $full_phone = $form['phone_code'] . ' ' . $form['phone_number'];
+        
+        // Thu thập data cho tất cả travelers
+        $num_travelers = isset($form['number_of_travelers']) ? intval($form['number_of_travelers']) : 1;
+        if($num_travelers < 1) $num_travelers = 1;
+        if($num_travelers > 10) $num_travelers = 10;
+        
+        $travelers_data = [];
+        for($i = 1; $i <= $num_travelers; $i++) {
+            $phone_code = isset($form['phone_code_' . $i]) ? $form['phone_code_' . $i] : '';
+            $phone_number = isset($form['phone_number_' . $i]) ? $form['phone_number_' . $i] : '';
+            $full_phone = ($phone_code && $phone_number) ? $phone_code . ' ' . $phone_number : '';
+            
+            $travelers_data[] = [
+                'contact_name' => isset($form['contact_name_' . $i]) ? $form['contact_name_' . $i] : '',
+                'fullname' => isset($form['fullname_' . $i]) ? $form['fullname_' . $i] : '',
+                'email' => isset($form['email_' . $i]) ? $form['email_' . $i] : '',
+                'phone' => $full_phone,
+                'phone_code' => $phone_code,
+                'phone_number' => $phone_number,
+                'passport' => isset($form['passport_url_' . $i]) ? $form['passport_url_' . $i] : '',
+                'photo' => isset($form['photo_url_' . $i]) ? $form['photo_url_' . $i] : '',
+            ];
+        }
+        
+        // Lấy thông tin người đầu tiên cho billing
+        $first_traveler = $travelers_data[0];
         $custom_data = [
             'visa_full_info' => [
-                'nationality' => $form['nationality'], 'arrival' => $form['arrival_date'],
-                'passport' => $form['passport_url'], 'photo' => $form['photo_url'],
-                'fullname' => $form['fullname'], 'email' => $form['email'], 'phone' => $full_phone,
-                'phone_code' => $form['phone_code'], 'phone_number' => $form['phone_number']
+                'nationality' => isset($form['nationality']) ? $form['nationality'] : '',
+                'arrival' => isset($form['arrival_date']) ? $form['arrival_date'] : '',
+                'number_of_travelers' => $num_travelers,
+                'travelers' => $travelers_data,
+                'fullname' => $first_traveler['fullname'],
+                'email' => $first_traveler['email'],
+                'phone' => $first_traveler['phone'],
+                'phone_code' => $first_traveler['phone_code'],
+                'phone_number' => $first_traveler['phone_number']
             ]
         ];
         
@@ -984,12 +1175,18 @@ class Visa_Wizard_V2_5 {
 
         if(WC()->cart->add_to_cart( $form['product_id'], 1, $form['variation_id'], [], $custom_data )) {
             $c = WC()->customer;
-            $c->set_billing_first_name($form['fullname']); $c->set_billing_email($form['email']); $c->set_billing_phone($full_phone);
-            $c->set_billing_country('VN'); $c->set_billing_address_1('Online App'); $c->set_billing_city('Hanoi'); $c->set_billing_postcode('');
+            $c->set_billing_first_name($first_traveler['fullname']);
+            $c->set_billing_email($first_traveler['email']);
+            $c->set_billing_phone($first_traveler['phone']);
+            $c->set_billing_country('VN');
+            $c->set_billing_address_1('Online App');
+            $c->set_billing_city('Hanoi');
+            $c->set_billing_postcode('');
             $c->save();
-            // Không redirect nữa, chỉ trả về success để load checkout form trong step 7
             wp_send_json_success(['message' => 'Added to cart successfully']);
-        } else wp_send_json_error(['message' => 'Error adding to cart. Please try again.']);
+        } else {
+            wp_send_json_error(['message' => 'Error adding to cart. Please try again.']);
+        }
     }
     
     public function ajax_load_checkout() {
@@ -1192,8 +1389,27 @@ class Visa_Wizard_V2_5 {
     public function save_order_meta($item, $key, $values, $order) {
         if(isset($values['visa_full_info'])) {
             $d = $values['visa_full_info'];
-            $item->add_meta_data('Nationality', $d['nationality']); $item->add_meta_data('Arrival Date', $d['arrival']);
-            $item->add_meta_data('Passport Link', $d['passport']); $item->add_meta_data('Photo Link', $d['photo']);
+            $item->add_meta_data('Nationality', $d['nationality'] ?? '');
+            $item->add_meta_data('Arrival Date', $d['arrival'] ?? '');
+            
+            // Lưu thông tin nhiều người
+            if(isset($d['travelers']) && is_array($d['travelers'])) {
+                $num_travelers = count($d['travelers']);
+                $item->add_meta_data('Number of Travelers', $num_travelers);
+                foreach($d['travelers'] as $idx => $traveler) {
+                    $num = $idx + 1;
+                    $item->add_meta_data("Traveler {$num} - Contact Name", $traveler['contact_name'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Full Name", $traveler['fullname'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Email", $traveler['email'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Phone", $traveler['phone'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Passport Link", $traveler['passport'] ?? '');
+                    $item->add_meta_data("Traveler {$num} - Photo Link", $traveler['photo'] ?? '');
+                }
+            } else {
+                // Fallback cho single traveler (backward compatibility)
+                $item->add_meta_data('Passport Link', $d['passport'] ?? '');
+                $item->add_meta_data('Photo Link', $d['photo'] ?? '');
+            }
         }
     }
 
