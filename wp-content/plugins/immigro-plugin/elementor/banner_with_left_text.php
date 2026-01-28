@@ -255,14 +255,26 @@ if ($(".banner-carousel").length) {
 		<section class="banner-section p_relative <?php echo esc_attr($settings['sec_class']);?>">
             <div class="banner-carousel owl-theme owl-carousel owl-dots-none">
 			
-				<?php foreach($settings['repeat'] as $item):?>	
+				<?php foreach($settings['repeat'] as $item):?>
+					<?php
+					$bgimg  = isset( $item['block_bgimg'] ) && is_array( $item['block_bgimg'] ) ? $item['block_bgimg'] : [];
+					$bg_url = '';
+					if ( ! empty( $bgimg['url'] ) ) {
+						$bg_url = $bgimg['url'];
+					} elseif ( ! empty( $bgimg['id'] ) ) {
+						$u = wp_get_attachment_url( (int) $bgimg['id'] );
+						if ( $u ) {
+							$bg_url = $u;
+						}
+					}
+					$bg_url = $bg_url ? esc_url( $bg_url ) : '';
+					?>
                 <div class="slide-item p_relative">
-					<?php if(wp_get_attachment_url($item['block_bgimg']['id'])): ?>
-					<div class="image-layer p_absolute" style="background-image: url(<?php echo wp_get_attachment_url($item['block_bgimg']['id']);?>);">
-					<?php else :?>
-					<div class="noimage">
-					<?php endif;?>
-					</div>
+					<?php if ( $bg_url ) : ?>
+					<div class="image-layer p_absolute" style="background-image: url(<?php echo $bg_url; ?>);"></div>
+					<?php else : ?>
+					<div class="noimage"></div>
+					<?php endif; ?>
                     <div class="auto-container">
                         <div class="content-box p_relative d_block z_5">
                             <h3><?php echo wp_kses($item['block_subtitle'], $allowed_tags);?></h3>
