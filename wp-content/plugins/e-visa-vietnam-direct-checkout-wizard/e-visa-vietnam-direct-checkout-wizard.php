@@ -384,8 +384,9 @@ class Visa_Wizard_V2_5 {
                             <h3 class="step-title"><span class="visa-step-badge">4</span>Date of Arrival</h3>
                             <p class="visa-step-desc">Specify your expected arrival date in Vietnam to determine visa validity start.</p>
                             <div class="form-group">
-                                <input type="date" name="arrival_date" class="form-control required-field" value="<?php echo esc_attr($prefill['arrival_date'] ?? ''); ?>">
+                                <input type="date" name="arrival_date" id="arrival_date" class="form-control required-field" value="<?php echo esc_attr($prefill['arrival_date'] ?? ''); ?>" min="<?php echo esc_attr( date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) ) ); ?>">
                             </div>
+                            <div id="arrival_date_error" class="visa-field-error" style="display:none; color:#c00; font-size:13px; margin-top:6px; text-align:left;"></div>
                         </div>
                     </div>
 
@@ -620,6 +621,25 @@ class Visa_Wizard_V2_5 {
                     return false;
                 }
                 $("#number_of_travelers").removeClass("input-error");
+                return true;
+            }
+
+            // Validate arrival date: phải là ngày tương lai (lớn hơn hôm nay)
+            function validateArrivalDate() {
+                var val = $("input[name='arrival_date']").val() || "";
+                var $input = $("#arrival_date");
+                var $err = $("#arrival_date_error");
+                $err.hide().text("");
+                $input.removeClass("input-error");
+                if(!val) return false;
+                var today = new Date();
+                var y = today.getFullYear(), m = today.getMonth() + 1, d = today.getDate();
+                var todayStr = y + "-" + String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+                if(val <= todayStr) {
+                    $input.addClass("input-error");
+                    $err.text("Arrival date must be a future date.").show();
+                    return false;
+                }
                 return true;
             }
 
@@ -872,6 +892,16 @@ class Visa_Wizard_V2_5 {
             function validateStep(step) {
                 let isValid = true;
                 let currentPanel = $(".step-content[data-step=\""+step+"\"]");
+                $("#global_error").text("Please fill in all required fields.");
+                
+                // Validate step 4: Arrival date phải là ngày tương lai
+                if(step === 4) {
+                    $("#arrival_date_error").hide();
+                    if(!validateArrivalDate()) {
+                        $("#global_error").text("Arrival date must be a future date.").slideDown();
+                        return false;
+                    }
+                }
                 
                 // Validate step 5: Number of Travelers
                 if(step === 5) {
@@ -929,6 +959,11 @@ class Visa_Wizard_V2_5 {
                     if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").removeClass("input-error"); }
                     $("#global_error").hide(); 
                 }
+            });
+
+            $(document).on("change", "input[name='arrival_date']", function() {
+                $("#arrival_date_error").hide();
+                if(validateArrivalDate()) $("#global_error").hide();
             });
 
             // Phone number validation: chỉ cho phép số (cho tất cả phone number fields)
@@ -1187,6 +1222,12 @@ class Visa_Wizard_V2_5 {
 
     public function ajax_checkout() {
         parse_str($_POST['data'], $form);
+        
+        $arrival = isset($form['arrival_date']) ? trim((string) $form['arrival_date']) : '';
+        $today   = current_time('Y-m-d');
+        if ( $arrival === '' || $arrival <= $today ) {
+            wp_send_json_error(['message' => __('Arrival date must be a future date.', 'woocommerce')]);
+        }
         
         // 1. SAVE DRAFT TO SESSION
         if ( WC()->session ) { WC()->session->set( 'visa_draft_data', $form ); }
