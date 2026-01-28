@@ -1,38 +1,83 @@
 /**
- * Custom CSS for Immidox Theme
- * Ẩn Contact Information và Billing Address trên trang checkout
+ * Custom CSS – Immidox Theme (evisavietnam)
+ * Ghi đè / tùy chỉnh giao diện. Load sau style chính.
+ * Cập nhật: 2026-01-28
  */
 
- .header-style-one .header-lower .menu-area .main-menu {
-    margin-right: 300px;
- }
+/* ==========================================================================
+   1. HEADER & NAVIGATION
+   ========================================================================== */
 
- .wc-block-components-checkout-place-order-button {
-   padding: 16px 48px;
-   min-width: 160px;
-   font-weight: 700;
-   text-transform: uppercase;
-   color: #fff;
-   background: #ffaa17;
-   border: none;
-   cursor: pointer;
-   border-radius: 8px;
-   font-size: 15px;
-   transition: all 0.3s ease;
-   text-align: center;
-   box-shadow: none !important;
-   outline: none !important;
- }
- .wc-block-components-checkout-place-order-button:hover {
-   background: #041E42;
-   color: #fff;
-   outline: none;
-   box-shadow: none;
- }
- #add_payment_method #payment, .woocommerce-cart #payment, .woocommerce-checkout #payment {
-   background-color: unset;
- }
- .elementor-icon-list-icon svg {
-   width: 20px;
-   height: 20px;
- }
+.header-style-one .header-lower .menu-area .main-menu {
+	margin-right: 300px;
+}
+
+
+/* ==========================================================================
+   2. WOOCOMMERCE / CHECKOUT
+   ========================================================================== */
+
+.wc-block-components-checkout-place-order-button {
+	padding: 16px 48px;
+	min-width: 160px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #fff;
+	background: #ffaa17;
+	border: none;
+	cursor: pointer;
+	border-radius: 8px;
+	font-size: 15px;
+	transition: all 0.3s ease;
+	text-align: center;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.wc-block-components-checkout-place-order-button:hover {
+	background: #041E42;
+	color: #fff;
+	outline: none;
+	box-shadow: none;
+}
+
+#add_payment_method #payment,
+.woocommerce-cart #payment,
+.woocommerce-checkout #payment {
+	background-color: unset;
+}
+
+
+/* ==========================================================================
+   3. ELEMENTOR
+   ========================================================================== */
+
+.elementor-icon-list-icon svg {
+	width: 20px;
+	height: 20px;
+}
+
+
+/* ==========================================================================
+   4. BANNER / SLIDER (Banner With Left Text)
+   ========================================================================== */
+
+/* Thêm override cho banner-carousel, image-layer, slide-item... tại đây nếu cần */
+
+
+/* ==========================================================================
+   5. VISA WIZARD & PLUGIN
+   ========================================================================== */
+
+/* Override cho e-visa wizard, form, modal... tại đây nếu cần */
+
+
+/* ==========================================================================
+   6. MISC / UTILITY
+   ========================================================================== */
+
+/* Custom rules khác */
+
+.working-block-one .inner-box {
+	background-color: #e3e3e3;
+}
