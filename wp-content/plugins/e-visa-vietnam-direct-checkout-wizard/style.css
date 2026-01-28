@@ -1,7 +1,7 @@
 /**
  * E-Visa Vietnam Direct Checkout Wizard
  * Customize giao diện wizard tại đây.
- * Version: 2.5
+ * Version: 2.6
  */
 
 /* ========== Container ========== */
@@ -145,6 +145,28 @@
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.visa-step-notes {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.visa-step-notes .visa-step-note {
+    display: block;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+}
+
+.visa-step-notes .visa-step-note:last-child {
+    margin-bottom: 0;
 }
 
 .visa-step-note {
@@ -421,7 +443,7 @@
 }
 
 .visa-terms-scroll-box {
-    max-height: 200px;
+    max-height: 280px;
     overflow-y: auto;
     margin-top: 12px;
     padding: 12px;
@@ -439,13 +461,15 @@
     margin-bottom: 12px;
 }
 
-.visa-terms-scroll-box .terms-section-item {
+.visa-terms-scroll-box .terms-section-item,
+.visa-terms-scroll-box .visa-terms-section {
     margin-bottom: 24px;
     padding-bottom: 20px;
     border-bottom: 2px solid #ddd;
 }
 
-.visa-terms-scroll-box .terms-section-item:last-child {
+.visa-terms-scroll-box .terms-section-item:last-child,
+.visa-terms-scroll-box .visa-terms-section:last-child {
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: none;

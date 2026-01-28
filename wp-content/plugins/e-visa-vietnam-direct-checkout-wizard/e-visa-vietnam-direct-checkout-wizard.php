@@ -2,7 +2,7 @@
 /*
 Plugin Name: E-Visa Vietnam Direct Checkout Wizard
 Description: Hệ thống Booking Visa V2.5 (Fix Postcode Hiding & Price Display on Return).
-Version: 2.5
+Version: 2.6
 Author: DuyViet
 */
 
@@ -125,13 +125,13 @@ class Visa_Wizard_V2_5 {
                             <tr><th>Hours</th><td><input type="time" name="visa_work_start" value="<?php echo esc_attr($start); ?>"> to <input type="time" name="visa_work_end" value="<?php echo esc_attr($end); ?>"></td></tr>
                             <tr><th>Date From</th><td><input type="date" name="visa_date_from" value="<?php echo esc_attr($date_from); ?>" class="regular-text"></td></tr>
                             <tr><th>Date To</th><td><input type="date" name="visa_date_to" value="<?php echo esc_attr($date_to); ?>" class="regular-text"></td></tr>
-                            <tr><th>Schedule Note</th><td><textarea name="visa_schedule_note" rows="3" class="large-text code"><?php echo esc_textarea($schedule_note); ?></textarea><p class="description">Use placeholders: {time_from}, {time_to}, {date_from}, {date_to}</p></td></tr>
+                            <tr><th>Schedule Note</th><td><textarea name="visa_schedule_note" rows="3" class="large-text code"><?php echo esc_textarea($schedule_note); ?></textarea><p class="description">Cú pháp mẫu: <code>Show info: Processing time counts from the time the application is confirmed, not submitted, during working hours from {time_from} to {time_to} Vietnam Local Time from {date_from} to {date_to}, except Public Holidays</code>. Placeholders: <code>{time_from}</code>, <code>{time_to}</code>, <code>{date_from}</code>, <code>{date_to}</code>.</p></td></tr>
                         </table>
                     </div>
                     <div class="visa-card">
                         <h2>Pricing Notes</h2>
                         <table class="form-table">
-                            <tr><th>Pricing Notes</th><td><textarea name="visa_pricing_notes" rows="5" class="large-text"><?php echo esc_textarea($pricing_notes); ?></textarea></td></tr>
+                            <tr><th>Pricing Notes</th><td><textarea name="visa_pricing_notes" rows="5" class="large-text"><?php echo esc_textarea($pricing_notes); ?></textarea><p class="description">Hiển thị tại Step Processing Time (mỗi nội dung một hàng).</p></td></tr>
                         </table>
                     </div>
                     <div class="visa-card">
@@ -139,7 +139,7 @@ class Visa_Wizard_V2_5 {
                         <div style="margin-bottom:20px;"><label>Terms</label><?php wp_editor( get_option('visa_terms_content'), 'visa_terms_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                         <div style="margin-bottom:20px;"><label>Privacy</label><?php wp_editor( get_option('visa_privacy_content'), 'visa_privacy_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                         <div style="margin-bottom:20px;"><label>Refund</label><?php wp_editor( get_option('visa_refund_content'), 'visa_refund_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
-                        <div><label>Terms Checkbox Text</label><textarea name="visa_terms_checkbox_text" rows="2" class="large-text"><?php echo esc_textarea($terms_checkbox_text); ?></textarea></div>
+                        <div><label>Terms Checkbox Text</label><textarea name="visa_terms_checkbox_text" rows="2" class="large-text"><?php echo esc_textarea($terms_checkbox_text); ?></textarea><p class="description">Ví dụ: <code>Click to agree: By submitting payment, I acknowledge that I have read and accept the EVISAS VIETNAM Terms of Service, Privacy Policy, and Refund Policy.</code> Các từ khóa Terms of Service / Privacy Policy / Refund Policy sẽ tự thay bằng link mở modal. Scroll box bên dưới hiển thị đầy đủ nội dung từng mục.</p></div>
                     </div>
                 </div>
                 <div class="visa-tab-panel" id="tab-nationality" style="<?php echo $active_tab !== 'nationality' ? 'display:none;' : ''; ?>">
@@ -202,7 +202,7 @@ class Visa_Wizard_V2_5 {
 
         $plugin_url = plugin_dir_url( __FILE__ );
         $style_path = plugin_dir_path( __FILE__ ) . 'style.css';
-        $version    = file_exists( $style_path ) ? (string) filemtime( $style_path ) : '2.5';
+        $version    = file_exists( $style_path ) ? (string) filemtime( $style_path ) : '2.6';
         wp_enqueue_style(
             'e-visa-wizard-style',
             $plugin_url . 'style.css',
@@ -305,7 +305,7 @@ class Visa_Wizard_V2_5 {
             </div>
             <div class="form-inner">
                 <div class="visa-sticky-header">
-                    <div class="visa-step-info">Step <span id="current_step_num">1</span> of 7</div>
+                    <div class="visa-step-info">Step <span id="current_step_num">1</span> of 8</div>
                     <div class="visa-total-price" id="header_price_display">--</div>
                 </div>
                 <div id="global_error" class="error-message">Please fill in all required fields.</div>
@@ -368,18 +368,20 @@ class Visa_Wizard_V2_5 {
                                     <?php endforeach; ?>
                                 </select>
                             </div>
-                            <?php if ( ! empty( $schedule_note_display ) ): ?>
-                                <p class="visa-step-note"><?php echo esc_html( $schedule_note_display ); ?></p>
-                            <?php endif; ?>
-                            <?php if ( ! empty( $pricing_notes ) ): ?>
-                                <p class="visa-step-note"><?php echo wp_kses_post( nl2br( $pricing_notes ) ); ?></p>
-                            <?php endif; ?>
+                            <div class="visa-step-notes">
+                                <?php if ( ! empty( $schedule_note_display ) ): ?>
+                                    <div class="visa-step-note"><?php echo esc_html( $schedule_note_display ); ?></div>
+                                <?php endif; ?>
+                                <?php if ( ! empty( $pricing_notes ) ): ?>
+                                    <div class="visa-step-note"><?php echo wp_kses_post( nl2br( $pricing_notes ) ); ?></div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="4">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">4</span>Arrival Date</h3>
+                            <h3 class="step-title"><span class="visa-step-badge">4</span>Date of Arrival</h3>
                             <p class="visa-step-desc">Specify your expected arrival date in Vietnam to determine visa validity start.</p>
                             <div class="form-group">
                                 <input type="date" name="arrival_date" class="form-control required-field" value="<?php echo esc_attr($prefill['arrival_date'] ?? ''); ?>">
@@ -419,7 +421,7 @@ class Visa_Wizard_V2_5 {
                                     <input type="checkbox" id="agree_terms" class="required-field">
                                     <span id="terms_checkbox_text"><?php echo esc_html( $terms_checkbox_text ); ?></span>
                                 </label>
-                                <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:200px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:4px; background:#f9f9f9;">
+                                <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:280px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:6px; background:#f9f9f9;">
                                     <div id="terms_content_display"></div>
                                 </div>
                             </div>
@@ -621,27 +623,27 @@ class Visa_Wizard_V2_5 {
                 return true;
             }
 
-            // Terms checkbox với scroll box - phân tách rõ từng mục
+            // Terms checkbox với scroll box - phân tách rõ từng mục (Terms / Privacy / Refund)
             var termsContent = <?php echo json_encode( wpautop( get_option('visa_terms_content', '') ) ); ?>;
             var privacyContent = <?php echo json_encode( wpautop( get_option('visa_privacy_content', '') ) ); ?>;
             var refundContent = <?php echo json_encode( wpautop( get_option('visa_refund_content', '') ) ); ?>;
             
             var scrollBoxHtml = '';
             if(termsContent && termsContent.trim()) {
-                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:24px; padding-bottom:20px; border-bottom:2px solid #ddd;">';
-                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Terms of Service</h4>';
+                scrollBoxHtml += '<div class="terms-section-item visa-terms-section" style="margin-bottom:20px; padding:16px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">';
+                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222; padding-bottom:8px; border-bottom:2px solid #ddd;">Terms of Service</h4>';
                 scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + termsContent + '</div>';
                 scrollBoxHtml += '</div>';
             }
             if(privacyContent && privacyContent.trim()) {
-                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:24px; padding-bottom:20px; border-bottom:2px solid #ddd;">';
-                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Privacy Policy</h4>';
+                scrollBoxHtml += '<div class="terms-section-item visa-terms-section" style="margin-bottom:20px; padding:16px; border:1px solid #ccc; border-radius:6px; background:#f8f9fa;">';
+                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222; padding-bottom:8px; border-bottom:2px solid #ddd;">Privacy Policy</h4>';
                 scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + privacyContent + '</div>';
                 scrollBoxHtml += '</div>';
             }
             if(refundContent && refundContent.trim()) {
-                scrollBoxHtml += '<div class="terms-section-item" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">';
-                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222;">Refund Policy</h4>';
+                scrollBoxHtml += '<div class="terms-section-item visa-terms-section" style="margin-bottom:0; padding:16px; border:1px solid #ccc; border-radius:6px; background:#f5f6f7;">';
+                scrollBoxHtml += '<h4 style="margin:0 0 12px 0; font-size:16px; font-weight:700; color:#222; padding-bottom:8px; border-bottom:2px solid #ddd;">Refund Policy</h4>';
                 scrollBoxHtml += '<div style="font-size:13px; line-height:1.6; color:#555;">' + refundContent + '</div>';
                 scrollBoxHtml += '</div>';
             }
