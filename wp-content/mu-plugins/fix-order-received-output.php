@@ -34,9 +34,8 @@ if ( $fix_is_order_received ) {
 		$stripped = trim( strip_tags( $buffer ) );
 		$has_replacement = (bool) preg_match( '/\x{FFFD}/u', $buffer );
 		$len = strlen( $buffer );
-		$stripped_len = strlen( $stripped );
-		// Trang hỏng: quá ngắn HOẶC có ký tự thay thế + nội dung text ít
-		$is_broken = ( $len < 500 ) || ( $has_replacement && $stripped_len < 100 );
+		// Trang hỏng: quá ngắn HOẶC có ký tự U+FFFD (luôn coi là lỗi encoding)
+		$is_broken = ( $len < 500 ) || $has_replacement;
 		if ( $is_broken ) {
 			$order_id = 0;
 			$uri = $_SERVER['REQUEST_URI'] ?? '';
