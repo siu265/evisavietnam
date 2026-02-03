@@ -413,3 +413,9 @@ if( immigro_set($options, 'boxed_wrapper') ){
 		return $classes;
 	} );
 }
+
+add_action( 'woocommerce_thankyou', function($order_id) {
+    echo '<pre>';
+    print_r($_GET); // Kiểm tra các tham số từ cổng thanh toán gửi về
+    echo '</pre>';
+});
