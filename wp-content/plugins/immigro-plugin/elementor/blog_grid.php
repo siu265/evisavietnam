@@ -633,7 +633,7 @@ class Blog_Grid extends Widget_Base {
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
-		$search_param = 'immigro_blog_search_' . $this->get_id();
+		$search_param = 'search';
 		$search_query = '';
 		if ( isset( $_GET[ $search_param ] ) ) {
 			$search_query = sanitize_text_field( wp_unslash( $_GET[ $search_param ] ) );
@@ -856,6 +856,11 @@ class Blog_Grid extends Widget_Base {
                     </div>
 					<?php endwhile; ?>        
                 </div>
+				<?php if ( ! empty( $settings['show_pagination'] ) ) { ?>
+					<div class="pagination-wrapper centred mt_40">
+						<?php immigro_the_pagination2( array( 'total' => $query->max_num_pages, 'next_text' => ' <i class="far fa-angle-right"></i>', 'prev_text' => '<i class="far fa-angle-left"></i>' ) ); ?>
+					</div>
+				<?php } ?>
             </div>
         </section>
 
@@ -928,9 +933,9 @@ class Blog_Grid extends Widget_Base {
                     </div>
 					<?php endwhile; ?>      
                 </div>
-				<?php if($settings['show_pagination']){ ?>
+				<?php if ( ! empty( $settings['show_pagination'] ) ) { ?>
 					<div class="pagination-wrapper centred mt_40">
-						<?php immigro_the_pagination2(array('total'=>$query->max_num_pages, 'next_text' => ' <i class="far fa-angle-right"></i>', 'prev_text' => '<i class="far fa-angle-left"></i>')); ?>
+						<?php immigro_the_pagination2( array( 'total' => $query->max_num_pages, 'next_text' => ' <i class="far fa-angle-right"></i>', 'prev_text' => '<i class="far fa-angle-left"></i>' ) ); ?>
 					</div>
 				<?php } ?>
             </div>
