@@ -419,7 +419,7 @@ $this->end_controls_section();
 		$allowed_tags = wp_kses_allowed_html('post');
 		$extra_imgs  = isset( $settings['extra_images'] ) && is_array( $settings['extra_images'] ) ? $settings['extra_images'] : [];
 		?>
-		<style>.team-extra-images{list-style:none;margin:10px 0 15px 0;padding:0;display:flex;flex-wrap:wrap;align-items:center}.team-extra-images li{display:inline-block;overflow:hidden;box-shadow:0 10px 50px rgba(34,34,34,0.2);background:#fff}.team-extra-images li img{display:block;vertical-align:top}</style>
+		<style>.team-extra-images{list-style:none;margin:10px 0 15px 0;padding:0;display:flex;flex-wrap:wrap;align-items:center;justify-content: center;}.team-extra-images li{display:flex;justify-content: center;align-items: center;overflow:hidden;box-shadow:0 10px 50px rgba(34,34,34,0.2);background:#fff}.team-extra-images li img{display:block;vertical-align:top; width: 90%; height: auto;}</style>
 		<?php  if ( 'style1' === $settings['style'] ) : ?>
 
 		<section class="team-section centred <?php echo esc_attr($settings['sec_class']);?>">
