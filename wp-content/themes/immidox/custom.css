@@ -643,4 +643,18 @@ span.page-numbers.current {
 	.woocommerce ul.order_details {
 		align-content: flex-start;
 	}
+
+	body.woocommerce-order-received .woocommerce-notice--success {
+		line-height: normal;
+	}
+
+	body.woocommerce-order-received .woocommerce-order-details__title, body.woocommerce-order-received .woocommerce-column__title {
+		width: 100%;
+		text-align: center;
+		display: block;
+	}
+
+	body.woocommerce-order-received .woocommerce-order .entry-title {
+		margin-bottom: 10px;
+	}
 }
