@@ -49,7 +49,7 @@ function woocommerce_onepay_init()
 		function __construct()
 		{
 
-			$this->icon = plugins_url('onepay-payment-gateway-for-woocommerce-paygate-vcb-exchange-rate-v1.1/logo.png', dirname(__FILE__)); // Icon URL
+			$this->icon = plugins_url('onepay-payment-gateway-for-woocommerce-paygate-vcb-exchange-rate-v1.1/cards-accepted.png', dirname(__FILE__)); // Icon URL
 			$this->id = 'onepay';
 			$this->method_title = 'OnePay-Paygate-VCB-Exchange-Rate';
 			$this->has_fields = false;
