@@ -60,11 +60,11 @@ add_action( 'init', function() {
 	}
 	wc_empty_cart();
 
-	// Chạy hook OnePay + woocommerce_thankyou (cập nhật trạng thái đơn, visa clear) - BẮT output
-	ob_start();
+	// Chạy OnePay + visa logic KHÔNG qua hook output (hook gây lỗi "1" + ký tự hỏng)
+	define( 'ONEPAY_THANKYOU_SILENT', true );
 	do_action( 'woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id() );
 	do_action( 'woocommerce_thankyou', $order->get_id() );
-	ob_end_clean();
+	// Visa clear_visa_session_on_thankyou chạy qua woocommerce_thankyou
 
 	// Xóa mọi buffer rác có thể đã bị output trước (theme/hook lỗi "1" + ký tự hỏng)
 	while ( ob_get_level() ) {

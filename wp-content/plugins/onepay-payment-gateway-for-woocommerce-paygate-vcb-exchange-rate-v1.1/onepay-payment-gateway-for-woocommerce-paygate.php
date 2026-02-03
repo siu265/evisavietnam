@@ -303,7 +303,10 @@ function woocommerce_onepay_init()
 				$transStatus = '<h1 class = "entry-title" style="color:red;">Payment Pending</h1>';
 				$order->add_order_note(__('Payment pending', 'woocommerce'));
 			}
-			print $transStatus;
+			// Cho phép chế độ silent (fix-order-received-output mu-plugin) - không print để tránh output lỗi
+			if ( ! ( defined( 'ONEPAY_THANKYOU_SILENT' ) && ONEPAY_THANKYOU_SILENT ) ) {
+				print $transStatus;
+			}
 		}
 
 		function validateHash($agrs, $SECURE_SECRET)
