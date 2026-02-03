@@ -1,30 +1,63 @@
 # Báo cáo Soát Bảo Mật - evisavietnam
 
-**Ngày:** 2026-01-28
+**Ngày cập nhật:** 2026-01-28
 
 ## 1. TÓM TẮT
 
-| Mức độ    | Số lượng | Trạng thái   |
-|-----------|----------|--------------|
-| Nghiêm trọng | 1      | Đã xử lý     |
-| Cảnh báo  | 4        | Cần hành động |
-| Thông tin | 3        | Hiểu biết    |
+| Mức độ      | Số lượng | Trạng thái   |
+|-------------|----------|--------------|
+| Nghiêm trọng | 20+     | Đã xử lý     |
+| Cảnh báo    | 4        | Cần hành động |
+| Thông tin   | 3        | Hiểu biết    |
 
 ---
 
 ## 2. MALWARE ĐÃ PHÁT HIỆN VÀ XÓA
 
-### 2.1 Backdoor trong Redux Framework (ĐÃ XÓA)
+### 2.1 Backdoor PHP (RCE - Remote Code Execution)
 
-**File:** `wp-content/plugins/immigro-plugin/redux-framework/ReduxCore/core/required.php`
+**Mẫu:** Đoạn mã nhận payload qua POST/REQUEST (tên tham số hex-encoded như `\x73\x79m`, `\x6Bey`, `\x68old\x65\x72`...), giải mã, ghi file tạm, `include` thực thi, xóa file.
 
-**Mô tả:** Đoạn mã độc được chèn vào đầu file, sử dụng tham số POST `symbol` (mã hóa `sym\x62\x6Fl`):
-- Nhận payload qua POST
-- Giải mã và ghi ra file tạm
-- Thực thi qua `include`, sau đó xóa file
-- Cho phép thực thi mã tùy ý từ xa (RCE)
+**Các file đã làm sạch:**
+- `immigro-plugin/redux-framework/ReduxCore/core/required.php`
+- `woocommerce/templates/emails/customer-stock-notification-verified.php`
+- `woocommerce/includes/tracks/class-wc-site-tracking.php`
+- `woocommerce/patterns/testimonials-single.php`
+- `woocommerce/patterns/page-coming-soon-minimal-left-image.php`
+- `woocommerce/includes/interfaces/class-wc-customer-data-store-interface.php`
+- `woocommerce/packages/action-scheduler/classes/ActionScheduler_WPCommentCleaner.php`
+- `woocommerce/assets/client/admin/admin-layout/style.asset.php`
+- `contact-form-7/includes/contact-form-template.php`
+- `woocommerce/includes/admin/meta-boxes/class-wc-meta-box-product-short-description.php`
 
-**Hành động đã thực hiện:** Đã xóa toàn bộ mã độc, giữ lại nội dung Redux hợp lệ.
+**Các file độc hại đã xóa hoàn toàn:**
+- `woocommerce/src/Internal/RestApi/Routes/V4/OrderNotes/default_links.php` (thay bằng stub)
+- `woocommerce/assets/.../product-details-section-description/dbconnect.php`
+- `elementor/.../editor-components/editor.components.asset.php` (thay bằng stub)
+- `elementor/.../Util/changeProject.php`, `Profiler/Node/JINCSubscription.php`
+- `pro-elements/.../export.runner.base.php` (file giả, class thật ở export-runner-base.php)
+- `woocommerce/packages/email-editor/.../Tokenizer/xoopsmailer.php`
+- `woocommerce/packages/email-editor/.../Sabberworm/CSS/Rule/testcourselib.php`
+- `woocommerce/assets/.../product-attributes-field/articleweb.php`
+- `woocommerce/vendor/opis/json-schema/.../Keywords/editinputtype.php`
+- `wordfence/crypto/.../SecretStream/downloader.php`
+- `wordfence/crypto/.../namespaced/Core/adr_vault.php`
+- `wordfence/crypto/.../namespaced/Core/.symbol` (dropper)
+- `wordfence/crypto/.../Poly1305/.comp` (payload chính)
+
+### 2.2 Payload .comp – Tạo backdoor admin
+
+**File:** `wordfence/.../Poly1305/.comp` (đã xóa)
+
+**Hành vi:**
+- Quét toàn ổ đĩa tìm `wp-config.php`
+- Đọc cấu hình DB từ wp-config
+- Tạo user WordPress: `user_login=root`, `user_email=livewire31@proton.me`, mật khẩu `AdolfHitler88.3123`
+- Gán quyền Administrator
+
+Đây chính là nguồn gốc tài khoản **root / livewire31@proton.me** trong bảng Users.
+
+**Hành động bắt buộc:** Xóa user này trong Users hoặc database (xem mục 6).
 
 ---
 
@@ -32,57 +65,59 @@
 
 ### 3.1 Theme files "unknown" - FALSE POSITIVE
 
-Các file sau bị Wordfence đánh dấu "unknown to WordPress" nhưng **là file hợp lệ của theme override**:
-- `wp-content/themes/immidox/woocommerce/checkout/thankyou.php`
-- `wp-content/themes/immidox/woocommerce/checkout/order-received.php`
-- `wp-content/themes/immidox/footer.php`
-
-Wordfence so sánh với checksum WordPress core; theme override không nằm trong core nên bị báo sai.
-
-**Khuyến nghị:** Trong Wordfence, chọn "Mark as Fixed" cho các file trên.
+Các file theme override bị báo sai: `thankyou.php`, `order-received.php`, `footer.php` trong immidox.  
+**Khuyến nghị:** Trong Wordfence chọn "Mark as Fixed".
 
 ### 3.2 CVE-2023-1463 - Elementor RCE
 
-**File:** `banner_with_left_text.php` (Immigro Elementor widget)
+Cập nhật Elementor lên phiên bản mới nhất.
 
-Lỗ hổng nằm trong **Elementor core**, không phải widget tùy chỉnh. Cần cập nhật Elementor lên phiên bản đã vá.
+### 3.3 Slider Path
 
-**Khuyến nghị:** Cập nhật plugin Elementor lên phiên bản mới nhất.
+Gỡ plugin và thay bằng giải pháp khác.
 
-### 3.3 Slider Path - Plugin cũ, lỗ hổng
+### 3.4 WordPress core bị sửa
 
-**Khuyến nghị:** Gỡ plugin Slider Path và thay bằng giải pháp khác (slider native của theme hoặc plugin được bảo trì).
-
-### 3.4 WordPress core bị sửa - class-wp-rest-posts-controller.php
-
-**Khuyến nghị:** Tải lại WordPress core sạch, thay thế file `wp-includes/rest-api/endpoints/class-wp-rest-posts-controller.php` bằng bản gốc từ wordpress.org.
+Tải lại WordPress core sạch từ wordpress.org và thay thế file bị sửa.
 
 ---
 
 ## 4. MÃ HỢP LỆ (Không phải malware)
 
-- **base64_decode, gzinflate:** Có trong Wordfence, Redux, các plugin chuẩn – dùng cho mục đích hợp lệ (mã hóa, nén).
-- **$_GET['file'], $_GET['code']:** Có trong Wordfence (file viewer), Elementor (OAuth), wp-admin – đều có kiểm tra và sanitize.
-- **$_REQUEST:** Sử dụng chuẩn trong Merlin, TGM, Redux.
+- base64_decode, gzinflate trong Wordfence, Redux – dùng hợp lệ
+- $_GET['file'], $_GET['code'] – có sanitize
+- eval trong Twig/Elementor – code template engine chuẩn
 
 ---
 
 ## 5. FILE BẢO VỆ ĐÃ TẠO
 
-1. **`wp-content/mu-plugins/protect-wp-core.php`**  
-   - Tạo `.htaccess` bảo vệ trong wp-includes, wp-admin  
-   - Chặn chỉnh sửa file core qua Theme/Plugin Editor  
-   - Cảnh báo khi thư mục core có quyền ghi  
-
-2. **`protect-core-permissions.sh`**  
-   - Script chạy qua SSH để đặt chmod 555/444 cho thư mục/file core  
-   - Dùng: `./protect-core-permissions.sh /path/to/wordpress`
+- `wp-content/mu-plugins/protect-wp-core.php`
+- `protect-core-permissions.sh`
+- `define('DISALLOW_FILE_EDIT', true)` trong wp-config.php
 
 ---
 
-## 6. KHUYẾN NGHỊ BỔ SUNG
+## 6. HÀNH ĐỘNG CẦN LÀM NGAY
 
-1. **wp-config.php:** Thêm `define('DISALLOW_FILE_EDIT', true);` để tắt Theme/Plugin Editor.
-2. **Quyền file:** Chạy `protect-core-permissions.sh` trên server production.
-3. **Cập nhật:** Nâng cấp WordPress, Elementor và các plugin lên phiên bản mới nhất.
-4. **Backup:** Sao lưu định kỳ và kiểm tra file core thường xuyên.
+1. **Xóa tài khoản backdoor**  
+   Xóa user `root` (email `livewire31@proton.me`) trong WordPress Admin → Users hoặc qua SQL:
+   ```sql
+   DELETE FROM img_usermeta WHERE user_id IN (SELECT ID FROM img_users WHERE user_email='livewire31@proton.me');
+   DELETE FROM img_users WHERE user_email='livewire31@proton.me';
+   ```
+   *(Thay `img_` bằng table prefix thực tế.)*
+
+2. **Đổi tất cả mật khẩu**  
+   Mật khẩu của mọi tài khoản admin.
+
+3. **Tải lại plugin sạch**  
+   - WooCommerce  
+   - Contact Form 7  
+   - Wordfence  
+
+4. **Chạy script bảo vệ**  
+   `./protect-core-permissions.sh /path/to/wordpress`
+
+5. **Bật Wordfence / Sucuri**  
+   Chạy quét toàn site sau khi dọn malware.

