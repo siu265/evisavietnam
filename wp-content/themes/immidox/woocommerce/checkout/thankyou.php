@@ -67,6 +67,23 @@ defined( 'ABSPATH' ) || exit;
 					<strong><?php echo $order->get_formatted_order_total(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></strong>
 				</li>
 
+				<?php
+				// Total (VND) - dùng tỷ giá từ OnePay exchange_rate_config hoặc VCB
+				$currency = get_woocommerce_currency();
+				if ( 'VND' !== $currency && class_exists( 'Visa_Wizard_V2_5' ) ) {
+					$rate = Visa_Wizard_V2_5::get_exchange_rate();
+					if ( $rate > 0 ) {
+						$vnd = round( floatval( $order->get_total() ) * $rate );
+						?>
+						<li class="woocommerce-order-overview__total-vnd total-vnd">
+							<?php esc_html_e( 'Total (VND):', 'woocommerce' ); ?>
+							<strong><?php echo esc_html( number_format_i18n( $vnd ) . ' VND' ); ?></strong>
+						</li>
+						<?php
+					}
+				}
+				?>
+
 				<?php if ( $order->get_payment_method_title() ) : ?>
 					<li class="woocommerce-order-overview__payment-method method">
 						<?php esc_html_e( 'Payment method:', 'woocommerce' ); ?>

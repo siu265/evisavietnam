@@ -53,6 +53,44 @@ class Visa_Wizard_V2_5 {
         add_action( 'template_redirect', array( $this, 'log_order_received_page_request' ), 1 );
     }
 
+    /**
+     * Lấy tỷ giá USD->VND từ OnePay (exchange_rate_config nếu có, hoặc tự động từ VCB).
+     * @return float Tỷ giá (0 nếu không lấy được hoặc tiền tệ là VND)
+     */
+    public static function get_exchange_rate() {
+        if ( ! function_exists( 'WC' ) || ! WC()->payment_gateways() ) {
+            return 0;
+        }
+        $gateways = WC()->payment_gateways()->payment_gateways();
+        $onepay   = isset( $gateways['onepay'] ) ? $gateways['onepay'] : null;
+        if ( $onepay && method_exists( $onepay, 'getRate' ) ) {
+            return floatval( $onepay->getRate() );
+        }
+        $currency = get_woocommerce_currency();
+        if ( 'VND' === $currency ) {
+            return 1;
+        }
+        if ( in_array( $currency, array( 'USD', 'EUR', 'JPY' ), true ) ) {
+            $response = wp_remote_get( 'https://portal.vietcombank.com.vn/Usercontrols/TVPortal.TyGia/pXML.aspx', array( 'timeout' => 15 ) );
+            if ( is_wp_error( $response ) ) {
+                return 0;
+            }
+            $body = wp_remote_retrieve_body( $response );
+            $xml  = @simplexml_load_string( $body );
+            if ( $xml ) {
+                $value = '0';
+                foreach ( $xml->Exrate as $ex ) {
+                    if ( isset( $ex['CurrencyCode'] ) && (string) $ex['CurrencyCode'] === $currency ) {
+                        $value = str_replace( ',', '', (string) $ex['Sell'] );
+                        break;
+                    }
+                }
+                return floatval( $value );
+            }
+        }
+        return 0;
+    }
+
     /** Ghi log vào wp-content/uploads/visa-checkout-logs/ (luôn ghi được trên mọi host) */
     private function visa_log( $msg ) {
         try {
@@ -641,6 +679,9 @@ class Visa_Wizard_V2_5 {
                             <div class="review-item review-total">
                                 <span>Total:</span> <span class="review-value" id="rev_price">--</span>
                             </div>
+                            <div class="review-item review-vnd" id="review_vnd_row" style="display:none;">
+                                <span>Total (VND):</span> <span class="review-value" id="rev_vnd">--</span>
+                            </div>
                         </div>
                         
                         <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
@@ -662,6 +703,7 @@ class Visa_Wizard_V2_5 {
         </div>
 
         <script>
+        var visaExchangeRate = <?php echo json_encode( floatval( Visa_Wizard_V2_5::get_exchange_rate() ) ); ?>;
         var visaStepFields = {
             step6: <?php echo json_encode( $step_opts['6']['fields'] ?? [] ); ?>,
             step7: <?php echo json_encode( $step_opts['7']['fields'] ?? [] ); ?>
@@ -1247,9 +1289,11 @@ class Visa_Wizard_V2_5 {
                     }, function(res){
                         $("#header_price_display").css("opacity", "1");
                         if(res.success) { 
-                            // Lưu variation_id
+                            // Lưu variation_id và exchange_rate (cập nhật từ response nếu có)
                             $("#variation_id").val(res.data.variation_id);
-                            
+                            if(typeof res.data.exchange_rate !== 'undefined') {
+                                visaExchangeRate = parseFloat(res.data.exchange_rate) || 0;
+                            }
                             // Tính giá tổng = giá gốc * số người
                             if(res.data.raw_price) {
                                 let basePrice = parseFloat(res.data.raw_price);
@@ -1345,6 +1389,19 @@ class Visa_Wizard_V2_5 {
                 // Price
                 let priceHtml = $("#header_price_display").html() || "--";
                 $("#rev_price").html(priceHtml);
+                
+                // VND (Total USD * exchange rate) - chỉ hiển thị khi tỷ giá > 0
+                var priceTxt = $("#header_price_display").text();
+                var priceMatch = priceTxt.match(/(\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\d+(?:\.\d{2})?)/);
+                var totalUsd = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
+                var rate = typeof visaExchangeRate !== 'undefined' ? parseFloat(visaExchangeRate) : 0;
+                if(rate > 0 && totalUsd > 0) {
+                    var vndAmount = Math.round(totalUsd * rate);
+                    $("#rev_vnd").text(vndAmount.toLocaleString('vi-VN') + ' VND');
+                    $("#review_vnd_row").show();
+                } else {
+                    $("#review_vnd_row").hide();
+                }
             }
 
             function clearVisaForm() {
@@ -1413,11 +1470,13 @@ class Visa_Wizard_V2_5 {
         }
 
         if ($matched_vid) {
+            $exchange_rate = self::get_exchange_rate();
             wp_send_json_success([
                 'variation_id' => $matched_vid, 
                 'price_html' => $price_html,
                 'raw_price' => $raw_price,
-                'currency' => $currency
+                'currency' => $currency,
+                'exchange_rate' => $exchange_rate
             ]);
         } else {
             wp_send_json_error(['message' => 'No price found. Please check attributes.']);
