@@ -163,3 +163,14 @@
 .header-top {
 	background: #1e593c;
 }
+
+@media screen and (max-width: 768px) {
+	.header-top .info li a {
+		font-size: 14px;
+		text-align: left;
+	}
+
+	.header-top .info {
+		text-align: left;
+	}
+}

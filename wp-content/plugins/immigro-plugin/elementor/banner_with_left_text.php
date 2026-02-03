@@ -156,6 +156,15 @@ class Banner_With_Left_Text extends Widget_Base {
 										'default' => esc_html__('', 'rashid')
 									],
 
+									'block_animation_text' =>
+									[
+										'name' => 'block_animation_text',
+										'label' => esc_html__( 'Animation Text', 'immigro' ),
+										'type' => Controls_Manager::TEXT,
+										'placeholder' => esc_html__( 'text 1 | text 2 | text 3', 'immigro' ),
+										'description' => esc_html__( 'Các text phân cách bằng dấu |, hiển thị tuần tự (text 1 → text 2 → text 3 → lặp lại).', 'immigro' ),
+									],
+
 									'block_button'=>
 
 									[
@@ -210,6 +219,15 @@ class Banner_With_Left_Text extends Widget_Base {
 
 
 
+<style>
+.banner-animation-text { min-height: 1.5em; }
+.banner-animation-text .banner-anim-item {
+	position: absolute; left: 0; top: 0; opacity: 0;
+	transition: opacity 0.5s ease;
+	pointer-events: none;
+}
+.banner-animation-text .banner-anim-item.active { position: relative; opacity: 1; pointer-events: auto; }
+</style>
 <?php
 	  echo '
 	 <script>
@@ -229,21 +247,26 @@ if ($(".banner-carousel").length) {
 		smartSpeed: 1000,
 		autoplay: 6000,
 		responsive:{
-			0:{
-				items:1
-			},
-			600:{
-				items:1
-			},
-			800:{
-				items:1
-			},
-			1024:{
-				items:1
-			}
+			0:{ items:1 },
+			600:{ items:1 },
+			800:{ items:1 },
+			1024:{ items:1 }
 		}
 	});
 }
+// Animation Text: cycle through text 1 | text 2 | text 3
+$(".banner-animation-text").each(function(){
+	var $wrap = $(this);
+	var $items = $wrap.find(".banner-anim-item");
+	if ($items.length < 2) return;
+	var idx = 0;
+	var interval = parseInt($wrap.data("interval"), 10) || 3000;
+	setInterval(function(){
+		$items.removeClass("active");
+		idx = (idx + 1) % $items.length;
+		$items.eq(idx).addClass("active");
+	}, interval);
+});
 //put the code above the line 
 
   });
@@ -279,6 +302,22 @@ if ($(".banner-carousel").length) {
                         <div class="content-box p_relative d_block z_5">
                             <h3><?php echo wp_kses($item['block_subtitle'], $allowed_tags);?></h3>
                             <h2 class="p_relative d_block"><?php echo wp_kses($item['block_title'], $allowed_tags);?></h2>
+                            <?php
+                            $anim_text = isset( $item['block_animation_text'] ) ? trim( (string) $item['block_animation_text'] ) : '';
+                            if ( $anim_text !== '' ) :
+                                $anim_parts = array_map( 'trim', explode( '|', $anim_text ) );
+                                $anim_parts = array_filter( $anim_parts );
+                                if ( ! empty( $anim_parts ) ) :
+                            ?>
+                            <div class="banner-animation-text p_relative d_block" data-interval="3000">
+                                <?php foreach ( $anim_parts as $idx => $part ) : ?>
+                                <span class="banner-anim-item<?php echo $idx === 0 ? ' active' : ''; ?>"><?php echo esc_html( $part ); ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php
+                                endif;
+                            endif;
+                            ?>
                             <p class="p_relative d_block"><?php echo wp_kses($item['block_text'], $allowed_tags);?></p>
                             <div class="btn-box">
                                 <a href="<?php echo esc_url($item['block_btnlink']['url']);?>" class="btn-1"><?php echo wp_kses($item['block_button'], $allowed_tags);?><span></span></a>
