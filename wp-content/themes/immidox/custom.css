@@ -151,3 +151,10 @@
 .working-block-one .inner-box {
 	background-color: #e3e3e3;
 }
+
+/* Main Menu */
+
+.main-menu .navigation > li > a {
+	text-transform: uppercase;
+	font-size: 18px;
+}
