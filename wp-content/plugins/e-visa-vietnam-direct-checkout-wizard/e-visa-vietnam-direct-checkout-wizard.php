@@ -1470,11 +1470,20 @@ class Visa_Wizard_V2_5 {
             wp_send_json_error(['message' => 'Missing Price/Variation ID. Please re-select options.']);
         }
 
+        // Validate billing email before setting (WooCommerce throws WC_Data_Exception if invalid)
+        $billing_email = $first_traveler['email'];
+        if ( empty( $billing_email ) ) {
+            wp_send_json_error(['message' => __('Please enter a valid email address.', 'woocommerce')]);
+        }
+        if ( ! is_email( $billing_email ) ) {
+            wp_send_json_error(['message' => __('Please enter a valid email address.', 'woocommerce')]);
+        }
+
         // Thêm vào cart với số lượng = số người
         if(WC()->cart->add_to_cart( $form['product_id'], $num_travelers, $form['variation_id'], [], $custom_data )) {
             $c = WC()->customer;
             $c->set_billing_first_name($first_traveler['contact_name']);
-            $c->set_billing_email($first_traveler['email']);
+            $c->set_billing_email(sanitize_email($billing_email));
             $c->set_billing_phone($first_traveler['phone']);
             $c->set_billing_country('VN');
             $c->set_billing_address_1('Online App');

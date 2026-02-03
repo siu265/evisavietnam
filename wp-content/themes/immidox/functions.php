@@ -435,7 +435,7 @@ if( immigro_set($options, 'boxed_wrapper') ){
  // (Chạy thẳng, không cần qua bộ xử lý đường dẫn của WordPress nên không lo 404)
  add_action( 'init', 'DV_handle_direct_login' );
  function DV_handle_direct_login() {
-	 $slug = defined('DV_LOGIN_SLUG') ? DV_LOGIN_SLUG : 'quan-tri';
+	 $slug = defined('DV_LOGIN_SLUG') ? DV_LOGIN_SLUG : 'admin-panel';
 	 
 	 // Lấy phần đường dẫn sau tên miền
 	 $request_path = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
