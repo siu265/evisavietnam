@@ -251,6 +251,11 @@
 	height: auto !important;
 }
 
+.team-block-one .inner-box .content-box {
+	border-radius: 10px;
+	padding-bottom: 30px;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
