@@ -637,6 +637,7 @@ span.page-numbers.current {
 		align-items: center;
 		float: left;
 		gap: 10px;
+		width: 100%;
 	}
 
 	.woocommerce ul.order_details {
