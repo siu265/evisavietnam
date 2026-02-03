@@ -657,4 +657,8 @@ span.page-numbers.current {
 	body.woocommerce-order-received .woocommerce-order .entry-title {
 		margin-bottom: 10px;
 	}
+
+	.sidebar-page-container p {
+		margin-bottom: 0px;
+	}
 }
