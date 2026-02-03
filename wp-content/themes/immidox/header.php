@@ -58,14 +58,46 @@ if ( ! function_exists( 'wp_body_open' ) ) {
 <?php endif; ?>	
 	
 <?php if($options->get( 'theme_preloader' ) ):?>	
+<?php
+$preloader_type = $options->get( 'preloader_type' );
+if ( empty( $preloader_type ) ) {
+	$preloader_type = 'text';
+}
+?>
 <!-- preloader -->
 <div class="loader-wrap">
     <div class="preloader">
         <div class="preloader-close">x</div>
         <div class="handle-preloader">
-            <div class="animation-preloader">
+            <div class="animation-preloader <?php echo esc_attr( $preloader_type === 'logo' ? 'preloader-logo-type' : '' ); ?>">
                 <div class="spinner"></div>
-                <?php echo wp_kses( $options->get( 'preloader_text', ' ' ), $allowed_html ); ?>
+                <?php if ( $preloader_type === 'logo' ) : ?>
+                    <?php
+                    $logo = $options->get( 'preloader_logo' );
+                    $logo_url = '';
+                    if ( ! empty( $logo['url'] ) ) {
+                        $logo_url = $logo['url'];
+                    } elseif ( ! empty( $logo['id'] ) ) {
+                        $u = wp_get_attachment_url( (int) $logo['id'] );
+                        if ( $u ) {
+                            $logo_url = $u;
+                        }
+                    }
+                    if ( $logo_url ) :
+                    ?>
+                    <div class="preloader-logo-wrap">
+                        <div class="preloader-logo-circle">
+                            <img src="<?php echo esc_url( $logo_url ); ?>" alt="Loading" class="preloader-logo-img" />
+                        </div>
+                    </div>
+                    <?php else : ?>
+                    <div class="preloader-logo-wrap preloader-logo-placeholder">
+                        <div class="preloader-logo-circle"><span>Logo</span></div>
+                    </div>
+                    <?php endif; ?>
+                <?php else : ?>
+                    <?php echo wp_kses( $options->get( 'preloader_text', ' ' ), $allowed_html ); ?>
+                <?php endif; ?>
             </div>  
         </div>
     </div>

@@ -73,7 +73,66 @@
 
 
 /* ==========================================================================
-   6. MISC / UTILITY
+   6. PRELOADER – Logo Loading (circle animation)
+   ========================================================================== */
+
+/* Logo type: ẩn spinner mặc định, hiện logo trong vòng tròn xoay */
+.handle-preloader .animation-preloader.preloader-logo-type .spinner {
+	display: none;
+}
+
+.handle-preloader .animation-preloader.preloader-logo-type .preloader-logo-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 0;
+}
+
+.handle-preloader .animation-preloader .preloader-logo-circle {
+	position: relative;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	border: 3px solid rgba(255, 255, 255, 0.3);
+	border-top-color: #fff;
+	animation: preloader-circle-spin 1s linear infinite;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.05);
+}
+
+.handle-preloader .animation-preloader .preloader-logo-img {
+	max-width: 60%;
+	max-height: 60%;
+	object-fit: contain;
+	position: relative;
+	z-index: 1;
+}
+
+.handle-preloader .animation-preloader .preloader-logo-placeholder .preloader-logo-circle span {
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.6);
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+@keyframes preloader-circle-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media screen and (max-width: 500px) {
+	.handle-preloader .animation-preloader .preloader-logo-circle {
+		width: 90px;
+		height: 90px;
+	}
+}
+
+
+/* ==========================================================================
+   7. MISC / UTILITY
    ========================================================================== */
 
 /* Custom rules khác */
