@@ -516,4 +516,8 @@ span.page-numbers.current {
 	.scroll-to-top {
 		right: -50px;
 	}
+
+	.banner-section {
+		padding-bottom: 100px;
+	}
 }
