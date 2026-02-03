@@ -57,7 +57,7 @@ if ( ! function_exists( 'wp_body_open' ) ) {
 <!-- mouse-pointer end -->
 <?php endif; ?>	
 	
-<?php if($options->get( 'theme_preloader' ) ):?>	
+<?php if ( $options->get( 'theme_preloader' ) && ! ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ) ) : ?>	
 <?php
 $preloader_type = $options->get( 'preloader_type' );
 if ( empty( $preloader_type ) ) {
@@ -98,7 +98,11 @@ if ( empty( $preloader_type ) ) {
                 <?php else : ?>
                     <?php
                     $preloader_text = $options->get( 'preloader_text', ' ' );
-                    $preloader_text = is_string( $preloader_text ) ? wp_check_invalid_utf8( $preloader_text ) : ' ';
+                    // Tránh output "1" khi giá trị là integer/boolean từ DB
+                    if ( ! is_string( $preloader_text ) || $preloader_text === '1' || $preloader_text === 1 ) {
+                        $preloader_text = ' ';
+                    }
+                    $preloader_text = wp_check_invalid_utf8( $preloader_text ) ?: ' ';
                     echo wp_kses( $preloader_text, $allowed_html );
                     ?>
                 <?php endif; ?>

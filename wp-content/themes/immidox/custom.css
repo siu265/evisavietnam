@@ -337,6 +337,10 @@ span.page-numbers.current {
 	padding: 10px;
 }
 
+.header-style-one .header-lower .menu-area .btn-box, .main-header.header-style-four .nav-right li.btn-box {
+	display: block !important;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
