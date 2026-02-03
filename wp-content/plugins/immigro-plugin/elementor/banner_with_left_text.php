@@ -100,6 +100,42 @@ class Banner_With_Left_Text extends Widget_Base {
 		
 		
 		$this->end_controls_section();
+
+		// Animation Text settings (widget-level)
+		$this->start_controls_section(
+			'anim_text_section',
+			[
+				'label' => esc_html__( 'Animation Text', 'immigro' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+		$this->add_control(
+			'anim_effect',
+			[
+				'label'   => esc_html__( 'Animation Effect', 'immigro' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'fade',
+				'options' => [
+					'fade'       => esc_html__( 'Fade', 'immigro' ),
+					'slideUp'    => esc_html__( 'Slide Up', 'immigro' ),
+					'slideDown'  => esc_html__( 'Slide Down', 'immigro' ),
+					'slideLeft'  => esc_html__( 'Slide Left', 'immigro' ),
+					'slideRight' => esc_html__( 'Slide Right', 'immigro' ),
+				],
+			]
+		);
+		$this->add_control(
+			'anim_interval',
+			[
+				'label'   => esc_html__( 'Interval (ms)', 'immigro' ),
+				'type'    => Controls_Manager::NUMBER,
+				'default' => 3000,
+				'min'     => 1000,
+				'max'     => 10000,
+				'step'    => 500,
+			]
+		);
+		$this->end_controls_section();
 		
 		// New Tab#1
 
@@ -200,6 +236,34 @@ class Banner_With_Left_Text extends Widget_Base {
 			);
 				
 				
+		$this->end_controls_section();
+
+		// Style: Animation Text
+		$this->start_controls_section(
+			'anim_text_style',
+			[
+				'label' => esc_html__( 'Animation Text Style', 'immigro' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'anim_text_typography',
+				'label'    => esc_html__( 'Typography', 'immigro' ),
+				'selector' => '{{WRAPPER}} .banner-animation-text .banner-anim-item',
+			]
+		);
+		$this->add_control(
+			'anim_text_color',
+			[
+				'label'     => esc_html__( 'Color', 'immigro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .banner-animation-text .banner-anim-item' => 'color: {{VALUE}};',
+				],
+			]
+		);
 		$this->end_controls_section();	
 					
 		
@@ -220,13 +284,21 @@ class Banner_With_Left_Text extends Widget_Base {
 
 
 <style>
-.banner-animation-text { min-height: 1.5em; }
+.banner-animation-text.banner-anim-inline { display: inline; position: relative; }
 .banner-animation-text .banner-anim-item {
 	position: absolute; left: 0; top: 0; opacity: 0;
-	transition: opacity 0.5s ease;
-	pointer-events: none;
+	transition: opacity 0.5s ease, transform 0.5s ease;
+	pointer-events: none; white-space: nowrap;
 }
 .banner-animation-text .banner-anim-item.active { position: relative; opacity: 1; pointer-events: auto; }
+.banner-animation-text.banner-anim-slideUp .banner-anim-item { transform: translateY(10px); }
+.banner-animation-text.banner-anim-slideUp .banner-anim-item.active { transform: translateY(0); }
+.banner-animation-text.banner-anim-slideDown .banner-anim-item { transform: translateY(-10px); }
+.banner-animation-text.banner-anim-slideDown .banner-anim-item.active { transform: translateY(0); }
+.banner-animation-text.banner-anim-slideLeft .banner-anim-item { transform: translateX(10px); }
+.banner-animation-text.banner-anim-slideLeft .banner-anim-item.active { transform: translateX(0); }
+.banner-animation-text.banner-anim-slideRight .banner-anim-item { transform: translateX(-10px); }
+.banner-animation-text.banner-anim-slideRight .banner-anim-item.active { transform: translateX(0); }
 </style>
 <?php
 	  echo '
@@ -301,23 +373,27 @@ $(".banner-animation-text").each(function(){
                     <div class="auto-container">
                         <div class="content-box p_relative d_block z_5">
                             <h3><?php echo wp_kses($item['block_subtitle'], $allowed_tags);?></h3>
-                            <h2 class="p_relative d_block"><?php echo wp_kses($item['block_title'], $allowed_tags);?></h2>
                             <?php
                             $anim_text = isset( $item['block_animation_text'] ) ? trim( (string) $item['block_animation_text'] ) : '';
-                            if ( $anim_text !== '' ) :
-                                $anim_parts = array_map( 'trim', explode( '|', $anim_text ) );
-                                $anim_parts = array_filter( $anim_parts );
+                            $anim_parts = [];
+                            if ( $anim_text !== '' ) {
+                                $anim_parts = array_filter( array_map( 'trim', explode( '|', $anim_text ) ) );
+                            }
+                            ?>
+                            <h2 class="p_relative d_block banner-title-wrap">
+                                <?php echo wp_kses($item['block_title'], $allowed_tags); ?><?php if ( ! empty( $anim_parts ) ) : ?> <?php endif; ?>
+                                <?php
                                 if ( ! empty( $anim_parts ) ) :
-                            ?>
-                            <div class="banner-animation-text p_relative d_block" data-interval="3000">
-                                <?php foreach ( $anim_parts as $idx => $part ) : ?>
-                                <span class="banner-anim-item<?php echo $idx === 0 ? ' active' : ''; ?>"><?php echo esc_html( $part ); ?></span>
-                                <?php endforeach; ?>
-                            </div>
-                            <?php
-                                endif;
-                            endif;
-                            ?>
+                                    $anim_effect = isset( $settings['anim_effect'] ) ? $settings['anim_effect'] : 'fade';
+                                    $anim_interval = isset( $settings['anim_interval'] ) ? absint( $settings['anim_interval'] ) : 3000;
+                                ?>
+                                <span class="banner-animation-text banner-anim-inline banner-anim-<?php echo esc_attr( $anim_effect ); ?>" data-interval="<?php echo esc_attr( $anim_interval ); ?>">
+                                    <?php foreach ( $anim_parts as $idx => $part ) : ?>
+                                    <span class="banner-anim-item<?php echo $idx === 0 ? ' active' : ''; ?>"><?php echo esc_html( $part ); ?></span>
+                                    <?php endforeach; ?>
+                                </span>
+                                <?php endif; ?>
+                            </h2>
                             <p class="p_relative d_block"><?php echo wp_kses($item['block_text'], $allowed_tags);?></p>
                             <div class="btn-box">
                                 <a href="<?php echo esc_url($item['block_btnlink']['url']);?>" class="btn-1"><?php echo wp_kses($item['block_button'], $allowed_tags);?><span></span></a>

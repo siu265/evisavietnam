@@ -160,10 +160,6 @@ $logo_typography = '';
 				<?php if( $options->get( 'address_v1' ) ):?>
 				<li><?php echo wp_kses( $options->get( 'address_v1'), $allowed_html ); ?></li>
 				<?php endif; ?>
-				<?php if( $options->get( 'phone_v1' ) ):?>
-				<li><a href="tel:<?php echo wp_kses( $options->get( 'phone_link_v1'), $allowed_html ); ?>"><?php echo wp_kses( $options->get( 'phone_v1'), $allowed_html ); ?></a></li>
-				<?php endif; ?>
-				
 				<?php if( $options->get( 'email_v1' ) ):?>
 				<li><a href="mailto:<?php echo wp_kses( $options->get( 'email_link_v1'), $allowed_html ); ?>"><?php echo wp_kses( $options->get( 'email_v1'), $allowed_html ); ?></a></li>
 				<?php endif; ?>

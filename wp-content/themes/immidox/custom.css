@@ -165,6 +165,10 @@
 }
 
 @media screen and (max-width: 768px) {
+	.header-top {
+		display: none;
+	}
+	
 	.header-top .info li a {
 		font-size: 14px;
 		text-align: left;
