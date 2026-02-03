@@ -1,0 +1,62 @@
+2026-01-29T07:58:58+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 459025000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202601290758582090649151
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8439
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8439/?key=wc_order_zdwCgsrm2Hl0U
+    [vpc_TicketNo] => 14.187.188.16
+    [vpc_Version] => 2
+)
+2026-01-29T08:31:05+00:00 INFO process_onepay_ipn - Order ID: 8439 - Order Note: WC_onepay Gateway Info | Code: 253 | Message: Giao dịch không thành công. Quá thời gian thanh toán. Vui lòng thực hiện thanh toán lại  - http_args: Array
+(
+    [vpc_Amount] => 459025000
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202601290758582090649151
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Expired
+    [vpc_OrderInfo] => 8439
+    [vpc_SecureHash] => A3E0C37CF509DF2F1DB478F5DBBDB5DF11CB61E69B1488A2FD8ACBBDDD43F544
+    [vpc_TxnResponseCode] => 253
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-01-29T09:04:33+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 459025000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 20260129090433871452461
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8440
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8440/?key=wc_order_bsz5LSv0Vp7pN
+    [vpc_TicketNo] => 14.187.188.16
+    [vpc_Version] => 2
+)
+2026-01-29T09:37:04+00:00 INFO process_onepay_ipn - Order ID: 8440 - Order Note: WC_onepay Gateway Info | Code: 253 | Message: Giao dịch không thành công. Quá thời gian thanh toán. Vui lòng thực hiện thanh toán lại  - http_args: Array
+(
+    [vpc_Amount] => 459025000
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 20260129090433871452461
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Expired
+    [vpc_OrderInfo] => 8440
+    [vpc_SecureHash] => 94A565C0231DECA4369406CEC38F705A11740A43B1DB169E7CAE7D5E3641B179
+    [vpc_TxnResponseCode] => 253
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
