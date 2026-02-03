@@ -48,9 +48,12 @@ class Visa_Wizard_V2_5 {
         
         // Đảm bảo WooCommerce trả về JSON khi submit từ AJAX
         add_filter( 'woocommerce_ajax_get_endpoint', array( $this, 'fix_checkout_endpoint' ), 10, 2 );
+
+        // Log chu trình khi truy cập trang order-received
+        add_action( 'template_redirect', array( $this, 'log_order_received_page_request' ), 1 );
     }
 
-    /** Ghi log vào file riêng trong plugin (không phụ thuộc debug.log) */
+    /** Ghi log vào file riêng trong plugin (logs/visa-checkout.log) */
     private function visa_log( $msg ) {
         try {
             $dir = __DIR__ . '/logs';
@@ -60,13 +63,24 @@ class Visa_Wizard_V2_5 {
             $file = $dir . '/visa-checkout.log';
             $line = '[' . current_time( 'Y-m-d H:i:s' ) . '] ' . ( is_string( $msg ) ? $msg : print_r( $msg, true ) ) . "\n";
             $result = @file_put_contents( $file, $line, FILE_APPEND | LOCK_EX );
-            // Nếu không ghi được, thử ghi vào error_log
             if ( $result === false ) {
-                error_log( '[VISA LOG FAILED] ' . $msg );
+                error_log( '[VISA LOG FAILED] ' . ( is_string( $msg ) ? $msg : json_encode( $msg ) ) );
             }
         } catch ( Exception $e ) {
             error_log( '[VISA LOG EXCEPTION] ' . $e->getMessage() );
         }
+    }
+
+    /** Log khi request trang order-received (để debug lỗi thank you) */
+    public function log_order_received_page_request() {
+        $uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+        if ( strpos( $uri, 'order-received' ) === false && empty( $_GET['key'] ) ) {
+            return;
+        }
+        $this->visa_log( '--- ORDER RECEIVED PAGE REQUEST ---' );
+        $this->visa_log( 'URI: ' . $uri );
+        $this->visa_log( 'GET: ' . json_encode( $_GET ) );
+        $this->visa_log( 'is_wc_endpoint_url(order-received): ' . ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ? 'yes' : 'no' ) );
     }
 
     /* ================= 1. ADMIN SETTINGS ================= */
@@ -1406,17 +1420,31 @@ class Visa_Wizard_V2_5 {
     }
 
     public function ajax_upload_file() {
-        if(!function_exists('wp_handle_upload')) require_once(ABSPATH.'wp-admin/includes/file.php');
-        $up = wp_handle_upload($_FILES['file'], ['test_form'=>false]);
-        if(isset($up['url'])) wp_send_json_success(['url'=>$up['url']]); else wp_send_json_error();
+        if ( ! function_exists( 'wp_handle_upload' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+        $up = wp_handle_upload( $_FILES['file'], array( 'test_form' => false ) );
+        if ( isset( $up['url'] ) ) {
+            wp_send_json_success( array( 'url' => $up['url'] ) );
+        }
+        $this->visa_log( 'ERROR ajax_upload_file: Upload failed. up=' . json_encode( $up ) );
+        wp_send_json_error();
     }
 
     public function ajax_checkout() {
-        parse_str($_POST['data'], $form);
-        
+        $this->visa_log( '=== AJAX_CHECKOUT START ===' );
+        try {
+            parse_str($_POST['data'], $form);
+            $this->visa_log( 'Form keys: ' . implode( ', ', array_keys( $form ) ) );
+        } catch ( Exception $e ) {
+            $this->visa_log( 'ERROR parse_str: ' . $e->getMessage() );
+            wp_send_json_error(['message' => 'Invalid form data.']);
+        }
+
         $arrival = isset($form['arrival_date']) ? trim((string) $form['arrival_date']) : '';
         $today   = current_time('Y-m-d');
         if ( $arrival === '' || $arrival <= $today ) {
+            $this->visa_log( 'ERROR: Arrival date invalid (arrival=' . $arrival . ', today=' . $today . ')' );
             wp_send_json_error(['message' => __('Arrival date must be a future date.', 'woocommerce')]);
         }
         
@@ -1467,38 +1495,56 @@ class Visa_Wizard_V2_5 {
         ];
         
         if ( empty($form['variation_id']) ) {
+            $this->visa_log( 'ERROR: Missing variation_id' );
             wp_send_json_error(['message' => 'Missing Price/Variation ID. Please re-select options.']);
         }
 
         // Validate billing email before setting (WooCommerce throws WC_Data_Exception if invalid)
         $billing_email = $first_traveler['email'];
         if ( empty( $billing_email ) ) {
+            $this->visa_log( 'ERROR: Billing email empty' );
             wp_send_json_error(['message' => __('Please enter a valid email address.', 'woocommerce')]);
         }
         if ( ! is_email( $billing_email ) ) {
+            $this->visa_log( 'ERROR: Billing email invalid: ' . $billing_email );
             wp_send_json_error(['message' => __('Please enter a valid email address.', 'woocommerce')]);
         }
 
+        $this->visa_log( 'Adding to cart: product_id=' . $form['product_id'] . ', qty=' . $num_travelers . ', variation_id=' . $form['variation_id'] );
+
         // Thêm vào cart với số lượng = số người
-        if(WC()->cart->add_to_cart( $form['product_id'], $num_travelers, $form['variation_id'], [], $custom_data )) {
-            $c = WC()->customer;
-            $c->set_billing_first_name($first_traveler['contact_name']);
-            $c->set_billing_email(sanitize_email($billing_email));
-            $c->set_billing_phone($first_traveler['phone']);
-            $c->set_billing_country('VN');
-            $c->set_billing_address_1('Online App');
-            $c->set_billing_city('Hanoi');
-            $c->set_billing_postcode('');
-            $c->save();
-            wp_send_json_success(['message' => 'Added to cart successfully']);
-        } else {
-            wp_send_json_error(['message' => 'Error adding to cart. Please try again.']);
+        try {
+            $added = WC()->cart->add_to_cart( $form['product_id'], $num_travelers, $form['variation_id'], [], $custom_data );
+            if ( $added ) {
+                $c = WC()->customer;
+                $c->set_billing_first_name($first_traveler['contact_name']);
+                $c->set_billing_email(sanitize_email($billing_email));
+                $c->set_billing_phone($first_traveler['phone']);
+                $c->set_billing_country('VN');
+                $c->set_billing_address_1('Online App');
+                $c->set_billing_city('Hanoi');
+                $c->set_billing_postcode('');
+                $c->save();
+                $this->visa_log( 'AJAX_CHECKOUT SUCCESS: Cart count=' . WC()->cart->get_cart_contents_count() );
+                wp_send_json_success(['message' => 'Added to cart successfully']);
+            } else {
+                $this->visa_log( 'ERROR: add_to_cart returned false' );
+                wp_send_json_error(['message' => 'Error adding to cart. Please try again.']);
+            }
+        } catch ( Exception $e ) {
+            $this->visa_log( 'ERROR add_to_cart: ' . $e->getMessage() );
+            $this->visa_log( 'Stack: ' . $e->getTraceAsString() );
+            wp_send_json_error(['message' => 'Error: ' . $e->getMessage()]);
         }
     }
     
     public function ajax_load_checkout() {
+        $this->visa_log( '=== AJAX_LOAD_CHECKOUT START ===' );
+        $this->visa_log( 'Cart is_empty: ' . ( WC()->cart->is_empty() ? 'yes' : 'no' ) . ', count=' . WC()->cart->get_cart_contents_count() );
+
         // Kiểm tra cart có sản phẩm không
         if ( WC()->cart->is_empty() ) {
+            $this->visa_log( 'ERROR: Cart empty, cannot load checkout' );
             wp_send_json_error(['message' => 'Cart is empty']);
         }
         
@@ -1525,10 +1571,11 @@ class Visa_Wizard_V2_5 {
             $html,
             1
         );
-        
+
+        $this->visa_log( 'AJAX_LOAD_CHECKOUT SUCCESS: HTML length=' . strlen( $html ) );
         wp_send_json_success(['html' => $html]);
     }
-    
+
     public function ajax_process_checkout() {
         // Log ngay đầu để đảm bảo hàm được gọi
         $this->visa_log( '=== ajax_process_checkout CALLED ===' );
@@ -1685,12 +1732,15 @@ class Visa_Wizard_V2_5 {
 
     /** Hook: clear session khi xem trang order-received (đảm bảo clear dù checkout xử lý bởi WC hay plugin) */
     public function clear_visa_session_on_thankyou( $order_id ) {
+        $this->visa_log( '=== CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=' . $order_id . ' ===' );
         if ( ! $order_id || ! WC()->session ) {
+            $this->visa_log( 'Skip: order_id=' . $order_id . ', session=' . ( WC()->session ? 'yes' : 'no' ) );
             return;
         }
         WC()->session->__unset( 'visa_draft_data' );
         WC()->session->__unset( 'checkout' );
         WC()->session->__unset( 'order_awaiting_payment' );
+        $this->visa_log( 'Session cleared for order ' . $order_id );
     }
 
     public function save_order_meta($item, $key, $values, $order) {
