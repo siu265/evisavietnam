@@ -624,6 +624,10 @@ class Visa_Wizard_V2_5 {
                             </div>
                         </div>
                         
+                        <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
+                            <!-- Checkout form sẽ được load vào đây -->
+                        </div>
+                        
                         <div class="form-group visa-terms-wrap" style="margin:24px 0;">
                             <label class="visa-terms-label">
                                 <input type="checkbox" id="agree_terms" class="required-field">
@@ -632,10 +636,6 @@ class Visa_Wizard_V2_5 {
                             <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:280px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:6px; background:#f9f9f9;">
                                 <div id="terms_content_display"></div>
                             </div>
-                        </div>
-                        
-                        <div id="visa_checkout_wrapper" class="visa-checkout-wrapper">
-                            <!-- Checkout form sẽ được load vào đây -->
                         </div>
                     </div>
                 </div>
@@ -759,7 +759,7 @@ class Visa_Wizard_V2_5 {
                 var valPhone = (visaPrefill && visaPrefill.phone_number) ? visaPrefill.phone_number.replace(/"/g, '&quot;') : '';
                 var valCode = (visaPrefill && visaPrefill.phone_code) ? visaPrefill.phone_code : '';
                 var html = '<div class="main-contact-section">';
-                html += '<p class="description" style="margin-bottom:16px; color:#666;">One contact person for all travelers (main contact).</p>';
+                // html += '<p class="description" style="margin-bottom:16px; color:#666;">One contact person for all travelers (main contact).</p>';
                 html += '<div class="form-group">';
                 html += '<label style="display:block; margin-bottom:6px; font-weight:600; color:#555;">' + lblContact + '</label>';
                 html += '<input type="text" name="contact_name" class="form-control required-field" placeholder="' + phContact + '" value="' + valContact + '">';
