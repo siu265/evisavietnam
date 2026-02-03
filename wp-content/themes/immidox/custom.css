@@ -659,6 +659,6 @@ span.page-numbers.current {
 	}
 
 	.sidebar-page-container p {
-		margin-bottom: 0px;
+		margin-bottom: 0px !important;
 	}
 }
