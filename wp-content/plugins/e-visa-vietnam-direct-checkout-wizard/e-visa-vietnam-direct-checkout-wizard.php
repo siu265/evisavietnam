@@ -675,7 +675,7 @@ class Visa_Wizard_V2_5 {
                             <div class="review-item"><span>Processing Time:</span> <span class="review-value" id="rev_time">--</span></div>
                             <div class="review-item"><span>Arrival Date:</span> <span class="review-value" id="rev_date">--</span></div>
                             <div class="review-item"><span>Number of Travelers:</span> <span class="review-value" id="rev_travelers">--</span></div>
-                            <div class="review-item"><span>Travelers Info:</span> <span class="review-value" id="rev_name" style="text-align:left; display:block; margin-top:8px;"></span></div>
+                            <div class="review-item"><span>Travelers Info:</span> <span class="review-value" id="rev_name" style="text-align:left; display:block; margin-top:0px;"></span></div>
                             <div class="review-item review-total">
                                 <span>Total:</span> <span class="review-value" id="rev_price">--</span>
                             </div>
@@ -1379,7 +1379,7 @@ class Visa_Wizard_V2_5 {
                 for(var i = 1; i <= numTravelers; i++) {
                     let passportUrl = $("input[name=\"passport_url_" + i + "\"]").val() || "";
                     let photoUrl = $("input[name=\"photo_url_" + i + "\"]").val() || "";
-                    travelersHtml += "<div style=\"margin-top:12px; padding-top:12px; border-top:1px solid #eee; font-size:13px; line-height:1.6;\">";
+                    travelersHtml += "<div style=\"display: flex;flex-wrap: wrap;margin-top:12px; padding-top:12px; border-top:1px solid #eee; font-size:13px; line-height:1.6;\">";
                     travelersHtml += "<strong style=\"color:#222;\">Traveler " + i + ":</strong> ";
                     travelersHtml += "Passport: " + (passportUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--") + " | ";
                     travelersHtml += "Photo: " + (photoUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--");

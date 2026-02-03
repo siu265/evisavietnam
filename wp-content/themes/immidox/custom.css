@@ -12,6 +12,7 @@
 .header-style-one .header-lower .outer-box::before {
 	z-index: 0;
 }
+
 .header-style-one .header-lower .main-box,
 .header-style-one .header-lower .menu-area,
 .header-style-one .header-lower .menu-area .btn-box {
@@ -25,15 +26,21 @@
 	flex-wrap: nowrap;
 	white-space: nowrap;
 }
-.header-style-one .header-lower .menu-area .main-menu .navigation > li > a {
+
+.header-style-one .header-lower .menu-area .main-menu .navigation>li>a {
 	white-space: nowrap;
 	padding-left: 12px;
 	padding-right: 12px;
 	font-size: 16px;
 	font-weight: 700;
 }
+
+#payment_method_onepay {
+	display: none !important;
+}
+
 @media only screen and (max-width: 1499px) {
-	.header-style-one .header-lower .menu-area .main-menu .navigation > li > a {
+	.header-style-one .header-lower .menu-area .main-menu .navigation>li>a {
 		padding-left: 10px;
 		padding-right: 10px;
 		font-size: 14px;
@@ -43,6 +50,7 @@
 .header-style-one .header-lower .menu-area .main-menu {
 	margin-right: 350px;
 }
+
 @media only screen and (max-width: 1749px) {
 	.header-style-one .header-lower .menu-area .main-menu {
 		margin-right: 80px;
@@ -51,14 +59,17 @@
 
 /* Menu mobile sớm hơn (breakpoint 1400px) */
 @media only screen and (max-width: 1399px) {
+
 	.header-style-one .header-lower .menu-area .main-menu,
 	.sticky-header .main-menu {
 		display: none !important;
 	}
+
 	.header-style-one .menu-area .mobile-nav-toggler {
 		display: block !important;
 		padding: 10px;
 	}
+
 	.header-style-one .header-lower .menu-area {
 		display: flex !important;
 		align-items: center;
@@ -69,6 +80,7 @@
 		border-radius: 0;
 		overflow: visible;
 	}
+
 	.header-style-one .header-lower .menu-area .btn-box {
 		clip-path: none;
 	}
@@ -79,17 +91,24 @@
 	display: flex !important;
 	align-items: center;
 }
+
 .header-style-one .header-lower .menu-area .btn-box a {
 	white-space: nowrap;
 	font-size: 16px;
 	font-weight: 600;
 	border-radius: 8px;
 }
+
+.navSidebar-button {
+	display: none !important;
+}
+
 @media only screen and (max-width: 767px) {
 	.header-style-one .header-lower .menu-area .btn-box a {
 		padding: 8px 14px;
 		font-size: 13px;
 	}
+
 	.navSidebar-button {
 		display: none !important;
 	}
@@ -360,20 +379,24 @@
 	flex-wrap: wrap;
 	align-items: stretch;
 }
-.team-section .row > [class*="col-"] {
+
+.team-section .row>[class*="col-"] {
 	display: flex;
 }
+
 .team-section .team-block-one {
 	flex: 1;
 	display: flex;
 	width: 100%;
 }
+
 .team-section .inner-box {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 }
+
 .team-section .content-box {
 	flex: 1;
 	display: flex;
@@ -386,9 +409,9 @@
 }
 
 .post-meta-author {
-    margin-left: 5px;
-    padding-left: 5px;
-    border-left: 1px solid #bc9c22;
+	margin-left: 5px;
+	padding-left: 5px;
+	border-left: 1px solid #bc9c22;
 	color: #bc9c22;
 }
 
@@ -397,15 +420,15 @@
 }
 
 .immigro-blog-search-form {
-    background-color: rgba(0, 0, 0, .03);
-    border-color: rgba(0, 0, 0, .09);
-    border-radius: 99px;
-    box-shadow: none;
-    color: currentColor !important;
-    padding: 10px 15px;
-    margin-bottom: 20px;
+	background-color: rgba(0, 0, 0, .03);
+	border-color: rgba(0, 0, 0, .09);
+	border-radius: 99px;
+	box-shadow: none;
+	color: currentColor !important;
+	padding: 10px 15px;
+	margin-bottom: 20px;
 	display: flex;
-    justify-content: space-between;
+	justify-content: space-between;
 	align-items: center;
 	gap: 10px;
 }
@@ -416,9 +439,9 @@
 
 span.page-numbers.current {
 	font-family: 'Poppins', sans-serif;
-    border: 1px solid #bc9c22;
-    background-color: #bc9c22;
-    border-color: #bc9c22;
+	border: 1px solid #bc9c22;
+	background-color: #bc9c22;
+	border-color: #bc9c22;
 }
 
 .wp-block-group__inner-container {
