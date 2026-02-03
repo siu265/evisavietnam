@@ -36,7 +36,7 @@ $logo_typography = '';
 			<div class="top-right">
 				<ul class="info clearfix">
 					<?php if( $options->get( 'phone_v1' ) ):?>
-					<li><i class="icon-3"></i><a href="tel:<?php echo wp_kses( $options->get( 'phone_link_v1'), $allowed_html ); ?>"><?php echo wp_kses( $options->get( 'phone_v1'), $allowed_html ); ?></a></li>
+					<li><i class="icon-24"></i><a href="<?php echo wp_kses( $options->get( 'phone_link_v1'), $allowed_html ); ?>"><?php echo wp_kses( $options->get( 'phone_v1'), $allowed_html ); ?></a></li>
 					<?php endif; ?>
 					<?php if( $options->get( 'login_v1' ) ):?>
 					<li><i class="icon-4"></i><a href="<?php echo wp_kses( $options->get( 'login_link_v1'), $allowed_html ); ?>"><?php echo wp_kses( $options->get( 'login_v1'), $allowed_html ); ?></a></li>
@@ -104,7 +104,7 @@ $logo_typography = '';
 				</li>
 				
 				<li class="nav-btn nav-toggler navSidebar-button clearfix">
-					<i class="icon-24"></i>
+					<i class="icon-5"></i>
 				</li>
 			</ul>
 			<?php endif; ?>
@@ -133,7 +133,7 @@ $logo_typography = '';
 					</li>
 					
 					<li class="nav-btn nav-toggler navSidebar-button clearfix">
-						<i class="icon-24"></i>
+						<i class="icon-5"></i>
 					</li>
 				</ul>
 				<?php endif; ?>
