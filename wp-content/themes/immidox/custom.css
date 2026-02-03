@@ -249,6 +249,7 @@
 	vertical-align: top;
 	width: 80% !important;
 	height: auto !important;
+	border-radius: unset !important;
 }
 
 .team-block-one .inner-box .content-box {
