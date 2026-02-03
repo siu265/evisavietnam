@@ -1,0 +1,67 @@
+2026-02-03T06:29:26+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 654500000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 20260203062926840225605
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8587
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8587/?key=wc_order_yuJfWYxaSuput
+    [vpc_TicketNo] => 14.187.188.16
+    [vpc_Version] => 2
+)
+2026-02-03T07:02:04+00:00 INFO process_onepay_ipn - Order ID: 8587 - Order Note: WC_onepay Gateway Info | Code: 253 | Message: Giao dịch không thành công. Quá thời gian thanh toán. Vui lòng thực hiện thanh toán lại  - http_args: Array
+(
+    [vpc_Amount] => 654500000
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 20260203062926840225605
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Expired
+    [vpc_OrderInfo] => 8587
+    [vpc_SecureHash] => DC634BE11DA5E54764F0C736557057D5A3CF4DAD988E26181D2D0D393CC5F735
+    [vpc_TxnResponseCode] => 253
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-02-03T12:52:31+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 916300000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 20260203125231744453366
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8746
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8746/?key=wc_order_OyageMUAflvae
+    [vpc_TicketNo] => 125.212.158.14
+    [vpc_Version] => 2
+)
+2026-02-03T12:53:19+00:00 INFO process_onepay_ipn - Order ID: 8746 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 916300000
+    [vpc_Card] => 970436
+    [vpc_CardNum] => 970436xxxxxxxxx0002
+    [vpc_CardUid] => INS-OMHnwB6yURTgY3BYJAqMFA
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 20260203125231744453366
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8746
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => D5737886888B4DC85E707A83C2FCFCC5D291E8A1C730BA1F37C1EC1959342866
+    [vpc_TransactionNo] => PAY-eyocuSemS7WPZZB0wrPbEg
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)

