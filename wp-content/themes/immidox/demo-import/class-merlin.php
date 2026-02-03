@@ -122,6 +122,13 @@ class Merlin {
 	public $slug;
 
 	/**
+	 * Admin page hook suffix from add_theme_page.
+	 *
+	 * @var string|false
+	 */
+	public $hook_suffix;
+
+	/**
 	 * The base url where Merlin is located.
 	 *
 	 * @var array $strings
