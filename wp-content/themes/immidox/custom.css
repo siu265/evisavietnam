@@ -12,6 +12,41 @@
 	margin-right: 350px;
 }
 
+/* Menu mobile sớm hơn (breakpoint 1400px thay vì 1200px) */
+@media only screen and (max-width: 1399px) {
+	.header-style-one .header-lower .menu-area .main-menu,
+	.sticky-header .main-menu {
+		display: none !important;
+	}
+	.header-style-one .menu-area .mobile-nav-toggler {
+		display: block !important;
+		padding: 10px;
+	}
+	.header-style-one .header-lower .menu-area {
+		display: flex !important;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 8px;
+	}
+}
+
+/* Luôn hiển thị nút Apply Now kể cả trên mobile (ghi đè display:none từ responsive.css) */
+.header-style-one .header-lower .menu-area .btn-box {
+	display: flex !important;
+	align-items: center;
+}
+.header-style-one .header-lower .menu-area .btn-box a {
+	white-space: nowrap;
+	padding: 10px 18px;
+	font-size: 14px;
+}
+@media only screen and (max-width: 767px) {
+	.header-style-one .header-lower .menu-area .btn-box a {
+		padding: 8px 14px;
+		font-size: 13px;
+	}
+}
+
 
 /* ==========================================================================
    2. WOOCOMMERCE / CHECKOUT
@@ -337,9 +372,9 @@ span.page-numbers.current {
 	padding: 10px;
 }
 
-.header-style-one .header-lower .menu-area .btn-box, .main-header.header-style-four .nav-right li.btn-box {
+/* .header-style-one .header-lower .menu-area .btn-box, .main-header.header-style-four .nav-right li.btn-box {
 	display: block !important;
-}
+} */
 
 @media screen and (max-width: 768px) {
 	.header-top {
