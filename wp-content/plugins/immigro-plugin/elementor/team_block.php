@@ -290,7 +290,7 @@ $this->end_controls_section();
 				'max'     => 120,
 				'selectors' => [
 					'{{WRAPPER}} .team-extra-images li' => 'width: {{VALUE}}px; height: {{VALUE}}px;',
-					'{{WRAPPER}} .team-extra-images li img' => 'width: {{VALUE}}px; height: {{VALUE}}px; object-fit: cover;',
+					'{{WRAPPER}} .team-extra-images li img' => 'width: 90%; height: auto; object-fit: cover;',
 				],
 			]
 		);
