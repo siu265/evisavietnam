@@ -70,6 +70,8 @@
             // This will make for easier support when we ask users what version they are using.
 
             public static $_version = '3.6.18';
+            public $old_opt_name;
+            public $wp_data = array();
             public static $_dir;
             public static $_url;
             public static $_upload_dir;

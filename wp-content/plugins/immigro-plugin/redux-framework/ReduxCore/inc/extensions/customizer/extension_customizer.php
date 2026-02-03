@@ -42,6 +42,7 @@
             private static $post_values = array();
             public static $version = "2.0.0";
             private $options = array();
+            public $upload_dir;
 
             /**
              * Class Constructor. Defines the args for the extions class
@@ -416,7 +417,7 @@
 
                     if ( method_exists( $wp_customize, 'add_panel' ) && ( ! isset( $section['subsection'] ) || ( isset( $section['subsection'] ) && $section['subsection'] != true ) ) && isset( $this->parent->sections[ ( $key + 1 ) ]['subsection'] ) && $this->parent->sections[ ( $key + 1 ) ]['subsection'] ) {
 
-                        $this->add_panel( $section['id'], array(
+                        $this->add_panel( $section['id'], $wp_customize, array(
                             'priority'    => $section['priority'],
                             'capability'  => $section['permissions'],
                             //'theme_supports' => '',
@@ -424,10 +425,10 @@
                             'section'     => $section,
                             'opt_name'    => $this->parent->args['opt_name'],
                             'description' => '',
-                        ), $wp_customize );
+                        ) );
                         $panel = $section['id'];
 
-                        $this->add_section( $section['id'], array(
+                        $this->add_section( $section['id'], $wp_customize, array(
                             'title'       => $section['title'],
                             'priority'    => $section['priority'],
                             'description' => $section['desc'],
@@ -435,14 +436,14 @@
                             'opt_name'    => $this->parent->args['opt_name'],
                             'capability'  => $section['permissions'],
                             'panel'       => $panel
-                        ), $wp_customize );
+                        ) );
 
 
                     } else {
                         if ( ! isset( $section['subsection'] ) || ( isset( $section['subsection'] ) && $section['subsection'] != true ) ) {
                             $panel = "";
                         }
-                        $this->add_section( $section['id'], array(
+                        $this->add_section( $section['id'], $wp_customize, array(
                             'title'       => $section['title'],
                             'priority'    => $section['priority'],
                             'description' => $section['desc'],
@@ -450,7 +451,7 @@
                             'section'     => $section,
                             'capability'  => $section['permissions'],
                             'panel'       => $panel
-                        ), $wp_customize );
+                        ) );
                     }
 
                     if ( ! isset( $section['fields'] ) || ( isset( $section['fields'] ) && empty( $section['fields'] ) ) ) {
@@ -580,7 +581,7 @@
 
             }
 
-            public function add_section( $id, $args = array(), $wp_customize ) {
+            public function add_section( $id, $wp_customize, $args = array() ) {
 
                 if ( is_a( $id, 'WP_Customize_Section' ) ) {
                     $section = $id;
@@ -603,7 +604,7 @@
              * @param WP_Customize_Panel|string $id   Customize Panel object, or Panel ID.
              * @param array                     $args Optional. Panel arguments. Default empty array.
              */
-            public function add_panel( $id, $args = array(), $wp_customize ) {
+            public function add_panel( $id, $wp_customize, $args = array() ) {
                 if ( is_a( $id, 'WP_Customize_Panel' ) ) {
                     $panel = $id;
                 } else {

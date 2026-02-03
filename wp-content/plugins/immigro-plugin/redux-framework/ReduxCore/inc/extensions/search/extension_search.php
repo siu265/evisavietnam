@@ -32,6 +32,8 @@ if (!class_exists('ReduxFramework_Extension_search')) {
         static $version = "1.0.1";
         // Protected vars
         protected $parent;
+        public $_extension_dir;
+        public $_extension_url;
 
         /**
          * Class Constructor. Defines the args for the extions class

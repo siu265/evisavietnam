@@ -11,6 +11,7 @@ if (!class_exists('ReduxFramework_extension_language')) {
         protected $parent;
         public $field_name = 'language';
         public static $instance;
+        public $extension_dir;
 
         public function __construct($parent)
         {

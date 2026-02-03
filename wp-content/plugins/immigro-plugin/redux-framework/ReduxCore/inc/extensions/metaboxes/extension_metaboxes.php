@@ -39,6 +39,7 @@
             public $boxes = array();
             public $post_types = array();
             public $post_type;
+            public $post_type_fields = array();
             public $sections = array();
             public $output = array();
             private $parent;

@@ -38,6 +38,7 @@ if ( !class_exists( 'ReduxFramework_extension_social_media' ) ) {
 		public static $instance;
 
 		public $folder_path;
+		public $field_name;
 
 		/**
 		 * class Constructor - defines the args for the extions class.

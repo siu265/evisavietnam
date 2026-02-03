@@ -14,6 +14,7 @@ if (!class_exists('ReduxFramework_Extension_repeater')) {
         // Protected vars
         protected $parent;
         public static $instance;
+        public $field_name;
 
         public function __construct($parent) {
 
