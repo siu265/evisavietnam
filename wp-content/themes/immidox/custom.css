@@ -631,4 +631,15 @@ span.page-numbers.current {
 	.banner-section {
 		padding-bottom: 100px;
 	}
+
+	.woocommerce ul.order_details li {
+		display: flex;
+		align-items: center;
+		float: left;
+		gap: 10px;
+	}
+
+	.woocommerce ul.order_details {
+		align-content: flex-start;
+	}
 }
