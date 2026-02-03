@@ -89,6 +89,9 @@
 		padding: 8px 14px;
 		font-size: 13px;
 	}
+	.navSidebar-button {
+		display: none !important;
+	}
 }
 
 /* Header-top: tránh admin bar / plugin đè lên email */

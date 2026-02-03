@@ -108,6 +108,20 @@ class Merlin {
 	protected $base_path = null;
 
 	/**
+	 * URL for the "Ready" big button.
+	 *
+	 * @var string
+	 */
+	public $ready_big_button_url;
+
+	/**
+	 * Theme slug (lowercase, no special chars).
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
 	 * The base url where Merlin is located.
 	 *
 	 * @var array $strings

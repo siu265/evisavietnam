@@ -15,6 +15,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Load textdomain sớm để tránh JIT trigger "too early" khi code chạy trước init
+add_action( 'plugins_loaded', function() {
+	load_plugin_textdomain( 'slider-path', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
+}, 0 );
+
 // This is file area
 define( 'SLIDERPATH_PLUGIN_URL', plugins_url( 'slider-path' ) . '/' );
 defined( 'SLIDERPATH_PLUGIN_DIR' ) || define( 'SLIDERPATH_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -82,7 +87,7 @@ if ( ! class_exists( 'SLIDERPATH_Main' ) ) {
 
             add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
             add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'enqueue_editor_styles' ] );
-            add_action( 'init', [ $this, 'i18n' ] );
+            add_action( 'init', [ $this, 'i18n' ], 0 );
             add_action( 'plugins_loaded', [ $this, 'include_files' ] );
             add_action( 'elementor/widgets/widgets_registered', [ $this, 'register_widgets' ] );
             add_action( 'elementor/frontend/before_enqueue_styles', [ $this, 'register_styles' ] );
@@ -191,7 +196,7 @@ if ( ! class_exists( 'SLIDERPATH_Main' ) ) {
         }
 
         /**
-         * Language and Textdomain
+         * Language and Textdomain (priority 0 = load sớm nhất tại init)
          */
         public function i18n() {
             load_plugin_textdomain( 'slider-path', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );

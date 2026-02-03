@@ -19,6 +19,13 @@ class Base {
 	 */
 	private $option_key = 'immigro';
 
+	/**
+	 * Protocol (http or https)
+	 *
+	 * @var string
+	 */
+	public $protocol;
+
 	function __construct() {
 
 	}
