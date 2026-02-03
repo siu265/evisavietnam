@@ -177,10 +177,46 @@
     justify-content: center;
     align-items: center;
 	color: #c8c2c2;
+	opacity: 0.5;
 }
 
 .banner-carousel .owl-nav button span {
 	font-size: 16px;
+}
+
+.team-block-one .inner-box .designation {
+	margin-bottom: 10px;
+}
+
+/* Extra Images (style giống social icons) */
+.team-extra-images {
+	list-style: none;
+	margin: 10px 0 15px 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.team-extra-images li {
+	display: inline-block;
+	overflow: hidden;
+	box-shadow: 0 10px 50px rgba(34, 34, 34, 0.2);
+	background: #fff;
+}
+.team-block-one .inner-box:hover .team-extra-images li {
+	background: rgba(255, 255, 255, 0.15);
+}
+.team-block-one .inner-box .team-extra-images li img {
+	display: block;
+	vertical-align: top;
+}
+.team-block-two .lower-content .team-extra-images,
+.team-block-three .lower-content .team-extra-images {
+	margin: 8px 0 12px 0;
+}
+
+.team-block-one .inner-box p {
+	margin-bottom: 15px;
 }
 
 @media screen and (max-width: 768px) {
