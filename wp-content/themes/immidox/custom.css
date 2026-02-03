@@ -206,7 +206,83 @@
 
 
 /* ==========================================================================
-   5. VISA WIZARD & PLUGIN
+   5. THANK YOU PAGE – Mobile
+   ========================================================================== */
+
+@media only screen and (max-width: 767px) {
+	/* Tránh cắt Total, overflow */
+	.woocommerce-order,
+	.woocommerce-order-details {
+		overflow-x: hidden;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.woocommerce-order .woocommerce-order-overview {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	/* Order details table – scroll ngang nếu cần, hoặc stack layout */
+	.woocommerce-order-details .woocommerce-table--order-details {
+		display: block;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details thead {
+		display: none;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details tbody,
+	.woocommerce-order-details .woocommerce-table--order-details tfoot {
+		display: block;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details tr {
+		display: block;
+		border-bottom: 1px solid #eee;
+		padding: 12px 0;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details td,
+	.woocommerce-order-details .woocommerce-table--order-details th {
+		display: block;
+		text-align: left !important;
+		padding: 4px 0;
+		border: none;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details td.product-total,
+	.woocommerce-order-details .woocommerce-table--order-details th:first-child {
+		font-weight: 600;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details td.product-total::before {
+		content: "Total: ";
+		font-weight: 600;
+		display: inline;
+	}
+	/* Tfoot totals – label trước giá */
+	.woocommerce-order-details .woocommerce-table--order-details tfoot tr {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		flex-wrap: wrap;
+		gap: 4px;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details tfoot th {
+		flex: 0 0 auto;
+	}
+	.woocommerce-order-details .woocommerce-table--order-details tfoot td {
+		flex: 0 0 auto;
+		white-space: nowrap;
+	}
+	/* URL dài (Passport Link, Selfie Link) – break để không tràn */
+	.woocommerce-order-details .product-name,
+	.woocommerce-order-details .product-name a {
+		word-break: break-all;
+		overflow-wrap: anywhere;
+		max-width: 100%;
+	}
+	/* Scroll to top – không bị cắt trên Thank You */
+	.scroll-to-top {
+		right: 10px !important;
+	}
+}
+
+/* ==========================================================================
+   6. VISA WIZARD & PLUGIN
    ========================================================================== */
 
 /* Override cho e-visa wizard, form, modal... tại đây nếu cần */
