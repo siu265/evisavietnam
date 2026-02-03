@@ -68,15 +68,20 @@ defined( 'ABSPATH' ) || exit;
 				</li>
 
 				<?php
-				// Total (VND) - dùng tỷ giá từ OnePay exchange_rate_config hoặc VCB
+				// Exchange Rate & Payment Amount - dùng tỷ giá từ OnePay exchange_rate_config hoặc VCB
 				$currency = get_woocommerce_currency();
 				if ( 'VND' !== $currency && class_exists( 'Visa_Wizard_V2_5' ) ) {
 					$rate = Visa_Wizard_V2_5::get_exchange_rate();
 					if ( $rate > 0 ) {
-						$vnd = round( floatval( $order->get_total() ) * $rate );
+						$total_usd = floatval( $order->get_total() );
+						$vnd       = round( $total_usd * $rate );
 						?>
-						<li class="woocommerce-order-overview__total-vnd total-vnd">
-							<?php esc_html_e( 'Total (VND):', 'woocommerce' ); ?>
+						<li class="woocommerce-order-overview__exchange-rate exchange-rate">
+							<?php esc_html_e( 'Exchange Rate:', 'woocommerce' ); ?>
+							<strong><?php echo esc_html( '1 USD ~ ' . number_format_i18n( round( $rate ) ) . ' VND' ); ?></strong>
+						</li>
+						<li class="woocommerce-order-overview__payment-amount payment-amount">
+							<?php esc_html_e( 'Payment Amount:', 'woocommerce' ); ?>
 							<strong><?php echo esc_html( number_format_i18n( $vnd ) . ' VND' ); ?></strong>
 						</li>
 						<?php

@@ -679,8 +679,11 @@ class Visa_Wizard_V2_5 {
                             <div class="review-item review-total">
                                 <span>Total:</span> <span class="review-value" id="rev_price">--</span>
                             </div>
-                            <div class="review-item review-vnd" id="review_vnd_row" style="display:none;">
-                                <span>Total (VND):</span> <span class="review-value" id="rev_vnd">--</span>
+                            <div class="review-item review-exchange-rate" id="review_exchange_rate_row" style="display:none;">
+                                <span>Exchange Rate:</span> <span class="review-value" id="rev_exchange_rate">--</span>
+                            </div>
+                            <div class="review-item review-payment-amount" id="review_vnd_row" style="display:none;">
+                                <span>Payment Amount:</span> <span class="review-value" id="rev_vnd">--</span>
                             </div>
                         </div>
                         
@@ -1390,17 +1393,18 @@ class Visa_Wizard_V2_5 {
                 let priceHtml = $("#header_price_display").html() || "--";
                 $("#rev_price").html(priceHtml);
                 
-                // VND (Total USD * exchange rate) - chỉ hiển thị khi tỷ giá > 0
+                // Exchange Rate & Payment Amount - chỉ hiển thị khi tỷ giá > 0
                 var priceTxt = $("#header_price_display").text();
                 var priceMatch = priceTxt.match(/(\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\d+(?:\.\d{2})?)/);
                 var totalUsd = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0;
                 var rate = typeof visaExchangeRate !== 'undefined' ? parseFloat(visaExchangeRate) : 0;
                 if(rate > 0 && totalUsd > 0) {
                     var vndAmount = Math.round(totalUsd * rate);
+                    $("#rev_exchange_rate").text("1 USD ~ " + Math.round(rate).toLocaleString('vi-VN') + " VND");
                     $("#rev_vnd").text(vndAmount.toLocaleString('vi-VN') + ' VND');
-                    $("#review_vnd_row").show();
+                    $("#review_exchange_rate_row, #review_vnd_row").show();
                 } else {
-                    $("#review_vnd_row").hide();
+                    $("#review_exchange_rate_row, #review_vnd_row").hide();
                 }
             }
 
@@ -1413,6 +1417,7 @@ class Visa_Wizard_V2_5 {
                 $("#visa_terms_scroll").hide();
                 $("#rev_nation, #rev_type, #rev_time, #rev_date, #rev_name, #rev_email, #rev_phone, #rev_passport, #rev_photo").text("--");
                 $("#rev_price").html("--");
+                $("#review_exchange_rate_row, #review_vnd_row").hide();
                 $(".traveler-passport-url, .traveler-photo-url").val("");
                 $(".upload-preview-box").empty().hide();
                 $(".upload-status").text("");
