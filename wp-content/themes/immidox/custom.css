@@ -257,6 +257,33 @@
 	padding-bottom: 30px;
 }
 
+/* Equal min-height cho content-box khi nhiều team block trong cùng hàng */
+.team-section .row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+}
+.team-section .row > [class*="col-"] {
+	display: flex;
+}
+.team-section .team-block-one {
+	flex: 1;
+	display: flex;
+	width: 100%;
+}
+.team-section .inner-box {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.team-section .content-box {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
