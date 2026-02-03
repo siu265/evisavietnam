@@ -208,7 +208,7 @@
 }
 
 .team-block-one .inner-box:hover .team-extra-images li {
-	background: rgba(255, 255, 255, 0.15);
+	background: #fff;
 }
 
 .team-block-one .inner-box .team-extra-images li img {
@@ -247,7 +247,7 @@
 .team-extra-images li img {
 	display: block;
 	vertical-align: top;
-	width: 80% !important;
+	width: 70% !important;
 	height: auto !important;
 	border-radius: unset !important;
 }

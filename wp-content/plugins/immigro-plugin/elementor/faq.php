@@ -181,12 +181,12 @@ class Faq extends Widget_Base {
 		<div class="faq-inner <?php echo esc_attr($settings['sec_class']);?>">
 			<ul class="accordion-box">
 			<?php foreach($settings['repeat'] as $key=>$item):?>	
-				<li class="accordion block <?php if($key == 1) echo 'active-block';?>">
-					<div class="acc-btn <?php if($key == 1) echo 'active';?>">
+				<li class="accordion block <?php if($key == 0) echo 'active-block';?>">
+					<div class="acc-btn <?php if($key == 0) echo 'active';?>">
 						<div class="icon-outer"></div>
 						<h5><?php echo wp_kses($item['block_title'], $allowed_tags);?></h5>
 					</div>
-					<div class="acc-content <?php if($key == 1) echo 'current';?>">
+					<div class="acc-content <?php if($key == 0) echo 'current';?>">
 						<div class="text">
 							<p><?php echo wp_kses($item['block_text'], $allowed_tags);?></p>
 						</div>
@@ -203,12 +203,12 @@ class Faq extends Widget_Base {
 			<div class="content-three">
 				<ul class="accordion-box">
 					<?php foreach($settings['repeat'] as $key=>$item):?>	
-					<li class="accordion block <?php if($key == 1) echo 'active-block';?>">
-						<div class="acc-btn <?php if($key == 1) echo 'active';?>">
+					<li class="accordion block <?php if($key == 0) echo 'active-block';?>">
+						<div class="acc-btn <?php if($key == 0) echo 'active';?>">
 							<div class="icon-outer"></div>
 							<h5><?php echo wp_kses($item['block_title'], $allowed_tags);?></h5>
 						</div>
-						<div class="acc-content <?php if($key == 1) echo 'current';?>">
+						<div class="acc-content <?php if($key == 0) echo 'current';?>">
 							<div class="text">
 								<p><?php echo wp_kses($item['block_text'], $allowed_tags);?></p>
 							</div>
