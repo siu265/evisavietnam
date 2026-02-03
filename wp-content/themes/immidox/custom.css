@@ -169,6 +169,12 @@
    4. BANNER / SLIDER (Banner With Left Text)
    ========================================================================== */
 
+/* Giảm chiều cao, tăng chiều ngang hình ảnh banner */
+.banner-section .banner-carousel .slide-item .image-layer {
+	background-size: 115% 92%;
+	background-position: center right;
+}
+
 /* Fix hiển thị background trên mobile */
 @media only screen and (max-width: 991px) {
 	.banner-section .banner-carousel .slide-item {
@@ -176,7 +182,7 @@
 		padding: 80px 20px 120px;
 	}
 	.banner-section .banner-carousel .slide-item .image-layer {
-		background-size: cover;
+		background-size: 118% 90%;
 		background-position: center right;
 		background-repeat: no-repeat;
 		-webkit-backface-visibility: hidden;
@@ -189,11 +195,12 @@
 }
 @media only screen and (max-width: 575px) {
 	.banner-section .banner-carousel .slide-item {
-		min-height: 420px;
+		min-height: 400px;
 		padding: 60px 16px 100px;
 	}
 	.banner-section .banner-carousel .slide-item .image-layer {
-		background-position: 60% center;
+		background-size: 120% 88%;
+		background-position: 65% center;
 	}
 }
 
