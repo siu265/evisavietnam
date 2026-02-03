@@ -414,8 +414,18 @@ if( immigro_set($options, 'boxed_wrapper') ){
 	} );
 }
 
-add_action( 'woocommerce_thankyou', function($order_id) {
-    echo '<pre>';
-    print_r($_GET); // Kiểm tra các tham số từ cổng thanh toán gửi về
-    echo '</pre>';
-});
+add_action( 'woocommerce_thankyou', function( $order_id ) {
+    if ( ! $order_id ) return;
+
+    $order = wc_get_order( $order_id );
+    
+    // Tạo file log riêng để dễ theo dõi
+    $log_file = WP_CONTENT_DIR . '/debug-order.log';
+    $message = "--- Order Received Log (" . date('Y-m-d H:i:s') . ") ---\n";
+    $message .= "Order ID: " . $order_id . "\n";
+    $message .= "GET Data: " . print_r($_GET, true) . "\n";
+    $message .= "POST Data: " . print_r($_POST, true) . "\n";
+    $message .= "-------------------------------------------\n\n";
+
+    file_put_contents( $log_file, $message, FILE_APPEND );
+}, 10, 1 );
