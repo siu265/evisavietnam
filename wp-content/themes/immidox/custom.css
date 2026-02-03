@@ -164,11 +164,30 @@
 	background: #1e593c;
 }
 
+.btn-1 {
+	box-shadow: none;
+}
+
+.banner-carousel .owl-nav button {
+	background: rgba(255, 255, 255, 0.1);
+	width: 45px;
+	height: 45px;
+	display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+	color: #c8c2c2;
+}
+
+.banner-carousel .owl-nav button span {
+	font-size: 16px;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
 	}
-	
+
 	.header-top .info li a {
 		font-size: 14px;
 		text-align: left;
