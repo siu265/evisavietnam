@@ -86,13 +86,13 @@ if ( empty( $preloader_type ) ) {
                     if ( $logo_url ) :
                     ?>
                     <div class="preloader-logo-wrap">
-                        <div class="preloader-logo-circle">
-                            <img src="<?php echo esc_url( $logo_url ); ?>" alt="Loading" class="preloader-logo-img" />
-                        </div>
+                        <div class="preloader-logo-ring"></div>
+                        <img src="<?php echo esc_url( $logo_url ); ?>" alt="Loading" class="preloader-logo-img" />
                     </div>
                     <?php else : ?>
                     <div class="preloader-logo-wrap preloader-logo-placeholder">
-                        <div class="preloader-logo-circle"><span>Logo</span></div>
+                        <div class="preloader-logo-ring"></div>
+                        <span class="preloader-logo-img">Logo</span>
                     </div>
                     <?php endif; ?>
                 <?php else : ?>
