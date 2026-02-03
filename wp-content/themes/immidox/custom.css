@@ -182,6 +182,7 @@
 		min-height: 400px;
 		padding: 80px 20px 120px;
 	}
+
 	.banner-section .banner-carousel .slide-item .image-layer {
 		background-size: cover;
 		background-position: center right;
@@ -189,15 +190,18 @@
 		backface-visibility: hidden;
 		transform: none;
 	}
+
 	.banner-section .banner-carousel .active .slide-item .image-layer {
 		transform: none;
 	}
 }
+
 @media only screen and (max-width: 575px) {
 	.banner-section .banner-carousel .slide-item {
 		min-height: 380px;
 		padding: 60px 16px 90px;
 	}
+
 	.banner-section .banner-carousel .slide-item .image-layer {
 		background-size: cover;
 		background-position: 60% center;
@@ -210,6 +214,7 @@
    ========================================================================== */
 
 @media only screen and (max-width: 767px) {
+
 	/* Tránh cắt Total, overflow */
 	.woocommerce-order,
 	.woocommerce-order-details {
@@ -217,26 +222,32 @@
 		padding-left: 0;
 		padding-right: 0;
 	}
+
 	.woocommerce-order .woocommerce-order-overview {
 		padding-left: 0;
 		padding-right: 0;
 	}
+
 	/* Order details table – scroll ngang nếu cần, hoặc stack layout */
 	.woocommerce-order-details .woocommerce-table--order-details {
 		display: block;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details thead {
 		display: none;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details tbody,
 	.woocommerce-order-details .woocommerce-table--order-details tfoot {
 		display: block;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details tr {
 		display: block;
 		border-bottom: 1px solid #eee;
 		padding: 12px 0;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details td,
 	.woocommerce-order-details .woocommerce-table--order-details th {
 		display: block;
@@ -244,15 +255,18 @@
 		padding: 4px 0;
 		border: none;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details td.product-total,
 	.woocommerce-order-details .woocommerce-table--order-details th:first-child {
 		font-weight: 600;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details td.product-total::before {
 		content: "Total: ";
 		font-weight: 600;
 		display: inline;
 	}
+
 	/* Tfoot totals – label trước giá */
 	.woocommerce-order-details .woocommerce-table--order-details tfoot tr {
 		display: flex;
@@ -261,13 +275,16 @@
 		flex-wrap: wrap;
 		gap: 4px;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details tfoot th {
 		flex: 0 0 auto;
 	}
+
 	.woocommerce-order-details .woocommerce-table--order-details tfoot td {
 		flex: 0 0 auto;
 		white-space: nowrap;
 	}
+
 	/* URL dài (Passport Link, Selfie Link) – break để không tràn */
 	.woocommerce-order-details .product-name,
 	.woocommerce-order-details .product-name a {
@@ -275,9 +292,20 @@
 		overflow-wrap: anywhere;
 		max-width: 100%;
 	}
+
 	/* Scroll to top – không bị cắt trên Thank You */
 	.scroll-to-top {
 		right: 10px !important;
+	}
+
+	.woocommerce table.shop_table tbody th,
+	.woocommerce table.shop_table tfoot td,
+	.woocommerce table.shop_table tfoot th,
+	.woocommerce-order-details .woocommerce-table--order-details tfoot td,
+	body.woocommerce-order-received .woocommerce-table--order-details th,
+	body.woocommerce-order-received .woocommerce-table--order-details td {
+		border-top: unset !important;
+		border-bottom: unset !important;
 	}
 }
 
