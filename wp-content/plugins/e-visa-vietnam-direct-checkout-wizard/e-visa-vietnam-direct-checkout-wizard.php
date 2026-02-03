@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: E-Visa Vietnam Direct Checkout Wizard
-Description: Hệ thống Booking Visa V2.5 (Fix Postcode Hiding & Price Display on Return).
-Version: 2.6
+Description: Hệ thống Booking Visa V2.7 (Step Options: cấu hình tiêu đề, mô tả, label, placeholder từng bước).
+Version: 2.7
 Author: DuyViet
 */
 
@@ -88,6 +88,121 @@ class Visa_Wizard_V2_5 {
         register_setting( 'visa_group', 'visa_privacy_content' );
         register_setting( 'visa_group', 'visa_refund_content' );
         register_setting( 'visa_group', 'visa_terms_checkbox_text' );
+        register_setting( 'visa_group', 'visa_step_options', [
+            'sanitize_callback' => array( $this, 'sanitize_step_options' ),
+        ] );
+    }
+
+    /** Mặc định cấu hình các bước booking */
+    private function get_default_step_options() {
+        return [
+            '1' => [
+                'title'       => 'Nationality',
+                'description' => 'Choose your nationality as shown on your passport to begin the application.',
+                'fields'      => [
+                    'nationality' => [ 'id' => 'nationality', 'label' => 'Nationality', 'placeholder' => 'Select your nationality', 'description' => '' ],
+                ],
+            ],
+            '2' => [
+                'title'       => 'Visa Type',
+                'description' => 'Select the type of entry and validity duration suitable for your trip.',
+                'fields'      => [
+                    'visa_type' => [ 'id' => 'visa_type', 'label' => 'Visa Type', 'placeholder' => 'Select visa type', 'description' => '' ],
+                ],
+            ],
+            '3' => [
+                'title'       => 'Processing Time',
+                'description' => 'Choose how quickly you need your visa processed based on your urgency.',
+                'fields'      => [
+                    'processing_time' => [ 'id' => 'processing_time', 'label' => 'Processing Time', 'placeholder' => 'Select processing time', 'description' => '' ],
+                ],
+            ],
+            '4' => [
+                'title'       => 'Date of Arrival',
+                'description' => 'Specify your expected arrival date in Vietnam to determine visa validity start.',
+                'fields'      => [
+                    'arrival_date' => [ 'id' => 'arrival_date', 'label' => 'Arrival Date', 'placeholder' => '', 'description' => '' ],
+                ],
+            ],
+            '5' => [
+                'title'       => 'Number of Travelers',
+                'description' => 'Enter the number of travelers for this visa application.',
+                'fields'      => [
+                    'number_of_travelers' => [ 'id' => 'number_of_travelers', 'label' => 'Number of Travelers', 'placeholder' => 'Number of travelers (1-10)', 'description' => '' ],
+                ],
+            ],
+            '6' => [
+                'title'       => 'Upload Documents',
+                'description' => 'Upload clear photos of your passport data page and a recent portrait for each traveler.',
+                'fields'      => [
+                    'passport' => [ 'id' => 'passport', 'label' => 'Passport', 'placeholder' => '', 'description' => '' ],
+                    'photo'    => [ 'id' => 'photo', 'label' => 'Photo', 'placeholder' => '', 'description' => '' ],
+                ],
+            ],
+            '7' => [
+                'title'       => 'Contact Information',
+                'description' => 'Provide contact details for each traveler.',
+                'fields'      => [
+                    'contact_name' => [ 'id' => 'contact_name', 'label' => 'Contact Name', 'placeholder' => 'Contact Name', 'description' => '' ],
+                    'email'        => [ 'id' => 'email', 'label' => 'Email', 'placeholder' => 'Email address', 'description' => '' ],
+                    'phone'        => [ 'id' => 'phone', 'label' => 'Phone', 'placeholder' => 'Phone number', 'description' => '' ],
+                ],
+            ],
+            '8' => [
+                'title'       => 'Review',
+                'description' => 'Review your application details and proceed to secure payment to finalize.',
+                'fields'      => [],
+            ],
+        ];
+    }
+
+    /** Lấy cấu hình bước (merge với mặc định) */
+    public function get_step_options() {
+        $saved   = get_option( 'visa_step_options', [] );
+        $default = $this->get_default_step_options();
+        $merged  = [];
+        foreach ( $default as $step_num => $step_default ) {
+            $s = isset( $saved[ $step_num ] ) ? $saved[ $step_num ] : [];
+            $merged[ $step_num ] = [
+                'title'       => isset( $s['title'] ) ? sanitize_text_field( $s['title'] ) : $step_default['title'],
+                'description' => isset( $s['description'] ) ? sanitize_textarea_field( $s['description'] ) : $step_default['description'],
+                'fields'      => [],
+            ];
+            foreach ( $step_default['fields'] as $fid => $fdef ) {
+                $sf  = isset( $s['fields'][ $fid ] ) ? $s['fields'][ $fid ] : [];
+                $merged[ $step_num ]['fields'][ $fid ] = [
+                    'id'          => $fdef['id'],
+                    'label'       => isset( $sf['label'] ) ? sanitize_text_field( $sf['label'] ) : $fdef['label'],
+                    'placeholder' => isset( $sf['placeholder'] ) ? sanitize_text_field( $sf['placeholder'] ) : $fdef['placeholder'],
+                    'description' => isset( $sf['description'] ) ? sanitize_textarea_field( $sf['description'] ) : ( $fdef['description'] ?? '' ),
+                ];
+            }
+        }
+        return $merged;
+    }
+
+    public function sanitize_step_options( $input ) {
+        if ( ! is_array( $input ) ) return [];
+        $default = $this->get_default_step_options();
+        $output  = [];
+        foreach ( $default as $step_num => $step_default ) {
+            $s = isset( $input[ $step_num ] ) ? $input[ $step_num ] : [];
+            $output[ $step_num ] = [
+                'title'       => isset( $s['title'] ) ? sanitize_text_field( $s['title'] ) : $step_default['title'],
+                'description' => isset( $s['description'] ) ? sanitize_textarea_field( $s['description'] ) : $step_default['description'],
+                'fields'      => [],
+            ];
+            foreach ( $step_default['fields'] as $fid => $fdef ) {
+                $sf  = isset( $s['fields'][ $fid ] ) ? $s['fields'][ $fid ] : [];
+                $output[ $step_num ]['fields'][ $fid ] = [
+                    'id'          => $fdef['id'],
+                    'label'       => isset( $sf['label'] ) ? sanitize_text_field( $sf['label'] ) : $fdef['label'],
+                    'placeholder' => isset( $sf['placeholder'] ) ? sanitize_text_field( $sf['placeholder'] ) : $fdef['placeholder'],
+                    'description' => isset( $sf['description'] ) ? sanitize_textarea_field( $sf['description'] ) : ( $fdef['description'] ?? '' ),
+                ];
+            }
+        }
+        return $output;
     }
 
     public function admin_styles() {
@@ -101,6 +216,7 @@ class Visa_Wizard_V2_5 {
             <h1>Visa Configuration</h1>
             <div class="visa-nav-tab-wrapper">
                 <a href="?page=visa-options&tab=general" class="visa-nav-tab <?php echo $active_tab == 'general' ? 'active' : ''; ?>">General</a>
+                <a href="?page=visa-options&tab=step_options" class="visa-nav-tab <?php echo $active_tab == 'step_options' ? 'active' : ''; ?>">Step Options</a>
                 <a href="?page=visa-options&tab=nationality" class="visa-nav-tab <?php echo $active_tab == 'nationality' ? 'active' : ''; ?>">Nationality</a>
             </div>
             <form method="post" action="options.php">
@@ -140,6 +256,47 @@ class Visa_Wizard_V2_5 {
                         <div style="margin-bottom:20px;"><label>Privacy</label><?php wp_editor( get_option('visa_privacy_content'), 'visa_privacy_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                         <div style="margin-bottom:20px;"><label>Refund</label><?php wp_editor( get_option('visa_refund_content'), 'visa_refund_content', ['textarea_rows'=>5,'media_buttons'=>false] ); ?></div>
                         <div><label>Terms Checkbox Text</label><textarea name="visa_terms_checkbox_text" rows="2" class="large-text"><?php echo esc_textarea($terms_checkbox_text); ?></textarea><p class="description">Ví dụ: <code>Click to agree: By submitting payment, I acknowledge that I have read and accept the EVISAS VIETNAM Terms of Service, Privacy Policy, and Refund Policy.</code> Các từ khóa Terms of Service / Privacy Policy / Refund Policy sẽ tự thay bằng link mở modal. Scroll box bên dưới hiển thị đầy đủ nội dung từng mục.</p></div>
+                    </div>
+                </div>
+                <?php
+                $step_opts = $this->get_step_options();
+                ?>
+                <div class="visa-tab-panel" id="tab-step_options" style="<?php echo $active_tab !== 'step_options' ? 'display:none;' : ''; ?>">
+                    <div class="visa-card">
+                        <h2>Step Options – Cấu hình các bước Booking</h2>
+                        <p class="description" style="margin-bottom:20px;">Tùy chỉnh tiêu đề, mô tả và nhãn/placeholder của từng bước. <strong>Field ID</strong> không được thay đổi (dùng trong code).</p>
+                        <?php foreach ( $step_opts as $step_num => $step ) : ?>
+                        <div class="visa-step-option-card" style="border:1px solid #ddd; border-radius:6px; padding:16px; margin-bottom:20px; background:#fafafa;">
+                            <h3 style="margin-top:0;">Step <?php echo esc_html( $step_num ); ?>: <?php echo esc_html( $step['title'] ); ?></h3>
+                            <table class="form-table">
+                                <tr>
+                                    <th>Step Title</th>
+                                    <td><input type="text" name="visa_step_options[<?php echo esc_attr( $step_num ); ?>][title]" value="<?php echo esc_attr( $step['title'] ); ?>" class="regular-text"></td>
+                                </tr>
+                                <tr>
+                                    <th>Step Description</th>
+                                    <td><textarea name="visa_step_options[<?php echo esc_attr( $step_num ); ?>][description]" rows="2" class="large-text"><?php echo esc_textarea( $step['description'] ); ?></textarea></td>
+                                </tr>
+                                <?php foreach ( $step['fields'] as $fid => $field ) : ?>
+                                <tr>
+                                    <th colspan="2" style="background:#eee; padding:8px;">Field: <code><?php echo esc_html( $field['id'] ); ?></code></th>
+                                </tr>
+                                <tr>
+                                    <th>Label</th>
+                                    <td><input type="text" name="visa_step_options[<?php echo esc_attr( $step_num ); ?>][fields][<?php echo esc_attr( $fid ); ?>][label]" value="<?php echo esc_attr( $field['label'] ); ?>" class="regular-text"></td>
+                                </tr>
+                                <tr>
+                                    <th>Placeholder</th>
+                                    <td><input type="text" name="visa_step_options[<?php echo esc_attr( $step_num ); ?>][fields][<?php echo esc_attr( $fid ); ?>][placeholder]" value="<?php echo esc_attr( $field['placeholder'] ); ?>" class="regular-text"></td>
+                                </tr>
+                                <tr>
+                                    <th>Description / Helper</th>
+                                    <td><textarea name="visa_step_options[<?php echo esc_attr( $step_num ); ?>][fields][<?php echo esc_attr( $fid ); ?>][description]" rows="2" class="large-text"><?php echo esc_textarea( $field['description'] ); ?></textarea><p class="description">Chú thích hiển thị dưới trường nhập (nếu có).</p></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="visa-tab-panel" id="tab-nationality" style="<?php echo $active_tab !== 'nationality' ? 'display:none;' : ''; ?>">
@@ -286,6 +443,7 @@ class Visa_Wizard_V2_5 {
         $date_from = get_option('visa_date_from', '');
         $date_to = get_option('visa_date_to', '');
         $terms_checkbox_text = get_option('visa_terms_checkbox_text', 'Click to agree: By submitting payment, I acknowledge that I have read and accept the EVISAS VIETNAM Terms of Service, Privacy Policy, and Refund Policy.');
+        $step_opts = $this->get_step_options();
         
         // Replace placeholders in schedule_note
         $schedule_note_display = str_replace(
@@ -316,15 +474,17 @@ class Visa_Wizard_V2_5 {
                     
                     <div class="step-content active" data-step="1">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">1</span>Nationality</h3>
-                            <p class="visa-step-desc">Choose your nationality as shown on your passport to begin the application.</p>
+                            <?php $s1 = $step_opts['1']; $f1 = $s1['fields']['nationality'] ?? ['placeholder'=>'Select your nationality']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">1</span><?php echo esc_html( $s1['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s1['description'] ); ?></p>
                             <div class="form-group">
-                                <select name="nationality" class="form-control required-field select2-enable" data-placeholder="Select your nationality">
-                                    <option value="">Select your nationality</option>
+                                <select name="nationality" class="form-control required-field select2-enable" data-placeholder="<?php echo esc_attr( $f1['placeholder'] ); ?>">
+                                    <option value=""><?php echo esc_html( $f1['placeholder'] ); ?></option>
                                     <?php foreach($nationalities as $n): ?>
                                         <option value="<?php echo esc_attr($n); ?>" <?php selected($prefill['nationality'] ?? '', $n); ?>><?php echo esc_html($n); ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <?php if ( ! empty( $f1['description'] ) ) : ?><p class="description"><?php echo esc_html( $f1['description'] ); ?></p><?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -341,32 +501,36 @@ class Visa_Wizard_V2_5 {
                     ?>
                     <div class="step-content" data-step="2">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">2</span>Visa Type</h3>
-                            <p class="visa-step-desc">Select the type of entry and validity duration suitable for your trip.</p>
+                            <?php $s2 = $step_opts['2']; $f2 = $s2['fields']['visa_type'] ?? ['placeholder'=>'Select visa type']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">2</span><?php echo esc_html( $s2['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s2['description'] ); ?></p>
                             <div class="form-group">
-                                <select name="visa_type" class="form-control price-trigger required-field select2-enable" id="select_visa_type" data-placeholder="Select visa type">
-                                    <option value="">Select visa type</option>
+                                <select name="visa_type" class="form-control price-trigger required-field select2-enable" id="select_visa_type" data-placeholder="<?php echo esc_attr( $f2['placeholder'] ); ?>">
+                                    <option value=""><?php echo esc_html( $f2['placeholder'] ); ?></option>
                                     <?php foreach ( $type_slugs as $term_slug ):
                                         $term_label = $this->get_attribute_label( $term_slug, $slug_type ); ?>
                                         <option value="<?php echo esc_attr( $term_slug ); ?>" data-label="<?php echo esc_attr( $term_label ); ?>"><?php echo esc_html( $term_label ); ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <?php if ( ! empty( $f2['description'] ) ) : ?><p class="description"><?php echo esc_html( $f2['description'] ); ?></p><?php endif; ?>
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="3">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">3</span>Processing Time</h3>
-                            <p class="visa-step-desc">Choose how quickly you need your visa processed based on your urgency.</p>
+                            <?php $s3 = $step_opts['3']; $f3 = $s3['fields']['processing_time'] ?? ['placeholder'=>'Select processing time']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">3</span><?php echo esc_html( $s3['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s3['description'] ); ?></p>
                             <div class="form-group">
-                                <select name="processing_time" class="form-control price-trigger required-field select2-enable" id="select_processing_time" data-placeholder="Select processing time">
-                                    <option value="">Select processing time</option>
+                                <select name="processing_time" class="form-control price-trigger required-field select2-enable" id="select_processing_time" data-placeholder="<?php echo esc_attr( $f3['placeholder'] ); ?>">
+                                    <option value=""><?php echo esc_html( $f3['placeholder'] ); ?></option>
                                     <?php foreach ( $time_slugs as $term_slug ):
                                         $term_label = $this->get_attribute_label( $term_slug, $slug_time ); ?>
                                         <option value="<?php echo esc_attr( $term_slug ); ?>" data-label="<?php echo esc_attr( $term_label ); ?>"><?php echo esc_html( $term_label ); ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                                <?php if ( ! empty( $f3['description'] ) ) : ?><p class="description"><?php echo esc_html( $f3['description'] ); ?></p><?php endif; ?>
                             </div>
                             <div class="visa-step-notes">
                                 <?php if ( ! empty( $schedule_note_display ) ): ?>
@@ -381,29 +545,34 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="4">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">4</span>Date of Arrival</h3>
-                            <p class="visa-step-desc">Specify your expected arrival date in Vietnam to determine visa validity start.</p>
+                            <?php $s4 = $step_opts['4']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">4</span><?php echo esc_html( $s4['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s4['description'] ); ?></p>
                             <div class="form-group">
                                 <input type="date" name="arrival_date" id="arrival_date" class="form-control required-field" value="<?php echo esc_attr($prefill['arrival_date'] ?? ''); ?>" min="<?php echo esc_attr( date( 'Y-m-d', strtotime( '+1 day', current_time( 'timestamp' ) ) ) ); ?>">
                             </div>
                             <div id="arrival_date_error" class="visa-field-error" style="display:none; color:#c00; font-size:13px; margin-top:6px; text-align:left;"></div>
+                            <?php $f4 = $s4['fields']['arrival_date'] ?? []; if ( ! empty( $f4['description'] ) ) : ?><p class="description"><?php echo esc_html( $f4['description'] ); ?></p><?php endif; ?>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="5">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">5</span>Number of Travelers</h3>
-                            <p class="visa-step-desc">Enter the number of travelers for this visa application.</p>
+                            <?php $s5 = $step_opts['5']; $f5 = $s5['fields']['number_of_travelers'] ?? ['placeholder'=>'Number of travelers (1-10)']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">5</span><?php echo esc_html( $s5['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s5['description'] ); ?></p>
                             <div class="form-group">
-                                <input type="number" name="number_of_travelers" id="number_of_travelers" class="form-control required-field" min="1" max="10" value="<?php echo esc_attr($prefill['number_of_travelers'] ?? '1'); ?>" placeholder="Number of travelers (1-10)">
+                                <input type="number" name="number_of_travelers" id="number_of_travelers" class="form-control required-field" min="1" max="10" value="<?php echo esc_attr($prefill['number_of_travelers'] ?? '1'); ?>" placeholder="<?php echo esc_attr( $f5['placeholder'] ); ?>">
+                                <?php if ( ! empty( $f5['description'] ) ) : ?><p class="description"><?php echo esc_html( $f5['description'] ); ?></p><?php endif; ?>
                             </div>
                         </div>
                     </div>
 
                     <div class="step-content" data-step="6">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">6</span>Upload Documents</h3>
-                            <p class="visa-step-desc">Upload clear photos of your passport data page and a recent portrait for each traveler.</p>
+                            <?php $s6 = $step_opts['6']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">6</span><?php echo esc_html( $s6['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s6['description'] ); ?></p>
                             <div id="travelers_upload_container">
                                 <!-- Upload fields sẽ được generate động bằng JavaScript dựa trên số người -->
                             </div>
@@ -412,8 +581,9 @@ class Visa_Wizard_V2_5 {
 
                     <div class="step-content" data-step="7">
                         <div class="visa-step-inner">
-                            <h3 class="step-title"><span class="visa-step-badge">7</span>Contact Information</h3>
-                            <p class="visa-step-desc">Provide contact details for each traveler.</p>
+                            <?php $s7 = $step_opts['7']; ?>
+                            <h3 class="step-title"><span class="visa-step-badge">7</span><?php echo esc_html( $s7['title'] ); ?></h3>
+                            <p class="visa-step-desc"><?php echo esc_html( $s7['description'] ); ?></p>
                             <div id="travelers_contact_container">
                                 <!-- Contact fields sẽ được generate động bằng JavaScript dựa trên số người -->
                             </div>
@@ -440,8 +610,9 @@ class Visa_Wizard_V2_5 {
                 <!-- Step 8 ĐẶT NGOÀI form để tránh form lồng form (checkout form có thẻ <form> riêng) -->
                 <div class="step-content" data-step="8">
                     <div class="visa-step-inner">
-                        <h3 class="step-title"><span class="visa-step-badge">8</span>Review</h3>
-                        <p class="visa-step-desc">Review your application details and proceed to secure payment to finalize.</p>
+                        <?php $s8 = $step_opts['8']; ?>
+                        <h3 class="step-title"><span class="visa-step-badge">8</span><?php echo esc_html( $s8['title'] ); ?></h3>
+                        <p class="visa-step-desc"><?php echo esc_html( $s8['description'] ); ?></p>
                         
                         <div class="review-box" id="review_summary">
                             <div class="review-item"><span>Nationality:</span> <span class="review-value" id="rev_nation">--</span></div>
@@ -464,6 +635,10 @@ class Visa_Wizard_V2_5 {
         </div>
 
         <script>
+        var visaStepFields = {
+            step6: <?php echo json_encode( $step_opts['6']['fields'] ?? [] ); ?>,
+            step7: <?php echo json_encode( $step_opts['7']['fields'] ?? [] ); ?>
+        };
         jQuery(document).ready(function($){
             let currentStep = 1; const totalSteps = 8;
             $(".select2-enable").each(function(){
@@ -508,11 +683,13 @@ class Visa_Wizard_V2_5 {
                 if(num > 10) num = 10;
                 var html = '';
                 for(var i = 1; i <= num; i++) {
+                    var lblPassport = (visaStepFields.step6 && visaStepFields.step6.passport) ? visaStepFields.step6.passport.label : 'Passport';
+                    var lblPhoto = (visaStepFields.step6 && visaStepFields.step6.photo) ? visaStepFields.step6.photo.label : 'Photo';
                     html += '<div class="traveler-upload-section" data-traveler="' + i + '">';
                     html += '<h4 style="margin:20px 0 12px; font-size:16px; color:#222;">Traveler ' + i + '</h4>';
                     html += '<div class="visa-upload-grid">';
                     html += '<div class="form-group">';
-                    html += '<label style="display:block; margin-bottom:8px; font-weight:600; color:#555;">Passport</label>';
+                    html += '<label style="display:block; margin-bottom:8px; font-weight:600; color:#555;">' + (lblPassport || 'Passport') + '</label>';
                     html += '<div class="file-upload-wrapper">';
                     html += '<input type="file" id="file_passport_' + i + '" accept="image/*" class="form-control traveler-upload-file" data-traveler="' + i + '" data-type="passport">';
                     html += '<input type="hidden" name="passport_url_' + i + '" id="passport_url_' + i + '" class="required-field traveler-passport-url">';
@@ -521,7 +698,7 @@ class Visa_Wizard_V2_5 {
                     html += '<div class="upload-preview-box" id="prev_passport_' + i + '"></div>';
                     html += '</div>';
                     html += '<div class="form-group">';
-                    html += '<label style="display:block; margin-bottom:8px; font-weight:600; color:#555;">Photo</label>';
+                    html += '<label style="display:block; margin-bottom:8px; font-weight:600; color:#555;">' + (lblPhoto || 'Photo') + '</label>';
                     html += '<div class="file-upload-wrapper">';
                     html += '<input type="file" id="file_photo_' + i + '" accept="image/*" class="form-control traveler-upload-file" data-traveler="' + i + '" data-type="photo">';
                     html += '<input type="hidden" name="photo_url_' + i + '" id="photo_url_' + i + '" class="required-field traveler-photo-url">';
@@ -570,14 +747,18 @@ class Visa_Wizard_V2_5 {
                 if(num > 10) num = 10;
                 var html = '';
                 var phoneCodes = <?php echo json_encode($phone_codes); ?>;
+                var f7 = visaStepFields.step7 || {};
+                var phContact = (f7.contact_name && f7.contact_name.placeholder) ? f7.contact_name.placeholder : 'Contact Name';
+                var phEmail = (f7.email && f7.email.placeholder) ? f7.email.placeholder : 'Email address';
+                var phPhone = (f7.phone && f7.phone.placeholder) ? f7.phone.placeholder : 'Phone number';
                 for(var i = 1; i <= num; i++) {
                     html += '<div class="traveler-contact-section" data-traveler="' + i + '">';
                     html += '<h4 style="margin:20px 0 12px; font-size:16px; color:#222;">Traveler ' + i + '</h4>';
                     html += '<div class="form-group">';
-                    html += '<input type="text" name="contact_name_' + i + '" class="form-control required-field" placeholder="Contact Name" value="">';
+                    html += '<input type="text" name="contact_name_' + i + '" class="form-control required-field" placeholder="' + phContact + '" value="">';
                     html += '</div>';
                     html += '<div class="form-group">';
-                    html += '<input type="email" name="email_' + i + '" class="form-control required-field" placeholder="Email address" value="">';
+                    html += '<input type="email" name="email_' + i + '" class="form-control required-field" placeholder="' + phEmail + '" value="">';
                     html += '</div>';
                     html += '<div class="form-group phone-group">';
                     html += '<div class="phone-code-wrap">';
@@ -588,7 +769,7 @@ class Visa_Wizard_V2_5 {
                     html += '</select>';
                     html += '</div>';
                     html += '<div class="phone-number-wrap">';
-                    html += '<input type="tel" name="phone_number_' + i + '" class="form-control required-field traveler-phone-number" placeholder="Phone number" value="">';
+                    html += '<input type="tel" name="phone_number_' + i + '" class="form-control required-field traveler-phone-number" placeholder="' + phPhone + '" value="">';
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';
