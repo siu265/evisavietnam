@@ -195,6 +195,8 @@
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	left: 0;
+	right: 0;
 }
 
 /* Extra Images (style giống social icons) */
