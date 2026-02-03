@@ -198,7 +198,7 @@ class Banner_With_Left_Text extends Widget_Base {
 										'label' => esc_html__( 'Animation Text', 'immigro' ),
 										'type' => Controls_Manager::TEXT,
 										'placeholder' => esc_html__( 'text 1 | text 2 | text 3', 'immigro' ),
-										'description' => esc_html__( 'Các text phân cách bằng dấu |, hiển thị tuần tự (text 1 → text 2 → text 3 → lặp lại).', 'immigro' ),
+										'description' => esc_html__( 'Texts separated by | will display in sequence (text 1 → text 2 → text 3 → repeat).', 'immigro' ),
 									],
 
 									'block_button'=>
