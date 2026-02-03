@@ -57,3 +57,52 @@
 [2026-02-03 22:58:56] === AJAX_LOAD_CHECKOUT START ===
 [2026-02-03 22:58:56] Cart is_empty: no, count=1
 [2026-02-03 22:58:58] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16801
+[2026-02-03 23:29:24] === AJAX_CHECKOUT START ===
+[2026-02-03 23:29:24] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-03 23:29:24] Adding to cart: product_id=8216, qty=1, variation_id=8236
+[2026-02-03 23:29:24] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-03 23:29:26] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-03 23:29:26] Cart is_empty: no, count=1
+[2026-02-03 23:29:27] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16801
+[2026-02-03 23:30:08] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:30:08] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:30:08] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:30:08] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:30:11] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:30:11] Session cleared for order 8772
+[2026-02-03 23:34:35] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:34:35] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:34:35] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:34:35] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:34:38] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:34:38] Session cleared for order 8772
+[2026-02-03 23:36:10] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:36:10] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:36:10] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:36:10] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:36:12] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:36:12] Session cleared for order 8772
+[2026-02-03 23:39:41] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:39:41] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:39:41] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:39:41] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:39:43] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:39:43] Session cleared for order 8772
+[2026-02-03 23:40:51] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:40:51] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:40:51] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:40:51] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:40:58] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:40:58] Session cleared for order 8772
+[2026-02-03 23:42:34] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:42:34] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:42:34] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:42:34] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:42:37] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:42:37] Session cleared for order 8772
+[2026-02-03 23:43:13] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:43:13] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:43:13] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:43:13] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:43:16] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:43:16] Session cleared for order 8772

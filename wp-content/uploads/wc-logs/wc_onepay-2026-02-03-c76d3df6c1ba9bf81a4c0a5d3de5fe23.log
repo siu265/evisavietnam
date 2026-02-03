@@ -529,3 +529,52 @@
     [vpc_TicketNo] => 125.212.158.14
     [vpc_Version] => 2
 )
+2026-02-03T16:29:08+00:00 INFO process_onepay_ipn - Order ID: 8760 - Order Note: WC_onepay Gateway Info | Code: 253 | Message: Giao dịch không thành công. Quá thời gian thanh toán. Vui lòng thực hiện thanh toán lại  - http_args: Array
+(
+    [vpc_Amount] => 654500000
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 20260203155625487149405
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Expired
+    [vpc_OrderInfo] => 8760
+    [vpc_SecureHash] => 1B67EDD7840D7AE994ABCD031F8D6F9F3ABDAAF72C9D80020008EB03020B9ADC
+    [vpc_TxnResponseCode] => 253
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-02-03T16:29:41+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 654500000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202602031629411738613854
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8772
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi
+    [vpc_TicketNo] => 125.212.158.14
+    [vpc_Version] => 2
+)
+2026-02-03T16:30:09+00:00 INFO process_onepay_ipn - Order ID: 8772 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 654500000
+    [vpc_Card] => HOMECREDIT
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202602031629411738613854
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8772
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => 313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+    [vpc_TransactionNo] => PAY-kB-P4IhpSqq1U2wbwemYRQ
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
