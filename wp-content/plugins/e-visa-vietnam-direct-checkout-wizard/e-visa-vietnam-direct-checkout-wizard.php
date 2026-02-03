@@ -141,7 +141,7 @@ class Visa_Wizard_V2_5 {
             ],
             '7' => [
                 'title'       => 'Contact Information',
-                'description' => 'Provide contact details for each traveler.',
+                'description' => 'Provide contact details for the main contact person (first traveler). This will be used for all correspondence.',
                 'fields'      => [
                     'contact_name' => [ 'id' => 'contact_name', 'label' => 'Contact Name', 'placeholder' => 'Contact Name', 'description' => '' ],
                     'email'        => [ 'id' => 'email', 'label' => 'Email', 'placeholder' => 'Email address', 'description' => '' ],
@@ -646,6 +646,7 @@ class Visa_Wizard_V2_5 {
             step6: <?php echo json_encode( $step_opts['6']['fields'] ?? [] ); ?>,
             step7: <?php echo json_encode( $step_opts['7']['fields'] ?? [] ); ?>
         };
+        var visaPrefill = <?php echo json_encode( $prefill ); ?>;
         jQuery(document).ready(function($){
             let currentStep = 1; const totalSteps = 8;
             $(".select2-enable").each(function(){
@@ -654,15 +655,12 @@ class Visa_Wizard_V2_5 {
             });
 
             // Restore Values (Prefill)
-            <?php if(!empty($prefill['visa_type'])): ?>
-                $("select[name='visa_type']").val("<?php echo esc_js($prefill['visa_type']); ?>").trigger("change");
-            <?php endif; ?>
-            <?php if(!empty($prefill['processing_time'])): ?>
-                $("select[name='processing_time']").val("<?php echo esc_js($prefill['processing_time']); ?>").trigger("change");
-            <?php endif; ?>
-            <?php if(!empty($prefill['phone_code'])): ?>
-                $("select[name='phone_code']").val("<?php echo esc_js($prefill['phone_code']); ?>").trigger("change");
-            <?php endif; ?>
+            if(visaPrefill.visa_type) {
+                $("select[name='visa_type']").val(visaPrefill.visa_type).trigger("change");
+            }
+            if(visaPrefill.processing_time) {
+                $("select[name='processing_time']").val(visaPrefill.processing_time).trigger("change");
+            }
 
             // FIX: AUTO TRIGGER PRICE CALCULATION AFTER PREFILL
             setTimeout(function(){
@@ -748,45 +746,47 @@ class Visa_Wizard_V2_5 {
                 });
             }
 
-            function generateTravelersContact(num) {
-                num = parseInt(num) || 1;
-                if(num < 1) num = 1;
-                if(num > 10) num = 10;
-                var html = '';
+            function generateTravelersContact() {
                 var phoneCodes = <?php echo json_encode($phone_codes); ?>;
                 var f7 = visaStepFields.step7 || {};
+                var lblContact = (f7.contact_name && f7.contact_name.label) ? f7.contact_name.label : 'Contact Name';
                 var phContact = (f7.contact_name && f7.contact_name.placeholder) ? f7.contact_name.placeholder : 'Contact Name';
                 var phEmail = (f7.email && f7.email.placeholder) ? f7.email.placeholder : 'Email address';
                 var phPhone = (f7.phone && f7.phone.placeholder) ? f7.phone.placeholder : 'Phone number';
-                for(var i = 1; i <= num; i++) {
-                    html += '<div class="traveler-contact-section" data-traveler="' + i + '">';
-                    html += '<h4 style="margin:20px 0 12px; font-size:16px; color:#222;">Traveler ' + i + '</h4>';
-                    html += '<div class="form-group">';
-                    html += '<input type="text" name="contact_name_' + i + '" class="form-control required-field" placeholder="' + phContact + '" value="">';
-                    html += '</div>';
-                    html += '<div class="form-group">';
-                    html += '<input type="email" name="email_' + i + '" class="form-control required-field" placeholder="' + phEmail + '" value="">';
-                    html += '</div>';
-                    html += '<div class="form-group phone-group">';
-                    html += '<div class="phone-code-wrap">';
-                    html += '<select name="phone_code_' + i + '" class="form-control select2-enable traveler-phone-code">';
-                    for(var code in phoneCodes) {
-                        html += '<option value="' + code + '">' + phoneCodes[code] + '</option>';
-                    }
-                    html += '</select>';
-                    html += '</div>';
-                    html += '<div class="phone-number-wrap">';
-                    html += '<input type="tel" name="phone_number_' + i + '" class="form-control required-field traveler-phone-number" placeholder="' + phPhone + '" value="">';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '</div>';
+                var valContact = (visaPrefill && visaPrefill.contact_name) ? visaPrefill.contact_name.replace(/"/g, '&quot;') : '';
+                var valEmail = (visaPrefill && visaPrefill.email) ? visaPrefill.email.replace(/"/g, '&quot;') : '';
+                var valPhone = (visaPrefill && visaPrefill.phone_number) ? visaPrefill.phone_number.replace(/"/g, '&quot;') : '';
+                var valCode = (visaPrefill && visaPrefill.phone_code) ? visaPrefill.phone_code : '';
+                var html = '<div class="main-contact-section">';
+                html += '<p class="description" style="margin-bottom:16px; color:#666;">One contact person for all travelers (main contact).</p>';
+                html += '<div class="form-group">';
+                html += '<label style="display:block; margin-bottom:6px; font-weight:600; color:#555;">' + lblContact + '</label>';
+                html += '<input type="text" name="contact_name" class="form-control required-field" placeholder="' + phContact + '" value="' + valContact + '">';
+                html += '</div>';
+                html += '<div class="form-group">';
+                html += '<label style="display:block; margin-bottom:6px; font-weight:600; color:#555;">' + (f7.email && f7.email.label ? f7.email.label : 'Email') + '</label>';
+                html += '<input type="email" name="email" class="form-control required-field" placeholder="' + phEmail + '" value="' + valEmail + '">';
+                html += '</div>';
+                html += '<div class="form-group phone-group">';
+                html += '<label style="display:block; margin-bottom:6px; font-weight:600; color:#555;">' + (f7.phone && f7.phone.label ? f7.phone.label : 'Phone') + '</label>';
+                html += '<div class="phone-code-wrap">';
+                html += '<select name="phone_code" class="form-control select2-enable traveler-phone-code">';
+                for(var code in phoneCodes) {
+                    var sel = (valCode && valCode === code) ? ' selected' : '';
+                    html += '<option value="' + code + '"' + sel + '>' + phoneCodes[code] + '</option>';
                 }
+                html += '</select>';
+                html += '</div>';
+                html += '<div class="phone-number-wrap">';
+                html += '<input type="tel" name="phone_number" class="form-control required-field traveler-phone-number" placeholder="' + phPhone + '" value="' + valPhone + '">';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
                 $("#travelers_contact_container").html(html);
-                // Re-init Select2 cho phone codes
                 $(".traveler-phone-code").select2({ width: "100%", placeholder: "Select..." });
             }
 
-            // Khi số người thay đổi, generate lại fields
+            // Khi số người thay đổi, generate lại upload fields (contact chỉ 1 người đầu mối)
             $(document).on("change", "#number_of_travelers", function(){
                 var num = parseInt($(this).val()) || 1;
                 if(num < 1) {
@@ -798,7 +798,6 @@ class Visa_Wizard_V2_5 {
                     num = 10;
                 }
                 generateTravelersUpload(num);
-                generateTravelersContact(num);
             });
 
             // Validate number of travelers
@@ -875,7 +874,7 @@ class Visa_Wizard_V2_5 {
             // Khởi tạo với số người mặc định
             var defaultTravelers = parseInt($("#number_of_travelers").val()) || 1;
             generateTravelersUpload(defaultTravelers);
-            generateTravelersContact(defaultTravelers);
+            generateTravelersContact();
 
             showStep(1);
 
@@ -1117,7 +1116,7 @@ class Visa_Wizard_V2_5 {
                         if($(this).hasClass("select2-hidden-accessible")) { $(this).next(".select2-container").find(".select2-selection").addClass("input-error"); }
                     } else { 
                         // Validate phone number format (step 7 - Contact Information)
-                        if($(this).hasClass("traveler-phone-number") && step === 7) {
+                        if(($(this).hasClass("traveler-phone-number") || $(this).attr("name") === "phone_number") && step === 7) {
                             if(!validatePhoneNumber($(this).val())) {
                                 isValid = false;
                                 $(this).addClass("input-error");
@@ -1296,23 +1295,24 @@ class Visa_Wizard_V2_5 {
                 let numTravelers = parseInt($("#number_of_travelers").val()) || 1;
                 $("#rev_travelers").text(numTravelers);
                 
-                // Travelers info
-                let travelersHtml = "";
+                // Main contact + Travelers info (documents)
+                let contactName = $("input[name=\"contact_name\"]").val() || "--";
+                let email = $("input[name=\"email\"]").val() || "--";
+                let phoneCode = $("select[name=\"phone_code\"]").val() || "";
+                let phoneNumber = $("input[name=\"phone_number\"]").val() || "";
+                let phone = phoneCode && phoneNumber ? phoneCode + " " + phoneNumber : (phoneNumber || "--");
+                let travelersHtml = "<div style=\"font-size:13px; line-height:1.6;\">";
+                travelersHtml += "<strong style=\"color:#222;\">Main Contact:</strong><br>";
+                travelersHtml += "Contact Name: " + contactName + "<br>";
+                travelersHtml += "Email: " + email + "<br>";
+                travelersHtml += "Phone: " + phone + "<br>";
+                travelersHtml += "</div>";
                 for(var i = 1; i <= numTravelers; i++) {
-                    let contactName = $("input[name=\"contact_name_" + i + "\"]").val() || "--";
-                    let email = $("input[name=\"email_" + i + "\"]").val() || "--";
-                    let phoneCode = $("select[name=\"phone_code_" + i + "\"]").val() || "";
-                    let phoneNumber = $("input[name=\"phone_number_" + i + "\"]").val() || "";
-                    let phone = phoneCode && phoneNumber ? phoneCode + " " + phoneNumber : (phoneNumber || "--");
                     let passportUrl = $("input[name=\"passport_url_" + i + "\"]").val() || "";
                     let photoUrl = $("input[name=\"photo_url_" + i + "\"]").val() || "";
-                    
                     travelersHtml += "<div style=\"margin-top:12px; padding-top:12px; border-top:1px solid #eee; font-size:13px; line-height:1.6;\">";
-                    travelersHtml += "<strong style=\"color:#222;\">Traveler " + i + ":</strong><br>";
-                    travelersHtml += "Contact Name: " + contactName + "<br>";
-                    travelersHtml += "Email: " + email + "<br>";
-                    travelersHtml += "Phone: " + phone + "<br>";
-                    travelersHtml += "Passport: " + (passportUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--") + "<br>";
+                    travelersHtml += "<strong style=\"color:#222;\">Traveler " + i + ":</strong> ";
+                    travelersHtml += "Passport: " + (passportUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--") + " | ";
                     travelersHtml += "Photo: " + (photoUrl ? '<span style="color:green;">✓ Uploaded</span>' : "--");
                     travelersHtml += "</div>";
                 }
@@ -1338,7 +1338,7 @@ class Visa_Wizard_V2_5 {
                 $(".upload-preview-box").empty().hide();
                 $(".upload-status").text("");
                 generateTravelersUpload(1);
-                generateTravelersContact(1);
+                generateTravelersContact();
                 if ($(".select2-enable").length && typeof $().select2 === "function") {
                     $(".select2-enable").val(null).trigger("change");
                 }
@@ -1427,18 +1427,21 @@ class Visa_Wizard_V2_5 {
         if($num_travelers < 1) $num_travelers = 1;
         if($num_travelers > 10) $num_travelers = 10;
         
+        // Chỉ 1 thông tin liên hệ cho người đầu mối (người đầu tiên)
+        $main_contact_name = isset($form['contact_name']) ? trim((string) $form['contact_name']) : '';
+        $main_email = isset($form['email']) ? trim((string) $form['email']) : '';
+        $main_phone_code = isset($form['phone_code']) ? $form['phone_code'] : '';
+        $main_phone_number = isset($form['phone_number']) ? $form['phone_number'] : '';
+        $main_phone = ($main_phone_code && $main_phone_number) ? $main_phone_code . ' ' . $main_phone_number : '';
+        
         $travelers_data = [];
         for($i = 1; $i <= $num_travelers; $i++) {
-            $phone_code = isset($form['phone_code_' . $i]) ? $form['phone_code_' . $i] : '';
-            $phone_number = isset($form['phone_number_' . $i]) ? $form['phone_number_' . $i] : '';
-            $full_phone = ($phone_code && $phone_number) ? $phone_code . ' ' . $phone_number : '';
-            
             $travelers_data[] = [
-                'contact_name' => isset($form['contact_name_' . $i]) ? $form['contact_name_' . $i] : '',
-                'email' => isset($form['email_' . $i]) ? $form['email_' . $i] : '',
-                'phone' => $full_phone,
-                'phone_code' => $phone_code,
-                'phone_number' => $phone_number,
+                'contact_name' => ($i === 1) ? $main_contact_name : '',
+                'email' => ($i === 1) ? $main_email : '',
+                'phone' => ($i === 1) ? $main_phone : '',
+                'phone_code' => ($i === 1) ? $main_phone_code : '',
+                'phone_number' => ($i === 1) ? $main_phone_number : '',
                 'passport' => isset($form['passport_url_' . $i]) ? $form['passport_url_' . $i] : '',
                 'photo' => isset($form['photo_url_' . $i]) ? $form['photo_url_' . $i] : '',
             ];

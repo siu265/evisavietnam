@@ -545,7 +545,7 @@
 
 .visa-wizard-container .btn-1:hover,
 .visa-wizard-container .btn-1:focus {
-    background: #041E42;
+    background: #1e593c;
     color: #fff;
     outline: none;
     box-shadow: none;
@@ -568,7 +568,7 @@
 .visa-wizard-container .btn-back:active {
     background: #f0f0f0;
     border-color: #ccc;
-    color: #041E42;
+    color: #1e593c;
     outline: none !important;
     box-shadow: none !important;
 }
@@ -657,7 +657,7 @@
 }
 
 .visa-close:hover {
-    color: #041E42;
+    color: #1e593c;
 }
 
 .visa-modal-body {
@@ -821,7 +821,7 @@
 
 .visa-checkout-form #place_order:hover,
 .visa-checkout-form #place_order:focus {
-    background: #041E42;
+    background: #1e593c;
     color: #fff;
     outline: none;
     box-shadow: none;
@@ -1055,7 +1055,7 @@ body.woocommerce-order-received .order-again .button {
 }
 
 body.woocommerce-order-received .order-again .button:hover {
-    background: #041E42;
+    background: #1e593c;
     color: #fff;
 }
 
