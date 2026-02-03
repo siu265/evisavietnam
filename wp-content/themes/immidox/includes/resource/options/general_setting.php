@@ -18,7 +18,7 @@ return  array(
             'type' => 'color',
             'output' => array('.site-title'),
             'title' => esc_html__('Color Scheme', 'immigro'),
-            'default' => '#EC4E4F',
+            'default' => '#bc9c22',
             'transparent' => false
         ),
 		

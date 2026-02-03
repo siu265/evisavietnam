@@ -331,6 +331,10 @@ span.page-numbers.current {
     border-color: #bc9c22;
 }
 
+.wp-block-group__inner-container {
+	padding: 10px;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;

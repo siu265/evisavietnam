@@ -128,7 +128,7 @@
 }
 
 .sidebar-widget ul li a:hover, .sidebar-widget ul li a.current {
-    background: #EC4E4F;
+    background: #bc9c22;
 }
 .sidebar-widget ul li a:hover:before, .sidebar-widget ul li a.current:before {
     opacity: 1;
@@ -181,8 +181,8 @@ span.post-date.p_relative.d_block.fs_16.font_family_poppins a {
     font-size: 14px !important;
 }
 .wp-block-tag-cloud a:hover {
-    background: #EC4E4F;
-    border-color: #EC4E4F;
+    background: #bc9c22;
+    border-color: #bc9c22;
 	color: #fff;
 }
 .blog-grid-two span.page-numbers.current {
@@ -238,9 +238,9 @@ span.page-numbers.current {
     width: 50px;
     line-height: 50px;
     font-family: 'League Spartan', sans-serif;
-    border: 1px solid #EC4E4F;
-    background-color: #EC4E4F;
-    border-color: #EC4E4F;
+    border: 1px solid #bc9c22;
+    background-color: #bc9c22;
+    border-color: #bc9c22;
     text-align: center;
     color: #fff;
     z-index: 1;
@@ -379,8 +379,8 @@ span.page-numbers.dots:hover, .pagination li a.current {
     color: #fff;
 }
 span.page-numbers.dots:hover, .pagination li a.current {
-    background-color: #EC4E4F;
-    border-color: #EC4E4F;
+    background-color: #bc9c22;
+    border-color: #bc9c22;
 }
 
 

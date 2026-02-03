@@ -98,12 +98,12 @@
     color: #222;
 }
 .comments-area .outer-box .single-comment .text-holder .text .reply:hover {
-    background: #EC4E4F;
+    background: #bc9c22;
     transition: all 700ms ease;
     cursor: pointer;
 }
 .comments-area .outer-box .single-comment .text-holder .text .reply:hover a {
-    color: #EC4E4F;
+    color: #bc9c22;
 }
 
 .wp_mr_post .sticky .inner-box,.wp_mr_post .tag-sticky-2  .inner-box{
