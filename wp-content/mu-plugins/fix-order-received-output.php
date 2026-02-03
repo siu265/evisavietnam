@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Fix Order Received Page Output
  * Description: Bypass theme/hook (nguồn lỗi "1" + ký tự hỏng) - Chạy OnePay thankyou, xuất trang tĩnh sạch.
- * Version: 1.5
+ * Version: 1.6
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 $fix_uri = $_SERVER['REQUEST_URI'] ?? '';
 $fix_is_order_received = ( strpos( $fix_uri, 'order-received' ) !== false && ! empty( $_GET['key'] ) );
 
+// Bắt output NGAY từ đầu - chặn "1" + ký tự lỗi output trước template_redirect
 if ( $fix_is_order_received ) {
+	ob_start();
 	$fix_log_dir = dirname( __DIR__ ) . '/uploads/visa-checkout-logs';
 	if ( ! is_dir( $fix_log_dir ) ) {
 		@mkdir( $fix_log_dir, 0755, true );
@@ -21,7 +23,7 @@ if ( $fix_is_order_received ) {
 	@file_put_contents( $fix_log_file, '[' . date( 'Y-m-d H:i:s' ) . '] [MU-PLUGIN] ORDER RECEIVED - URI: ' . $fix_uri . "\n", FILE_APPEND | LOCK_EX );
 }
 
-add_action( 'template_redirect', function() {
+add_action( 'init', function() {
 	$uri = $_SERVER['REQUEST_URI'] ?? '';
 	if ( strpos( $uri, 'order-received' ) === false || empty( $_GET['key'] ) ) {
 		return;
@@ -46,6 +48,11 @@ add_action( 'template_redirect', function() {
 	$order_key = isset( $_GET['key'] ) ? wc_clean( wp_unslash( $_GET['key'] ) ) : '';
 	if ( ! hash_equals( $order->get_order_key(), $order_key ) ) {
 		return;
+	}
+
+	// Xóa buffer đã bắt từ đầu (chứa "1" + ký tự lỗi nếu có)
+	if ( ob_get_level() ) {
+		ob_end_clean();
 	}
 
 	if ( WC()->session ) {
@@ -128,4 +135,4 @@ add_action( 'template_redirect', function() {
 </html>
 	<?php
 	exit;
-}, 1 );
+}, 999 );
