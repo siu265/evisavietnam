@@ -306,6 +306,24 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+.immigro-blog-search-form {
+    background-color: rgba(0, 0, 0, .03);
+    border-color: rgba(0, 0, 0, .09);
+    border-radius: 99px;
+    box-shadow: none;
+    color: currentColor !important;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+}
+
+.immigro-blog-search-form input {
+	width: 100%;
+}
+
 span.page-numbers.current {
 	font-family: 'Poppins', sans-serif;
     border: 1px solid #bc9c22;
