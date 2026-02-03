@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Fix Order Received Page Output
- * Description: Đảm bảo hook thankyou chạy và trang order-received hiển thị đầy đủ (header/footer + nội dung thankyou) khi flow mặc định không chạy.
- * Version: 1.4
+ * Description: Bypass theme/hook (nguồn lỗi "1" + ký tự hỏng) - Chạy OnePay thankyou, xuất trang tĩnh sạch.
+ * Version: 1.5
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -10,19 +10,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $fix_uri = $_SERVER['REQUEST_URI'] ?? '';
-$fix_is_order_received = ( strpos( $fix_uri, 'order-received' ) !== false || ! empty( $_GET['key'] ) );
+$fix_is_order_received = ( strpos( $fix_uri, 'order-received' ) !== false && ! empty( $_GET['key'] ) );
 
 if ( $fix_is_order_received ) {
 	$fix_log_dir = dirname( __DIR__ ) . '/uploads/visa-checkout-logs';
 	if ( ! is_dir( $fix_log_dir ) ) {
-		if ( function_exists( 'wp_mkdir_p' ) ) {
-			wp_mkdir_p( $fix_log_dir );
-		} else {
-			@mkdir( $fix_log_dir, 0755, true );
-		}
+		@mkdir( $fix_log_dir, 0755, true );
 	}
 	$fix_log_file = $fix_log_dir . '/visa-checkout.log';
-	@file_put_contents( $fix_log_file, '[' . date( 'Y-m-d H:i:s' ) . '] [MU-PLUGIN] ORDER RECEIVED REQUEST - URI: ' . $fix_uri . "\n", FILE_APPEND | LOCK_EX );
+	@file_put_contents( $fix_log_file, '[' . date( 'Y-m-d H:i:s' ) . '] [MU-PLUGIN] ORDER RECEIVED - URI: ' . $fix_uri . "\n", FILE_APPEND | LOCK_EX );
 }
 
 add_action( 'template_redirect', function() {
@@ -52,24 +48,18 @@ add_action( 'template_redirect', function() {
 		return;
 	}
 
-	// Giống WC_Shortcode_Checkout::order_received - setup session
 	if ( WC()->session ) {
 		unset( WC()->session->order_awaiting_payment );
 	}
 	wc_empty_cart();
 
-	// Chạy hook thankyou: OnePay cập nhật trạng thái đơn, visa clear session
+	// Chạy hook OnePay + woocommerce_thankyou (cập nhật trạng thái đơn, visa clear) - BẮT output
 	ob_start();
 	do_action( 'woocommerce_thankyou_' . $order->get_payment_method(), $order->get_id() );
-	$gateway_output = ob_get_clean();
 	do_action( 'woocommerce_thankyou', $order->get_id() );
+	ob_end_clean();
 
-	// Tránh OnePay chạy 2 lần khi load template - thay bằng output đã capture
-	remove_all_actions( 'woocommerce_thankyou_' . $order->get_payment_method() );
-	add_action( 'woocommerce_thankyou_' . $order->get_payment_method(), function() use ( $gateway_output ) {
-		echo $gateway_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}, 10 );
-
+	// Xóa mọi buffer rác có thể đã bị output trước (theme/hook lỗi "1" + ký tự hỏng)
 	while ( ob_get_level() ) {
 		ob_end_clean();
 	}
@@ -79,14 +69,63 @@ add_action( 'template_redirect', function() {
 		header( 'X-Robots-Tag: noindex' );
 	}
 
-	// Layout đầy đủ: header + nội dung thankyou (theme) + footer
-	get_header();
+	// Xuất trang tĩnh HOÀN TOÀN - KHÔNG dùng get_header, get_footer, wc_get_template (tránh hook/theme lỗi)
+	$order_number = $order->get_order_number();
+	$order_total  = $order->get_formatted_order_total();
+	$order_date   = $order->get_date_created() ? wc_format_datetime( $order->get_date_created() ) : '';
+	$order_email  = $order->get_billing_email();
+	$payment_title = $order->get_payment_method_title();
+	$gateway_msg   = '';
+	if ( $order->has_status( 'failed' ) ) {
+		$gateway_msg = '<p class="woocommerce-notice woocommerce-notice--error">' . esc_html__( 'Unfortunately your order cannot be processed. Please attempt your purchase again.', 'woocommerce' ) . '</p>';
+	} else {
+		$gateway_msg = '<p class="woocommerce-notice woocommerce-notice--success">' . esc_html__( 'Thank you. Your order has been received.', 'woocommerce' ) . '</p>';
+	}
+	$home_url = esc_url( home_url( '/' ) );
 
-	echo '<section class="blog-pagev2-area sidebar-page-container"><div class="container"><div class="row"><div class="col-12">';
-	wc_get_template( 'checkout/thankyou.php', array( 'order' => $order ) );
-	echo '</div></div></div></section>';
-
-	get_footer();
-
+	?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title><?php esc_html_e( 'Order received', 'woocommerce' ); ?></title>
+	<style>
+		body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;padding:40px 20px;background:#f5f5f5;color:#333;line-height:1.6;}
+		.thankyou-wrap{max-width:600px;margin:0 auto;background:#fff;padding:32px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+		h1{color:#2e7d32;margin:0 0 16px;font-size:1.5em;}
+		.order-details{list-style:none;padding:0;margin:20px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;}
+		.order-details li{padding:10px 0;display:flex;justify-content:space-between;}
+		.order-details li strong{margin-right:12px;}
+		.actions{margin-top:24px;}
+		.btn{display:inline-block;padding:10px 20px;background:#1976d2;color:#fff;text-decoration:none;border-radius:4px;}
+		.btn:hover{background:#1565c0;}
+	</style>
+</head>
+<body>
+	<div class="thankyou-wrap">
+		<h1><?php esc_html_e( 'Thank you. Your order has been received.', 'woocommerce' ); ?></h1>
+		<?php echo wp_kses_post( $gateway_msg ); ?>
+		<ul class="order-details">
+			<li><strong><?php esc_html_e( 'Order number:', 'woocommerce' ); ?></strong> <?php echo esc_html( $order_number ); ?></li>
+			<li><strong><?php esc_html_e( 'Date:', 'woocommerce' ); ?></strong> <?php echo esc_html( $order_date ); ?></li>
+			<?php if ( $order_email ) : ?>
+			<li><strong><?php esc_html_e( 'Email:', 'woocommerce' ); ?></strong> <?php echo esc_html( $order_email ); ?></li>
+			<?php endif; ?>
+			<li><strong><?php esc_html_e( 'Total:', 'woocommerce' ); ?></strong> <?php echo wp_kses_post( $order_total ); ?></li>
+			<?php if ( $payment_title ) : ?>
+			<li><strong><?php esc_html_e( 'Payment method:', 'woocommerce' ); ?></strong> <?php echo esc_html( $payment_title ); ?></li>
+			<?php endif; ?>
+		</ul>
+		<div class="actions">
+			<a href="<?php echo esc_url( $home_url ); ?>" class="btn"><?php esc_html_e( 'Return to homepage', 'woocommerce' ); ?></a>
+			<?php if ( is_user_logged_in() ) : ?>
+			<a href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>" class="btn" style="background:#666;margin-left:8px;"><?php esc_html_e( 'My account', 'woocommerce' ); ?></a>
+			<?php endif; ?>
+		</div>
+	</div>
+</body>
+</html>
+	<?php
 	exit;
 }, 1 );
