@@ -391,7 +391,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: #1D2133;
+    background: #1e593c;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     transform-origin: center;
     transform: scale(0) rotate(0);
@@ -409,7 +409,7 @@
   }
   
   .theme-btn-one:after {
-    background: #1D2133;
+    background: #1e593c;
   }
   
   .theme-btn-one span{
@@ -681,7 +681,7 @@
   
   .header-top{
     position: relative;
-    background: #1D2133;
+    background: #1e593c;
   }
   
   .header-top .top-inner{
@@ -840,7 +840,7 @@
   }
   
   .header-style-one .header-lower .menu-area .btn-box a:hover{
-    background: #1D2133;
+    background: #1e593c;
   }
   
   .header-lower .menu-area .btn-box a i{
@@ -1327,7 +1327,7 @@
   .main-menu .navigation > li > ul > li > a:hover,
   .main-menu .navigation > li > .megamenu li > a:hover{
     padding-left: 35px;
-    color: #1D2133;
+    color: #1e593c;
   }
   
   .main-menu .navigation > li > ul > li:last-child > a,
@@ -1404,7 +1404,7 @@
   
   .main-menu .navigation > li > ul > li > ul > li > a:hover{
     padding-left: 35px;
-    color: #1D2133;
+    color: #1e593c;
   }
   
   .main-menu .navigation > li > ul > li > ul > li.dropdown > a:after{
@@ -2364,7 +2364,7 @@
       display: block;
       overflow: hidden;
       border-bottom-left-radius: 15px;
-      background-color: #1D2133;
+      background-color: #1e593c;
   }
   
   .immigro-icon-shadow .elementor-widget-wrap.elementor-element-populated .elementor-element.elementor-widget.elementor-widget-image .elementor-widget-container	img,
@@ -2426,7 +2426,7 @@
       padding-left: 50px;
   }
   .immigro-form-hover .form-group.message-btn .wpcf7-form-control.has-spinner.wpcf7-submit.theme-btn-one:hover {
-      background: #1D2133;
+      background: #1e593c;
   }
   
   .immigro-icon-fix .elementor-icon-box-wrapper {
@@ -2497,7 +2497,7 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background-color: #1D2133;
+      background-color: #1e593c;
       transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
       transform: translate(-50%, -50%);
       z-index: -1;
@@ -2543,7 +2543,7 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background-color: #1D2133;
+      background-color: #1e593c;
       transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
       transform: translate(-50%, -50%);
       z-index: -1;
@@ -2685,7 +2685,7 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background-color: #1D2133;
+      background-color: #1e593c;
       transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
       transform: translate(-50%, -50%);
       z-index: -1;

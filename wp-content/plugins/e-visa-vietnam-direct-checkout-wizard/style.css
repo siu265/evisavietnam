@@ -61,18 +61,18 @@
 .visa-step-info {
     font-size: 14px;
     font-weight: 600;
-    color: #6E6E6E;
+    color: #bc9c22;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .visa-step-info span {
-    color: #222;
+    color: #e85a2a;
 }
 
 .visa-total-price {
     font-size: 22px;
-    color: #ffaa17;
+    color: #bc9c22;
     font-weight: 800;
 }
 
@@ -113,7 +113,7 @@
 .visa-wizard-container .step-title {
     font-size: 22px;
     font-weight: 700;
-    color: #ffaa17;
+    color: #bc9c22;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
@@ -223,7 +223,7 @@
 }
 
 .visa-wizard-container .phone-number-wrap .form-control:focus {
-    border-bottom-color: #ffaa17;
+    border-bottom-color: #bc9c22;
     outline: none;
     box-shadow: none;
 }
@@ -250,7 +250,7 @@
 }
 
 .visa-wizard-container .form-control:focus {
-    border-bottom-color: #ffaa17;
+    border-bottom-color: #bc9c22;
     outline: none;
     box-shadow: none;
 }
@@ -293,7 +293,7 @@
 }
 
 .visa-wizard-container .select2-container--default.select2-container--focus .select2-selection--single {
-    border-bottom-color: #ffaa17 !important;
+    border-bottom-color: #bc9c22 !important;
     box-shadow: none !important;
 }
 
@@ -330,7 +330,7 @@
 }
 
 .visa-upload-grid .form-control:focus {
-    border-bottom-color: #ffaa17;
+    border-bottom-color: #bc9c22;
 }
 
 .file-upload-wrapper input[type="file"] {
@@ -397,7 +397,7 @@
 }
 
 .review-item.review-total .review-value {
-    color: #ffaa17;
+    color: #bc9c22;
     font-size: 22px;
 }
 
@@ -528,7 +528,7 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
-    background: #ffaa17;
+    background: #bc9c22;
     border: none;
     cursor: pointer;
     border-radius: 8px;
@@ -670,7 +670,7 @@
 }
 
 .visa-link {
-    color: #ffaa17;
+    color: #bc9c22;
     text-decoration: underline;
     cursor: pointer;
     font-weight: 600;
@@ -775,7 +775,7 @@
 }
 
 .visa-checkout-form .wc_payment_methods label:hover {
-    border-bottom-color: #ffaa17;
+    border-bottom-color: #bc9c22;
 }
 
 .visa-checkout-form .wc_payment_methods input[type="radio"] {
@@ -787,8 +787,8 @@
 
 .visa-checkout-form .wc_payment_methods input[type="radio"]:checked+label,
 .visa-checkout-form .wc_payment_methods li.wc_payment_method>input[type="radio"]:checked~label {
-    border-bottom-color: #ffaa17;
-    color: #ffaa17;
+    border-bottom-color: #bc9c22;
+    color: #bc9c22;
 }
 
 /* Style cho place order button */
@@ -808,7 +808,7 @@
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
-    background: #ffaa17;
+    background: #bc9c22;
     border: none;
     cursor: pointer;
     border-radius: 8px;
@@ -859,7 +859,7 @@
     padding-top: 14px;
     font-size: 18px;
     font-weight: 700;
-    color: #ffaa17;
+    color: #bc9c22;
 }
 
 /* Style cho terms checkbox */
@@ -963,7 +963,7 @@ body.woocommerce-order-received .woocommerce-order-overview li strong {
 }
 
 body.woocommerce-order-received .woocommerce-order-overview .woocommerce-Price-amount {
-    color: #ffaa17;
+    color: #bc9c22;
 }
 
 body.woocommerce-order-received .woocommerce-order .entry-title {
@@ -981,7 +981,7 @@ body.woocommerce-order-received .woocommerce-order-details__title,
 body.woocommerce-order-received .woocommerce-column__title {
     font-size: 18px;
     font-weight: 700;
-    color: #ffaa17;
+    color: #bc9c22;
     margin-bottom: 16px;
     text-align: left;
     display: flex;
@@ -1012,7 +1012,7 @@ body.woocommerce-order-received .woocommerce-table--order-details thead th {
 }
 
 body.woocommerce-order-received .woocommerce-table--order-details .product-name a {
-    color: #ffaa17;
+    color: #bc9c22;
     font-weight: 600;
 }
 
@@ -1034,7 +1034,7 @@ body.woocommerce-order-received .woocommerce-table--order-details tfoot th {
 }
 
 body.woocommerce-order-received .woocommerce-table--order-details tfoot .woocommerce-Price-amount {
-    color: #ffaa17;
+    color: #bc9c22;
     font-weight: 700;
 }
 
@@ -1045,7 +1045,7 @@ body.woocommerce-order-received .order-again .button {
     font-weight: 700;
     text-transform: uppercase;
     color: #fff;
-    background: #ffaa17;
+    background: #bc9c22;
     border: none;
     border-radius: 8px;
     font-size: 15px;
