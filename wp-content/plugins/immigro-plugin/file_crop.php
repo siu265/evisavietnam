@@ -66,7 +66,7 @@ if (  ! class_exists(  'Immigro_Resizer'  )  ) {
 					if ( isset( $metadata['image_meta'] ) ) {
 						$md = $saved['width'] . 'x' . $saved['height'];
 						if ( $crop ) {
-							$md .= ( $align ) ? "_${align}" : "_c";
+							$md .= ( $align ) ? "_{$align}" : "_c";
 						}
 						$metadata['image_meta']['resized_images'][] = $md;
 						wp_update_attachment_metadata( $get_attachment[0]->ID, $metadata );
@@ -124,11 +124,11 @@ if (  ! class_exists(  'Immigro_Resizer'  )  ) {
             $dir = $info['dirname'];
             $ext = $info['extension'];
             $name = wp_basename( $file_path, ".$ext" );
-            $suffix = "${dest_width}x${dest_height}";
+            $suffix = "{$dest_width}x{$dest_height}";
             if ( $crop ) {
-            	$suffix .= ( $align ) ? "_${align}" : "_c";
+            	$suffix .= ( $align ) ? "_{$align}" : "_c";
             }
-            $dest_file_name = "${dir}/${name}-${suffix}.${ext}";
+            $dest_file_name = "{$dir}/{$name}-{$suffix}.{$ext}";
             return array( 
             	'dir' => $dir,
             	'name' => $name,

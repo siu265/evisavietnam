@@ -413,3 +413,70 @@ if( immigro_set($options, 'boxed_wrapper') ){
 		return $classes;
 	} );
 }
+
+/**
+ * BẢO MẬT: Đổi link đăng nhập thành /quan-tri (Phương pháp Bắt Link Trực Tiếp)
+ * Khắc phục triệt để lỗi 404
+ */
+
+ define( 'DV_LOGIN_SLUG', 'admin-panel' ); 
+
+ // 1. Xử lý: Khi gõ /quan-tri -> Gọi file đăng nhập ra ngay lập tức
+ // (Chạy thẳng, không cần qua bộ xử lý đường dẫn của WordPress nên không lo 404)
+ add_action( 'init', 'DV_handle_direct_login' );
+ function DV_handle_direct_login() {
+	 $slug = defined('DV_LOGIN_SLUG') ? DV_LOGIN_SLUG : 'quan-tri';
+	 
+	 // Lấy phần đường dẫn sau tên miền
+	 $request_path = trim( parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+ 
+	 // Nếu đường dẫn KHỚP với 'quan-tri'
+	 if ( $request_path === $slug ) {
+		 // --- FIX LỖI UNDEFINED VARIABLE ---
+		 // Khai báo các biến này là Global để wp-login.php có thể nhìn thấy và sử dụng
+		 global $user_login, $error, $action, $interim_login, $msg;
+		 
+		 // Nạp file đăng nhập gốc và dừng xử lý
+		 require_once ABSPATH . 'wp-login.php';
+		 exit; 
+	 }
+ }
+ 
+ // 2. Sửa lại tất cả các link nội bộ trỏ đến wp-login.php thành /quan-tri
+ // (Để khi bạn bấm "Quên mật khẩu" hay "Đăng nhập" nó không trỏ về link cũ)
+ add_filter( 'site_url', 'DV_rewrite_login_link', 10, 3 );
+ function DV_rewrite_login_link( $url, $path, $scheme ) {
+	 if ( $path === 'wp-login.php' && !is_user_logged_in() ) {
+		 return home_url( '/' . DV_LOGIN_SLUG );
+	 }
+	 return $url;
+ }
+ 
+ // 3. Chặn người lạ vào wp-login.php gốc hoặc wp-admin
+ add_action( 'init', 'DV_block_old_login_paths' );
+ function DV_block_old_login_paths() {
+	 global $pagenow;
+	 
+	 // Không chặn các tác vụ ngầm (AJAX)
+	 if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) return;
+ 
+	 // Nếu chưa đăng nhập
+	 if ( ! is_user_logged_in() ) {
+		 $slug = defined('DV_LOGIN_SLUG') ? DV_LOGIN_SLUG : 'quan-tri';
+ 
+		 // TRƯỜNG HỢP A: Cố tình vào /wp-admin/ -> Về trang chủ
+		 if ( is_admin() ) {
+			 wp_redirect( home_url() );
+			 exit;
+		 }
+ 
+		 // TRƯỜNG HỢP B: Cố tình vào wp-login.php (mà không phải qua link mới) -> Về trang chủ
+		 if ( $pagenow === 'wp-login.php' ) {
+			 // Kiểm tra URL hiện tại có chứa 'quan-tri' không
+			 if ( strpos( $_SERVER['REQUEST_URI'], $slug ) === false ) {
+				 wp_redirect( home_url() );
+				 exit;
+			 }
+		 }
+	 }
+ }
