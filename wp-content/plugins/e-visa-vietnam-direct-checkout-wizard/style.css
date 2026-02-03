@@ -201,7 +201,7 @@
 .visa-wizard-container .phone-group {
     display: flex;
     gap: 12px;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     max-width: 400px;
     margin: 0 auto;
