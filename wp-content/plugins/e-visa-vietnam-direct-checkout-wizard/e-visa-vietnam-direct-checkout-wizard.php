@@ -594,15 +594,6 @@ class Visa_Wizard_V2_5 {
                             <div id="travelers_contact_container">
                                 <!-- Contact fields sẽ được generate động bằng JavaScript dựa trên số người -->
                             </div>
-                            <div class="form-group visa-terms-wrap">
-                                <label class="visa-terms-label">
-                                    <input type="checkbox" id="agree_terms" class="required-field">
-                                    <span id="terms_checkbox_text"><?php echo esc_html( $terms_checkbox_text ); ?></span>
-                                </label>
-                                <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:280px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:6px; background:#f9f9f9;">
-                                    <div id="terms_content_display"></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -630,6 +621,16 @@ class Visa_Wizard_V2_5 {
                             <div class="review-item"><span>Travelers Info:</span> <span class="review-value" id="rev_name" style="text-align:left; display:block; margin-top:8px;"></span></div>
                             <div class="review-item review-total">
                                 <span>Total:</span> <span class="review-value" id="rev_price">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group visa-terms-wrap" style="margin:24px 0;">
+                            <label class="visa-terms-label">
+                                <input type="checkbox" id="agree_terms" class="required-field">
+                                <span id="terms_checkbox_text"><?php echo esc_html( $terms_checkbox_text ); ?></span>
+                            </label>
+                            <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:280px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:6px; background:#f9f9f9;">
+                                <div id="terms_content_display"></div>
                             </div>
                         </div>
                         
@@ -953,6 +954,14 @@ class Visa_Wizard_V2_5 {
                     
                     let $form = $(this);
                     
+                    // Kiểm tra terms checkbox (ở Step 8)
+                    if(!$("#agree_terms").is(":checked")) {
+                        alert("Please accept the Terms of Service, Privacy Policy, and Refund Policy before placing your order.");
+                        $("#agree_terms").closest(".visa-terms-wrap").addClass("input-error");
+                        return false;
+                    }
+                    $("#agree_terms").closest(".visa-terms-wrap").removeClass("input-error");
+                    
                     let $submitBtn = $form.find("#place_order");
                     if($submitBtn.length === 0) {
                         console.error("Place order button not found!");
@@ -1174,12 +1183,6 @@ class Visa_Wizard_V2_5 {
                 if(validateStep(currentStep)) { 
                     // Nếu đang ở step 7, cần thêm vào cart trước khi chuyển sang step 8
                     if(currentStep === 7) {
-                        // Kiểm tra terms checkbox
-                        if(!$("#agree_terms").is(":checked")) { 
-                            alert("Please accept terms."); 
-                            return; 
-                        }
-                        
                         if(!$("#variation_id").val()) {
                             alert("Please re-select Visa Type or Processing Time (Price not calculated).");
                             return;
