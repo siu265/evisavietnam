@@ -158,17 +158,17 @@ $address2nd_v1= array(
 $phone_title_v1= array(
 		    'id'       => 'phone_title_v1',
 		    'type'     => 'text',
-		    'title'    => esc_html__( 'Phone Title', 'immigro' ),
-		    'desc'     => esc_html__( 'Enter Text of Phone', 'immigro' ),
-			'default'  => esc_html__( 'Call Us', 'immigro' ),
+		    'title'    => esc_html__( 'Address', 'immigro' ),
+		    'desc'     => esc_html__( 'Enter address', 'immigro' ),
+			'default'  => esc_html__( '123 Main St, Anytown, USA', 'immigro' ),
 			'required' => array( 'header_style_settings', '=', 'header_v1' ),
 	    );
 $phone_v1= array(
 		    'id'       => 'phone_v1',
 		    'type'     => 'text',
-		    'title'    => esc_html__( 'Phone Number', 'immigro' ),
-		    'desc'     => esc_html__( 'Enter Number', 'immigro' ),
-			'default'  => esc_html__( '+357 984538', 'immigro' ),
+		    'title'    => esc_html__( 'Address Link', 'immigro' ),
+		    'desc'     => esc_html__( 'Enter address link', 'immigro' ),
+			'default'  => esc_html__( '123 Main St, Anytown, USA', 'immigro' ),
 			'required' => array( 'header_style_settings', '=', 'header_v1' ),
 	    );
 $time_title_v1 = array(

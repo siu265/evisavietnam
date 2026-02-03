@@ -111,6 +111,7 @@
 	position: relative;
 	z-index: 1;
 	box-sizing: border-box;
+	padding: 12px;
 }
 
 .handle-preloader .animation-preloader .preloader-logo-placeholder .preloader-logo-img {

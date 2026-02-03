@@ -104,7 +104,7 @@ $logo_typography = '';
 				</li>
 				
 				<li class="nav-btn nav-toggler navSidebar-button clearfix">
-					<i class="icon-5"></i>
+					<i class="icon-24"></i>
 				</li>
 			</ul>
 			<?php endif; ?>
@@ -133,7 +133,7 @@ $logo_typography = '';
 					</li>
 					
 					<li class="nav-btn nav-toggler navSidebar-button clearfix">
-						<i class="icon-5"></i>
+						<i class="icon-24"></i>
 					</li>
 				</ul>
 				<?php endif; ?>
