@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Fix Order Received Page Output
  * Description: Khắc phục trang thank you chỉ hiển thị ký tự lỗi - thay thế output bị hỏng bằng trang thank you tối thiểu.
- * Version: 1.1
+ * Version: 1.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,6 +14,19 @@ $fix_uri = $_SERVER['REQUEST_URI'] ?? '';
 $fix_is_order_received = ( strpos( $fix_uri, 'order-received' ) !== false || ! empty( $_GET['key'] ) );
 
 if ( $fix_is_order_received ) {
+	// Log sớm nhất có thể (mu-plugin load trước mọi thứ)
+	$fix_log_dir = dirname( __DIR__ ) . '/uploads/visa-checkout-logs';
+	if ( ! is_dir( $fix_log_dir ) ) {
+		if ( function_exists( 'wp_mkdir_p' ) ) {
+			wp_mkdir_p( $fix_log_dir );
+		} else {
+			@mkdir( $fix_log_dir, 0755, true );
+		}
+	}
+	$fix_log_file = $fix_log_dir . '/visa-checkout.log';
+	$fix_line = '[' . date( 'Y-m-d H:i:s' ) . '] [MU-PLUGIN] ORDER RECEIVED REQUEST - URI: ' . $fix_uri . "\n";
+	@file_put_contents( $fix_log_file, $fix_line, FILE_APPEND | LOCK_EX );
+
 	ob_start( function( $buffer ) {
 		if ( ! is_string( $buffer ) ) {
 			return $buffer;
