@@ -290,6 +290,7 @@ $this->end_controls_section();
 				'max'     => 120,
 				'selectors' => [
 					'{{WRAPPER}} .team-extra-images li' => 'width: {{VALUE}}px; height: {{VALUE}}px;',
+					'{{WRAPPER}} .team-extra-images li img' => 'width: {{VALUE}}px; height: {{VALUE}}px; object-fit: cover;',
 				],
 			]
 		);
@@ -418,11 +419,23 @@ $this->end_controls_section();
 		$allowed_tags = wp_kses_allowed_html('post');
 		$extra_imgs  = isset( $settings['extra_images'] ) && is_array( $settings['extra_images'] ) ? $settings['extra_images'] : [];
 		?>
-		<style>.team-extra-images{list-style:none;margin:10px 0 15px 0;padding:0;display:flex;flex-wrap:wrap;align-items:center;justify-content: center;}.team-extra-images li{display:flex;justify-content: center;align-items: center;overflow:hidden;box-shadow:0 10px 50px rgba(34,34,34,0.2);background:#fff}.team-extra-images li img{display:block;vertical-align:top; width: 90% !important; height: auto !important;}</style>
 		<?php  if ( 'style1' === $settings['style'] ) : ?>
 
 		<section class="team-section centred <?php echo esc_attr($settings['sec_class']);?>">
             <div class="auto-container">
+                <div class="row clearfix">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 team-block">
+                        <div class="team-block-one">
+                            <div class="inner-box">
+                                <figure class="image-box">
+									<?php  if ( esc_url($settings['image']['id']) ) : ?>   
+									<img src="<?php echo wp_get_attachment_url($settings['image']['id']);?>" alt="<?php echo esc_attr($settings['alt_text']);?>"/>
+									<?php else :?>
+									<div class="noimage"></div>
+									<?php endif;?>
+								</figure>
+                                <div class="content-box">
                                     <h3><a href="<?php echo esc_url($settings['btnlink']['url']);?>"><?php echo $settings['title'];?></a></h3>
                                     <span class="designation"><?php echo $settings['subtitle'];?></span>
                                     <?php if ( ! empty( $extra_imgs ) ) :
