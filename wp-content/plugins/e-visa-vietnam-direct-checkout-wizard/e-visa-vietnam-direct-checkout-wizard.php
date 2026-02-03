@@ -239,8 +239,8 @@ class Visa_Wizard_V2_5 {
                         <table class="form-table">
                             <tr><th>Days</th><td><?php $all_days = ['Mon'=>'Mon','Tue'=>'Tue','Wed'=>'Wed','Thu'=>'Thu','Fri'=>'Fri','Sat'=>'Sat','Sun'=>'Sun']; foreach($all_days as $key => $label): ?><label style="margin-right:15px;"><input type="checkbox" name="visa_work_days[]" value="<?php echo $key; ?>" <?php if(in_array($key,(array)$days)) echo 'checked'; ?>> <?php echo $label; ?></label><?php endforeach; ?></td></tr>
                             <tr><th>Hours</th><td><input type="time" name="visa_work_start" value="<?php echo esc_attr($start); ?>"> to <input type="time" name="visa_work_end" value="<?php echo esc_attr($end); ?>"></td></tr>
-                            <tr><th>Date From</th><td><input type="date" name="visa_date_from" value="<?php echo esc_attr($date_from); ?>" class="regular-text"></td></tr>
-                            <tr><th>Date To</th><td><input type="date" name="visa_date_to" value="<?php echo esc_attr($date_to); ?>" class="regular-text"></td></tr>
+                            <tr><th>Date From</th><td><input type="date" name="visa_date_from" value="<?php echo esc_attr($date_from); ?>" class="regular-text"><p class="description">Dùng trong Schedule Note (placeholder {date_from}). Nếu để trống, phần ngày sẽ không hiển thị.</p></td></tr>
+                            <tr><th>Date To</th><td><input type="date" name="visa_date_to" value="<?php echo esc_attr($date_to); ?>" class="regular-text"><p class="description">Dùng trong Schedule Note (placeholder {date_to}).</p></td></tr>
                             <tr><th>Schedule Note</th><td><textarea name="visa_schedule_note" rows="3" class="large-text code"><?php echo esc_textarea($schedule_note); ?></textarea><p class="description">Cú pháp mẫu: <code>Show info: Processing time counts from the time the application is confirmed, not submitted, during working hours from {time_from} to {time_to} Vietnam Local Time from {date_from} to {date_to}, except Public Holidays</code>. Placeholders: <code>{time_from}</code>, <code>{time_to}</code>, <code>{date_from}</code>, <code>{date_to}</code>.</p></td></tr>
                         </table>
                     </div>
@@ -446,11 +446,18 @@ class Visa_Wizard_V2_5 {
         $step_opts = $this->get_step_options();
         
         // Replace placeholders in schedule_note
+        $df = $date_from ? date('d/m/Y', strtotime($date_from)) : '';
+        $dt = $date_to ? date('d/m/Y', strtotime($date_to)) : '';
         $schedule_note_display = str_replace(
             array('{time_from}', '{time_to}', '{date_from}', '{date_to}'),
-            array($work_start, $work_end, $date_from ? date('d/m/Y', strtotime($date_from)) : '', $date_to ? date('d/m/Y', strtotime($date_to)) : ''),
+            array($work_start, $work_end, $df, $dt),
             $schedule_note
         );
+        // Khi date_from/date_to chưa cấu hình: loại bỏ cụm " from  to ," tránh hiển thị lỗi
+        if ( empty($date_from) && empty($date_to) ) {
+            $schedule_note_display = preg_replace('/\s+from\s+to\s*,?\s*/', ' ', $schedule_note_display);
+            $schedule_note_display = preg_replace('/\s{2,}/', ' ', $schedule_note_display);
+        }
 
         $phone_codes = $this->get_all_phone_codes();
         
