@@ -408,6 +408,7 @@ class Blog_Grid extends Widget_Base {
 			[
 				'label'     => esc_html__( 'Text Color', 'immigro' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#bc9c22',
 				'selectors' => [
 					'{{WRAPPER}} .news-block-one .post-category-list a' => 'color: {{VALUE}};',
 				],
@@ -418,6 +419,7 @@ class Blog_Grid extends Widget_Base {
 			[
 				'label'     => esc_html__( 'Background Color', 'immigro' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
 				'selectors' => [
 					'{{WRAPPER}} .news-block-one .post-category-list a' => 'background-color: {{VALUE}};',
 				],
@@ -428,8 +430,31 @@ class Blog_Grid extends Widget_Base {
 			[
 				'label'     => esc_html__( 'Border Color', 'immigro' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#bc9c22',
 				'selectors' => [
 					'{{WRAPPER}} .news-block-one .post-category-list a' => 'border-color: {{VALUE}};',
+				],
+			]
+		);
+		$this->add_control(
+			'post_cat_hover_bg',
+			[
+				'label'     => esc_html__( 'Hover Background', 'immigro' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#bc9c22',
+				'selectors' => [
+					'{{WRAPPER}} .news-block-one .post-category-list a:hover' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+		$this->add_control(
+			'post_cat_hover_color',
+			[
+				'label'     => esc_html__( 'Hover Text Color', 'immigro' ),
+				'type'      => Controls_Manager::COLOR,
+				'default'   => '#ffffff',
+				'selectors' => [
+					'{{WRAPPER}} .news-block-one .post-category-list a:hover' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -473,6 +498,7 @@ class Blog_Grid extends Widget_Base {
 			[
 				'label'     => esc_html__( 'Text Color', 'immigro' ),
 				'type'      => Controls_Manager::COLOR,
+				'default'   => '#6f6f6f',
 				'selectors' => [
 					'{{WRAPPER}} .news-block-one .post-meta-line .post-meta-item' => 'color: {{VALUE}};',
 				],
@@ -698,17 +724,10 @@ class Blog_Grid extends Widget_Base {
 			align-items: center;
 			padding: 6px 18px;
 			border-radius: 30px;
-			border: 1px solid #ff7a00;
-			background-color: #fff;
-			font-size: 14px;
+			border: 1px solid;
 			line-height: 1.2;
 			text-transform: capitalize;
-			color: #ff7a00;
 			transition: all 0.3s ease;
-		}
-		.templatepath-immigro .news-block-one .post-category-list a:hover {
-			background-color: #ff7a00;
-			color: #ffffff;
 		}
 		.templatepath-immigro .news-block-one .post-title {
 			margin-bottom: 12px;
@@ -721,7 +740,7 @@ class Blog_Grid extends Widget_Base {
 			line-height: 1.35;
 		}
 		.templatepath-immigro .news-block-one .post-title a {
-			color: #ff7a00;
+			color: #bc9c22;
 		}
 		.templatepath-immigro .news-block-one .post-title a:hover {
 			color: #e66d00;
@@ -731,8 +750,6 @@ class Blog_Grid extends Widget_Base {
 			flex-wrap: wrap;
 			gap: 12px;
 			margin-bottom: 15px;
-			font-size: 14px;
-			color: #6f6f6f;
 		}
 		.templatepath-immigro .news-block-one .post-meta-line .post-meta-item {
 			display: inline-flex;
@@ -768,7 +785,7 @@ class Blog_Grid extends Widget_Base {
 			right: 12px;
 			border: none;
 			background: transparent;
-			color: #ff7a00;
+			color: #bc9c22;
 			font-size: 20px;
 			cursor: pointer;
 		}
