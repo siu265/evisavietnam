@@ -94,7 +94,8 @@ error_reporting( E_ALL );
 
 /* Add any custom values between this line and the "stop editing" line. */
 
-
+/** Chặn chỉnh sửa Theme/Plugin qua Admin - bảo vệ core */
+define( 'DISALLOW_FILE_EDIT', true );
 
 /* That's all, stop editing! Happy publishing. */
 
