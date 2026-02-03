@@ -5,10 +5,11 @@ if (!class_exists('ReduxFramework_language')) {
     {
         public $parent;
         public $field;
+        public $value;
         public $extension_dir = '';
         public $extension_url = '';
 
-        public function __construct($field = array(), $value = '', $parent)
+        public function __construct($field, $value, $parent)
         {
             $this->parent = $parent;
             $this->field = $field;

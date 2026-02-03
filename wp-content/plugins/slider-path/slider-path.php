@@ -15,10 +15,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// Load textdomain sớm để tránh JIT trigger "too early" khi code chạy trước init
-add_action( 'plugins_loaded', function() {
+// Load textdomain ngay khi plugin load để tránh JIT "too early"
+if ( function_exists( 'load_plugin_textdomain' ) ) {
 	load_plugin_textdomain( 'slider-path', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
-}, 0 );
+}
 
 // This is file area
 define( 'SLIDERPATH_PLUGIN_URL', plugins_url( 'slider-path' ) . '/' );

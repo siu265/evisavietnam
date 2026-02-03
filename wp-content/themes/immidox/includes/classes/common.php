@@ -5,6 +5,10 @@ namespace IMMIGRO\Includes\Classes;
  */
 class Common {
 	public static $instance;
+
+	/** @var string */
+	public $template;
+
 	function __construct() {
 	}
 	public static function instance() {

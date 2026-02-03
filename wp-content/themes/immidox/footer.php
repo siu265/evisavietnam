@@ -1,6 +1,7 @@
 <?php
 $options = immigro_WSH()->option();
 $allowed_html = wp_kses_allowed_html( 'post' );
+$settings = isset( $settings ) ? $settings : array();
 
 //Logo Settings
 $image_logo = $options->get( 'image_normal_logo' );
@@ -77,7 +78,7 @@ $options = immigro_WSH()->option();
 	<div class="xs-sidebar-widget">
 		<div class="sidebar-widget-container">
 			<div class="widget-heading">
-				<a href="#" class="close-side-widget"><img src="<?php echo esc_url(get_template_directory_uri().'/assets/images/close.png');?>" alt="<?php echo esc_attr($settings['alt_text']);?>"/></a>
+				<a href="#" class="close-side-widget"><img src="<?php echo esc_url(get_template_directory_uri().'/assets/images/close.png');?>" alt="<?php echo esc_attr( isset( $settings['alt_text'] ) ? $settings['alt_text'] : 'Close' ); ?>"/></a>
 			</div>
 			<div class="sidebar-textwidget">
 				<div class="sidebar-info-contents">

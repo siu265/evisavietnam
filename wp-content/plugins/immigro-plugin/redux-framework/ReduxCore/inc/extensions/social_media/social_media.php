@@ -26,7 +26,7 @@ if (!class_exists('ReduxFramework_social_media')) {
          * @since       1.0.0
          * @return      void
          */
-        public function __construct($field = array(), $value = '', $parent)
+        public function __construct($field, $value, $parent)
         {
             $this->parent = $parent;
             $this->field = $field;

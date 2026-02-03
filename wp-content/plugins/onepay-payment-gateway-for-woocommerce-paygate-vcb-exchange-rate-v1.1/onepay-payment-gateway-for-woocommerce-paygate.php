@@ -34,6 +34,12 @@ function woocommerce_onepay_init()
 		private $debug_md5;
 
 		private $exchange_rate_config;
+		private $merchant_access_code;
+		private $merchant_id;
+		private $secure_secret;
+		private $debug;
+		private $msg = array();
+		private $form_submission_method = false;
 		public static $log_enabled = false;
 		public static $ipn_enabled = false;
 
