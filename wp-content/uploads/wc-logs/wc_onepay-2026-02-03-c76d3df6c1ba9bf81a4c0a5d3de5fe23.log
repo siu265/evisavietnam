@@ -409,3 +409,123 @@
     [_wpnonce] => 
     [woocommerce-reset-password-nonce] => 
 )
+2026-02-03T15:29:29+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 916300000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 20260203152929413765685
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8757
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8757/?key=wc_order_lZzC7HJrIo3KK
+    [vpc_TicketNo] => 125.212.158.14
+    [vpc_Version] => 2
+)
+2026-02-03T15:30:04+00:00 INFO process_onepay_ipn - Order ID: 8757 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 916300000
+    [vpc_Card] => HOMECREDIT
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 20260203152929413765685
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8757
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => 09834FDEDC4E8EBA4ED22046EB6B117CD74437840239C182041AAFABC8CEC3D0
+    [vpc_TransactionNo] => PAY-awyO-OREQ9eMGRj6PHIJXA
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-02-03T15:31:14+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 654500000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202602031531141914741047
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8758
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8758/?key=wc_order_kqBrp07aQCYvr
+    [vpc_TicketNo] => 125.212.158.14
+    [vpc_Version] => 2
+)
+2026-02-03T15:31:26+00:00 INFO process_onepay_ipn - Order ID: 8758 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 654500000
+    [vpc_Card] => HOMECREDIT
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202602031531141914741047
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8758
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => 7E67A4A3AA998926CC2C98AF158EE83D91E87DAFDBA6570DB75FA7514DD37AD6
+    [vpc_TransactionNo] => PAY-vGYAqBwNQ4KStpMjPMW3kA
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-02-03T15:48:19+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 654500000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 202602031548191938200229
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8759
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8759/?key=wc_order_NH6in3EZhe5Kf
+    [vpc_TicketNo] => 125.212.158.14
+    [vpc_Version] => 2
+)
+2026-02-03T15:48:44+00:00 INFO process_onepay_ipn - Order ID: 8759 - Order Note: WC_onepay Gateway Info | Code: 0 | Message: Giao dịch thành công  - http_args: Array
+(
+    [vpc_Amount] => 654500000
+    [vpc_Card] => 970436
+    [vpc_CardNum] => 970436xxxxxxxxx0002
+    [vpc_CardUid] => INS-OMHnwB6yURTgY3BYJAqMFA
+    [vpc_Command] => pay
+    [vpc_MerchTxnRef] => 202602031548191938200229
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_Message] => Approved
+    [vpc_OrderInfo] => 8759
+    [vpc_PayChannel] => WEB
+    [vpc_SecureHash] => 0137AD8D51ECB7055735F733042BA3C632012CC44DBFF380B0D2F564714ADF8D
+    [vpc_TransactionNo] => PAY-zLjWyiiqQA2uHY8lKGBVng
+    [vpc_TxnResponseCode] => 0
+    [vpc_Version] => 2
+    [woocommerce-login-nonce] => 
+    [_wpnonce] => 
+    [woocommerce-reset-password-nonce] => 
+)
+2026-02-03T15:56:25+00:00 INFO get_pay_url - http_args: Array
+(
+    [AgainLink] => onepay.vn
+    [Title] => onepay.vn
+    [vpc_AccessCode] => 6BEB2566
+    [vpc_Amount] => 654500000
+    [vpc_CallbackURL] => https://evisavietnam.demo-site.asia/wc-api/onepay/
+    [vpc_Command] => pay
+    [vpc_Locale] => en
+    [vpc_MerchTxnRef] => 20260203155625487149405
+    [vpc_Merchant] => TESTONEPAY31
+    [vpc_OrderInfo] => 8760
+    [vpc_ReturnURL] => https://evisavietnam.demo-site.asia/checkout/order-received/8760/?key=wc_order_o3i5K104VcaeV
+    [vpc_TicketNo] => 125.212.158.14
+    [vpc_Version] => 2
+)
