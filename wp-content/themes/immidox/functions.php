@@ -429,3 +429,28 @@ add_action( 'woocommerce_thankyou', function( $order_id ) {
 
     file_put_contents( $log_file, $message, FILE_APPEND );
 }, 10, 1 );
+
+add_action( 'init', function() {
+    // if ( is_admin() ) return;
+
+    // Kiểm tra các dấu hiệu của trang Order Received
+    // WooCommerce thường dùng tham số 'get' hoặc path info tùy cấu hình Permalink
+    if ( isset($_GET['key']) || strpos($_SERVER['REQUEST_URI'], 'order-received') !== false ) {
+        
+        $log_file = WP_CONTENT_DIR . '/debug-order.log';
+        $timestamp = date('Y-m-d H:i:s');
+        
+        $data = [
+            'TIME' => $timestamp,
+            'URL'  => $_SERVER['REQUEST_URI'],
+            'GET'  => $_GET,
+            'POST' => $_POST,
+            'IP'   => $_SERVER['REMOTE_ADDR']
+        ];
+
+        $message = "==== CHECKPOINT INIT ====\n" . print_r($data, true) . "\n=========================\n\n";
+        
+        // Ghi log
+        file_put_contents($log_file, $message, FILE_APPEND);
+    }
+});
