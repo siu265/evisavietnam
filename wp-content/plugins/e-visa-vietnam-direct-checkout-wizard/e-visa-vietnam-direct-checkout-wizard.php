@@ -53,18 +53,23 @@ class Visa_Wizard_V2_5 {
         add_action( 'template_redirect', array( $this, 'log_order_received_page_request' ), 1 );
     }
 
-    /** Ghi log vào file riêng trong plugin (logs/visa-checkout.log) */
+    /** Ghi log vào wp-content/uploads/visa-checkout-logs/ (luôn ghi được trên mọi host) */
     private function visa_log( $msg ) {
         try {
-            $dir = __DIR__ . '/logs';
+            $upload = wp_upload_dir();
+            $dir    = $upload['basedir'] . '/visa-checkout-logs';
             if ( ! is_dir( $dir ) ) {
                 wp_mkdir_p( $dir );
             }
-            $file = $dir . '/visa-checkout.log';
-            $line = '[' . current_time( 'Y-m-d H:i:s' ) . '] ' . ( is_string( $msg ) ? $msg : print_r( $msg, true ) ) . "\n";
+            $index  = $dir . '/index.php';
+            if ( ! file_exists( $index ) ) {
+                @file_put_contents( $index, '<?php // Silence is golden' );
+            }
+            $file   = $dir . '/visa-checkout.log';
+            $line   = '[' . current_time( 'Y-m-d H:i:s' ) . '] ' . ( is_string( $msg ) ? $msg : print_r( $msg, true ) ) . "\n";
             $result = @file_put_contents( $file, $line, FILE_APPEND | LOCK_EX );
             if ( $result === false ) {
-                error_log( '[VISA LOG FAILED] ' . ( is_string( $msg ) ? $msg : json_encode( $msg ) ) );
+                error_log( '[VISA LOG FAILED] ' . ( is_string( $msg ) ? $msg : wp_json_encode( $msg ) ) );
             }
         } catch ( Exception $e ) {
             error_log( '[VISA LOG EXCEPTION] ' . $e->getMessage() );
