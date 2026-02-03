@@ -257,9 +257,9 @@ function woocommerce_onepay_init()
 			// Extract the available receipt fields from the VPC Response
 			// If not present then let the value be equal to 'No Value Returned'
 			// Standard Receipt Data
-			$amount = $this->null2unknown($_GET["vpc_Amount"]);
-			$orderInfo = $this->null2unknown($_GET["vpc_OrderInfo"]);
-			$txnResponseCode = $this->null2unknown($_GET["vpc_TxnResponseCode"]);
+			$amount = $this->null2unknown( isset($_GET["vpc_Amount"]) ? $_GET["vpc_Amount"] : "" );
+			$orderInfo = $this->null2unknown( isset($_GET["vpc_OrderInfo"]) ? $_GET["vpc_OrderInfo"] : "" );
+			$txnResponseCode = $this->null2unknown( isset($_GET["vpc_TxnResponseCode"]) ? $_GET["vpc_TxnResponseCode"] : "" );
 
 			// This is the display title for 'Receipt' page
 			//$title = $_GET ["Title"];
@@ -290,7 +290,7 @@ function woocommerce_onepay_init()
 				WC()->cart->empty_cart();
 			} elseif ($hashValidated == "CORRECT" && $txnResponseCode != "0") {
 				$tranDesc = $this->getResponseDescription($txnResponseCode);
-				$transStatus = '<h1 class = "entry-title" style="color:red;">Payment was fail-' . $tranDesc . '</h1>';
+				$transStatus = '<h1 class = "entry-title" style="color:red;">Payment was fail-' . esc_html( $tranDesc ) . '</h1>';
 				$order->update_status('failed');
 				$order->add_order_note(__('Payment failed-' . $tranDesc, 'woocommerce'));
 			} elseif ($hashValidated == "INVALID HASH") {

@@ -5,6 +5,15 @@ require_once get_template_directory() . '/includes/loader.php';
 add_action( 'after_setup_theme', 'immigro_setup_theme' );
 add_action( 'after_setup_theme', 'immigro_load_default_hooks' );
 
+// Đảm bảo charset UTF-8 trên trang order-received để tránh lỗi hiển thị ký tự
+add_action( 'send_headers', function() {
+	if ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ) {
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: text/html; charset=UTF-8', true );
+		}
+	}
+}, 1 );
+
 
 function immigro_setup_theme() {
 

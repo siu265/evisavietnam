@@ -14,7 +14,7 @@ $icon_href = $options->get( 'image_favicon' );
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js no-svg">
 <head>
-	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta charset="UTF-8">
 	<?php if (function_exists( 'has_site_icon' ) || has_site_icon() ): ?>
 		<?php if( $icon_href ):?>
 		
@@ -46,7 +46,7 @@ if ( ! function_exists( 'wp_body_open' ) ) {
 		}
 }?>
 	
-<main class="boxed_wrapper ltr <?php if($options->get( 'theme_rtl' ) ): echo esc_attr_e( 'rtl', 'immigro' ); endif;?>">	
+<main class="boxed_wrapper ltr <?php if ( $options->get( 'theme_rtl' ) ) { echo esc_attr( __( 'rtl', 'immigro' ) ); } ?>">	
 	
 <?php do_action( 'immigro_main_header' ); ?>	
 <?php if($options->get( 'mouse_effect' ) ):?>	
@@ -96,7 +96,11 @@ if ( empty( $preloader_type ) ) {
                     </div>
                     <?php endif; ?>
                 <?php else : ?>
-                    <?php echo wp_kses( $options->get( 'preloader_text', ' ' ), $allowed_html ); ?>
+                    <?php
+                    $preloader_text = $options->get( 'preloader_text', ' ' );
+                    $preloader_text = is_string( $preloader_text ) ? wp_check_invalid_utf8( $preloader_text ) : ' ';
+                    echo wp_kses( $preloader_text, $allowed_html );
+                    ?>
                 <?php endif; ?>
             </div>  
         </div>
