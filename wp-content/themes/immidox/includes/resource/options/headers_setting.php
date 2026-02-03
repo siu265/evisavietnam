@@ -354,8 +354,8 @@ $search_text_v1= array(
 $phone_link_v1=array(
 		    'id'       => 'phone_link_v1',
 		    'type'     => 'text',
-		    'title'    => esc_html__( 'Phone Link', 'immigro' ),
-		    'desc'     => esc_html__( 'Enter The Phone Link', 'immigro' ),
+		    'title'    => esc_html__( 'Address Link', 'immigro' ),
+		    'desc'     => esc_html__( 'Enter The Address Link', 'immigro' ),
 			'default'  => esc_html__( '#', 'immigro' ),
 			'required' => array( 'header_style_settings', '=', 'header_v1' ),
 	    );
