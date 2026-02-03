@@ -284,20 +284,32 @@ class Banner_With_Left_Text extends Widget_Base {
 
 
 <style>
-.banner-animation-text.banner-anim-inline { display: inline; position: relative; }
-.banner-animation-text .banner-anim-item {
-	position: absolute; left: 0; top: 0; opacity: 0;
-	transition: opacity 0.5s ease, transform 0.5s ease;
-	pointer-events: none; white-space: nowrap;
+.banner-animation-text.banner-anim-inline {
+	display: inline-grid;
+	position: relative;
+	min-width: 1em;
 }
-.banner-animation-text .banner-anim-item.active { position: relative; opacity: 1; pointer-events: auto; }
-.banner-animation-text.banner-anim-slideUp .banner-anim-item { transform: translateY(10px); }
+.banner-animation-text .banner-anim-item {
+	grid-area: 1/1;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+	pointer-events: none;
+	white-space: nowrap;
+	backface-visibility: hidden;
+}
+.banner-animation-text .banner-anim-item.active {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+.banner-animation-text.banner-anim-slideUp .banner-anim-item { transform: translateY(8px); }
 .banner-animation-text.banner-anim-slideUp .banner-anim-item.active { transform: translateY(0); }
-.banner-animation-text.banner-anim-slideDown .banner-anim-item { transform: translateY(-10px); }
+.banner-animation-text.banner-anim-slideDown .banner-anim-item { transform: translateY(-8px); }
 .banner-animation-text.banner-anim-slideDown .banner-anim-item.active { transform: translateY(0); }
-.banner-animation-text.banner-anim-slideLeft .banner-anim-item { transform: translateX(10px); }
+.banner-animation-text.banner-anim-slideLeft .banner-anim-item { transform: translateX(8px); }
 .banner-animation-text.banner-anim-slideLeft .banner-anim-item.active { transform: translateX(0); }
-.banner-animation-text.banner-anim-slideRight .banner-anim-item { transform: translateX(-10px); }
+.banner-animation-text.banner-anim-slideRight .banner-anim-item { transform: translateX(-8px); }
 .banner-animation-text.banner-anim-slideRight .banner-anim-item.active { transform: translateX(0); }
 </style>
 <?php
@@ -326,11 +338,13 @@ if ($(".banner-carousel").length) {
 		}
 	});
 }
-// Animation Text: cycle through text 1 | text 2 | text 3
+// Animation Text: cycle through text 1 | text 2 | text 3 (tránh nháy bằng CSS grid)
 $(".banner-animation-text").each(function(){
 	var $wrap = $(this);
+	if ($wrap.data("anim-inited")) return;
 	var $items = $wrap.find(".banner-anim-item");
 	if ($items.length < 2) return;
+	$wrap.data("anim-inited", true);
 	var idx = 0;
 	var interval = parseInt($wrap.data("interval"), 10) || 3000;
 	setInterval(function(){
