@@ -290,11 +290,69 @@ class Blog_Grid extends Widget_Base {
 				'default' => 'yes',
 			]
 		);
+		$this->add_control(
+			'show_category',
+			[
+				'label'   => esc_html__( 'Show Category', 'immigro' ),
+				'type'    => Controls_Manager::SWITCHER,
+				'default' => 'yes',
+			]
+		);
 	
 		
 		$this->end_controls_section();
 
 		/* ===== Style controls ===== */
+		$this->start_controls_section(
+			'style_blog_item_section',
+			[
+				'label' => esc_html__( 'Blog Item', 'immigro' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+		$this->add_control(
+			'blog_item_bg',
+			[
+				'label'     => esc_html__( 'Background Color', 'immigro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .news-block-one .inner-box' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+		$this->add_responsive_control(
+			'blog_item_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'immigro' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .news-block-one .lower-content' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+		$this->add_control(
+			'blog_item_radius',
+			[
+				'label'      => esc_html__( 'Border Radius', 'immigro' ),
+				'type'       => Controls_Manager::DIMENSIONS,
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .news-block-one .inner-box' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .news-block-one .image-box' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} 0 0; overflow: hidden;',
+					'{{WRAPPER}} .news-block-one .image-box img' => 'border-radius: inherit;',
+				],
+			]
+		);
+		$this->add_group_control(
+			\Elementor\Group_Control_Box_Shadow::get_type(),
+			[
+				'name'     => 'blog_item_shadow',
+				'selector' => '{{WRAPPER}} .news-block-one .inner-box',
+			]
+		);
+		$this->end_controls_section();
+
 		$this->start_controls_section(
 			'style_title_section',
 			[
@@ -442,6 +500,46 @@ class Blog_Grid extends Widget_Base {
 		$this->end_controls_section();
 
 		$this->start_controls_section(
+			'style_excerpt_section',
+			[
+				'label' => esc_html__( 'Excerpt / Description', 'immigro' ),
+				'tab'   => Controls_Manager::TAB_STYLE,
+			]
+		);
+		$this->add_group_control(
+			Group_Control_Typography::get_type(),
+			[
+				'name'     => 'post_excerpt_typography',
+				'selector' => '{{WRAPPER}} .news-block-one .lower-content p',
+			]
+		);
+		$this->add_control(
+			'post_excerpt_color',
+			[
+				'label'     => esc_html__( 'Text Color', 'immigro' ),
+				'type'      => Controls_Manager::COLOR,
+				'selectors' => [
+					'{{WRAPPER}} .news-block-one .lower-content p' => 'color: {{VALUE}};',
+				],
+			]
+		);
+		$this->add_control(
+			'post_excerpt_spacing',
+			[
+				'label' => esc_html__( 'Spacing Top (px)', 'immigro' ),
+				'type'  => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [ 'min' => 0, 'max' => 40 ],
+				],
+				'default' => [ 'size' => 0 ],
+				'selectors' => [
+					'{{WRAPPER}} .news-block-one .lower-content p' => 'margin-top: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+		$this->end_controls_section();
+
+		$this->start_controls_section(
 			'style_search_section',
 			[
 				'label' => esc_html__( 'Search Bar', 'immigro' ),
@@ -570,6 +668,25 @@ class Blog_Grid extends Widget_Base {
 			$immigro_blog_grid_styles = true;
 		?>
 		<style>
+		.templatepath-immigro .news-block-one .inner-box {
+			border-radius: 12px;
+			overflow: hidden;
+			background: #fff;
+			box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+		}
+		.templatepath-immigro .news-block-one .image-box {
+			border-radius: 12px 12px 0 0;
+			overflow: hidden;
+		}
+		.templatepath-immigro .news-block-one .image-box img {
+			width: 100%;
+			height: auto;
+			display: block;
+			object-fit: cover;
+		}
+		.templatepath-immigro .news-block-one .lower-content {
+			padding: 24px 24px 28px;
+		}
 		.templatepath-immigro .news-block-one .post-category-list {
 			display: flex;
 			flex-wrap: wrap;
@@ -581,8 +698,8 @@ class Blog_Grid extends Widget_Base {
 			align-items: center;
 			padding: 6px 18px;
 			border-radius: 30px;
-			border: 1px solid rgba(255, 170, 23, 0.45);
-			background-color: rgba(255, 170, 23, 0.12);
+			border: 1px solid #ff7a00;
+			background-color: #fff;
 			font-size: 14px;
 			line-height: 1.2;
 			text-transform: capitalize;
@@ -599,6 +716,15 @@ class Blog_Grid extends Widget_Base {
 			-webkit-line-clamp: 2;
 			-webkit-box-orient: vertical;
 			overflow: hidden;
+			font-weight: 700;
+			font-size: 1.25rem;
+			line-height: 1.35;
+		}
+		.templatepath-immigro .news-block-one .post-title a {
+			color: #ff7a00;
+		}
+		.templatepath-immigro .news-block-one .post-title a:hover {
+			color: #e66d00;
 		}
 		.templatepath-immigro .news-block-one .post-meta-line {
 			display: flex;
@@ -612,6 +738,12 @@ class Blog_Grid extends Widget_Base {
 			display: inline-flex;
 			align-items: center;
 			column-gap: 6px;
+		}
+		.templatepath-immigro .news-block-one .lower-content p {
+			font-size: 15px;
+			line-height: 1.6;
+			color: #555;
+			margin-bottom: 0;
 		}
 		.templatepath-immigro .immigro-blog-search-wrap {
 			text-align: center;
@@ -676,15 +808,19 @@ class Blog_Grid extends Widget_Base {
 								</figure>
                                 <div class="lower-content">
 									<?php
-									$categories = get_the_category();
-									if ( ! empty( $categories ) ) :
+									if ( ( $settings['show_category'] ?? 'yes' ) === 'yes' ) {
+										$categories = get_the_category();
+										if ( ! empty( $categories ) ) :
 									?>
 									<div class="post-category-list">
 										<?php foreach ( $categories as $category ) : ?>
 											<a href="<?php echo esc_url( get_category_link( $category->term_id ) ); ?>" class="post-category-link"><?php echo esc_html( $category->name ); ?></a>
 										<?php endforeach; ?>
 									</div>
-									<?php endif; ?>
+									<?php
+										endif;
+									}
+									?>
                                     <h3 class="post-title"><a href="<?php echo esc_url( the_permalink( get_the_id() ) );?>"><?php the_title(); ?></a></h3>
 									<?php
 									$meta_items = [];
