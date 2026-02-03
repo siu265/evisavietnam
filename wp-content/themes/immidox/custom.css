@@ -350,4 +350,24 @@ span.page-numbers.current {
 	.header-top .info {
 		text-align: left;
 	}
+
+	.header-lower .logo-box {
+		padding: 10px 0;
+	}
+
+	.main-header .logo-box .logo {
+		max-width: 150px;
+	}
+
+	.elementor-image-gallery .gallery.gallery-columns-3 .gallery-item {
+		max-width: 50%;
+	}
+
+	.elementor-image-gallery .gallery-item {
+		width: 50%;
+	}
+
+	.scroll-to-top {
+		right: -50px;
+	}
 }
