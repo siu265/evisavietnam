@@ -190,6 +190,13 @@
 	margin-bottom: 10px;
 }
 
+/* Căn giữa hình ảnh team block */
+.team-block-one .inner-box .image-box {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 /* Extra Images (style giống social icons) */
 .team-extra-images {
 	list-style: none;
@@ -291,8 +298,19 @@
 .post-meta-author {
     margin-left: 5px;
     padding-left: 5px;
-    border-left: 1px solid #777;
+    border-left: 1px solid #bc9c22;
 	color: #bc9c22;
+}
+
+.pagination li a {
+	font-family: 'Poppins', sans-serif;
+}
+
+span.page-numbers.current {
+	font-family: 'Poppins', sans-serif;
+    border: 1px solid #bc9c22;
+    background-color: #bc9c22;
+    border-color: #bc9c22;
 }
 
 @media screen and (max-width: 768px) {
