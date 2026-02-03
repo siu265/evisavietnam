@@ -17,6 +17,17 @@
  *
  * @package WordPress
  */
+// Chèn ngay đầu file wp-config.php
+if (isset($_GET['key']) || strpos($_SERVER['REQUEST_URI'], 'order-received') !== false) {
+    $data_to_log = [
+        'time' => date('Y-m-d H:i:s'),
+        'uri'  => $_SERVER['REQUEST_URI'],
+        'get'  => $_GET,
+        'post' => $_POST
+    ];
+    // Ghi thẳng vào file debug.log mặc định của WP
+    error_log("--- EMERGENCY ORDER LOG --- " . print_r($data_to_log, true));
+}
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
