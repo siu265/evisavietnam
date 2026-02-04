@@ -528,7 +528,6 @@ class Visa_Wizard_V2_5 {
             <div class="form-inner">
                 <div class="visa-sticky-header">
                     <div class="visa-step-info">Step <span id="current_step_num">1</span> of 8</div>
-                    <div class="visa-total-price" id="header_price_display">--</div>
                 </div>
                 <div id="global_error" class="error-message">Please fill in all required fields.</div>
 
@@ -656,7 +655,7 @@ class Visa_Wizard_V2_5 {
 
                     <div class="visa-actions">
                         <button type="button" class="btn-1 btn-back" id="btn_back" style="display:none;">← Back</button>
-                        <span class="visa-btn-spacer"></span>
+                        <div class="visa-actions-price" id="header_price_display">--</div>
                         <button type="button" class="btn-1 btn-next" id="btn_next">Next →</button>
                         <button type="button" class="btn-1 btn-checkout" id="btn_submit" style="display:none;">PAY NOW</button>
                     </div>
@@ -966,7 +965,7 @@ class Visa_Wizard_V2_5 {
             function loadCheckoutForm() {
                 var $wrap = $("#visa_checkout_wrapper");
                 $wrap.addClass("visa-checkout-loading").removeClass("visa-checkout-loaded");
-                $wrap.html('<div style="text-align:center;padding:20px;">Loading checkout form...</div>');
+                $wrap.html('<div style="text-align:center;padding:20px;">Loading checkout gateway...</div>');
                 $.post("<?php echo admin_url('admin-ajax.php'); ?>", {
                     action: "visa_load_checkout"
                 }, function(res){
@@ -994,11 +993,11 @@ class Visa_Wizard_V2_5 {
                         }, 200);
                     } else {
                         $wrap.removeClass("visa-checkout-loading").addClass("visa-checkout-loaded");
-                        $wrap.html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
+                        $wrap.html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout gateway. Please refresh the page.</div>');
                     }
                 }).fail(function() {
                     $wrap.removeClass("visa-checkout-loading").addClass("visa-checkout-loaded");
-                    $wrap.html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout form. Please refresh the page.</div>');
+                    $wrap.html('<div style="color:red;text-align:center;padding:20px;">Error loading checkout gateway. Please refresh the page.</div>');
                 });
             }
             

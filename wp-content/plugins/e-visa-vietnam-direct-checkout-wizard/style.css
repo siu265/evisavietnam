@@ -577,6 +577,15 @@
     flex: 1;
 }
 
+/* Giá hiển thị giữa Back và Next */
+.visa-actions .visa-actions-price {
+    flex: 1;
+    text-align: center;
+    font-size: 22px;
+    color: #bc9c22;
+    font-weight: 800;
+}
+
 /* ========== Error ========== */
 #global_error {
     background: #fff8e6;
@@ -1077,6 +1086,10 @@ body.woocommerce-order-received .woocommerce-customer-details address {
 .woocommerce-cart #payment ul.payment_methods li img,
 .woocommerce-checkout #payment ul.payment_methods li img {
     max-width: 250px;
+}
+
+.visa-checkout-wrapper .woocommerce-checkout-review-order-table {
+    display: none !important;
 }
 
 /* ========== Responsive ========== */
