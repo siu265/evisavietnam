@@ -169,3 +169,34 @@
 [2026-02-04 16:38:15] === AJAX_LOAD_CHECKOUT START ===
 [2026-02-04 16:38:15] Cart is_empty: no, count=1
 [2026-02-04 16:38:15] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16816
+[2026-02-04 17:20:25] ERROR ajax_upload_file: Upload failed. up={"error":"Specified file failed upload test."}
+[2026-02-04 17:21:23] === AJAX_CHECKOUT START ===
+[2026-02-04 17:21:23] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 17:21:23] Adding to cart: product_id=8216, qty=1, variation_id=8234
+[2026-02-04 17:21:23] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 17:21:25] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 17:21:25] Cart is_empty: no, count=1
+[2026-02-04 17:21:26] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16818
+[2026-02-04 17:48:46] === AJAX_CHECKOUT START ===
+[2026-02-04 17:48:46] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 17:48:46] ERROR: Billing email invalid: vdjbs@@gmail.com
+[2026-02-04 17:48:57] === AJAX_CHECKOUT START ===
+[2026-02-04 17:48:57] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 17:48:57] Adding to cart: product_id=8216, qty=1, variation_id=8231
+[2026-02-04 17:48:57] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 17:49:00] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 17:49:00] Cart is_empty: no, count=1
+[2026-02-04 17:49:01] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16806
+[2026-02-04 17:51:35] === AJAX_CHECKOUT START ===
+[2026-02-04 17:51:35] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 17:51:35] Adding to cart: product_id=8216, qty=1, variation_id=8231
+[2026-02-04 17:51:35] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 17:51:38] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 17:51:38] Cart is_empty: no, count=1
+[2026-02-04 17:51:38] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16806
+[2026-02-04 19:32:20] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-04 19:32:20] URI: /checkout/order-received/8879/?key=wc_order_HQpDqHgMmFIPi&vpc_Amount=523600000&vpc_Command=pay&vpc_MerchTxnRef=20260204104924291183690&vpc_Merchant=TESTONEPAY31&vpc_Message=Expired&vpc_OrderInfo=8879&vpc_TxnResponseCode=253&vpc_Version=2&vpc_SecureHash=0EBF98CF2721B2346501EF0E2278297A879D2DE82BDDCC05B2B5DED03902E9AC
+[2026-02-04 19:32:20] GET: {"key":"wc_order_HQpDqHgMmFIPi","vpc_Amount":"523600000","vpc_Command":"pay","vpc_MerchTxnRef":"20260204104924291183690","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Expired","vpc_OrderInfo":"8879","vpc_TxnResponseCode":"253","vpc_Version":"2","vpc_SecureHash":"0EBF98CF2721B2346501EF0E2278297A879D2DE82BDDCC05B2B5DED03902E9AC"}
+[2026-02-04 19:32:20] is_wc_endpoint_url(order-received): yes
+[2026-02-04 19:32:23] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8879 ===
+[2026-02-04 19:32:23] Session cleared for order 8879
