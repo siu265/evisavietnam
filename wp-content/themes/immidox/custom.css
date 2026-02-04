@@ -616,6 +616,9 @@ span.page-numbers.current {
 }
 
 @media screen and (max-width: 768px) {
+	.mobile-menu .nav-logo {
+		padding: 10px 25px;
+	}
 	.header-top {
 		display: none;
 	}
