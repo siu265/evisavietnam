@@ -106,3 +106,66 @@
 [2026-02-03 23:43:13] is_wc_endpoint_url(order-received): yes
 [2026-02-03 23:43:16] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
 [2026-02-03 23:43:16] Session cleared for order 8772
+[2026-02-03 23:43:36] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:43:36] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:43:36] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:43:36] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:43:38] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:43:38] Session cleared for order 8772
+[2026-02-03 23:44:08] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:44:08] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:44:08] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:44:08] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:44:10] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:44:10] Session cleared for order 8772
+[2026-02-03 23:44:48] --- ORDER RECEIVED PAGE REQUEST ---
+[2026-02-03 23:44:48] URI: /checkout/order-received/8772/?key=wc_order_NmnuS1tbLcqLi&vpc_Amount=654500000&vpc_Card=HOMECREDIT&vpc_Command=pay&vpc_MerchTxnRef=202602031629411738613854&vpc_Merchant=TESTONEPAY31&vpc_Message=Approved&vpc_OrderInfo=8772&vpc_PayChannel=WEB&vpc_TransactionNo=PAY-kB-P4IhpSqq1U2wbwemYRQ&vpc_TxnResponseCode=0&vpc_Version=2&vpc_SecureHash=313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204
+[2026-02-03 23:44:48] GET: {"key":"wc_order_NmnuS1tbLcqLi","vpc_Amount":"654500000","vpc_Card":"HOMECREDIT","vpc_Command":"pay","vpc_MerchTxnRef":"202602031629411738613854","vpc_Merchant":"TESTONEPAY31","vpc_Message":"Approved","vpc_OrderInfo":"8772","vpc_PayChannel":"WEB","vpc_TransactionNo":"PAY-kB-P4IhpSqq1U2wbwemYRQ","vpc_TxnResponseCode":"0","vpc_Version":"2","vpc_SecureHash":"313DA1FAD4C6D616A3981C34AF0CF846A203D3799DD09C4221AC6D412230C204"}
+[2026-02-03 23:44:48] is_wc_endpoint_url(order-received): yes
+[2026-02-03 23:44:51] === CLEAR_VISA_SESSION_ON_THANKYOU (woocommerce_thankyou) order_id=8772 ===
+[2026-02-03 23:44:51] Session cleared for order 8772
+[2026-02-04 11:57:23] === AJAX_CHECKOUT START ===
+[2026-02-04 11:57:23] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 11:57:23] ERROR: Billing email invalid: dftgyh
+[2026-02-04 11:57:32] === AJAX_CHECKOUT START ===
+[2026-02-04 11:57:32] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 11:57:32] Adding to cart: product_id=8216, qty=1, variation_id=8239
+[2026-02-04 11:57:32] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 11:57:36] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 11:57:36] Cart is_empty: no, count=1
+[2026-02-04 11:57:37] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16807
+[2026-02-04 12:13:09] === AJAX_CHECKOUT START ===
+[2026-02-04 12:13:09] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 12:13:09] Adding to cart: product_id=8216, qty=1, variation_id=8236
+[2026-02-04 12:13:09] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 12:13:11] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 12:13:11] Cart is_empty: no, count=1
+[2026-02-04 12:13:11] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16815
+[2026-02-04 14:17:15] === AJAX_CHECKOUT START ===
+[2026-02-04 14:17:15] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 14:17:15] Adding to cart: product_id=8216, qty=1, variation_id=8233
+[2026-02-04 14:17:15] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 14:17:17] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 14:17:17] Cart is_empty: no, count=1
+[2026-02-04 14:17:18] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16813
+[2026-02-04 16:08:12] === AJAX_CHECKOUT START ===
+[2026-02-04 16:08:12] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 16:08:12] Adding to cart: product_id=8216, qty=1, variation_id=8228
+[2026-02-04 16:08:12] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 16:08:15] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 16:08:15] Cart is_empty: no, count=1
+[2026-02-04 16:08:15] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16798
+[2026-02-04 16:10:42] === AJAX_CHECKOUT START ===
+[2026-02-04 16:10:42] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 16:10:42] Adding to cart: product_id=8216, qty=1, variation_id=8228
+[2026-02-04 16:10:43] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 16:10:45] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 16:10:45] Cart is_empty: no, count=1
+[2026-02-04 16:10:45] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16798
+[2026-02-04 16:38:12] === AJAX_CHECKOUT START ===
+[2026-02-04 16:38:12] Form keys: product_id, variation_id, nationality, visa_type, processing_time, arrival_date, number_of_travelers, passport_url_1, photo_url_1, contact_name, email, phone_code, phone_number
+[2026-02-04 16:38:12] Adding to cart: product_id=8216, qty=1, variation_id=8236
+[2026-02-04 16:38:12] AJAX_CHECKOUT SUCCESS: Cart count=1
+[2026-02-04 16:38:15] === AJAX_LOAD_CHECKOUT START ===
+[2026-02-04 16:38:15] Cart is_empty: no, count=1
+[2026-02-04 16:38:15] AJAX_LOAD_CHECKOUT SUCCESS: HTML length=16816
