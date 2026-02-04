@@ -615,6 +615,11 @@ span.page-numbers.current {
 	background-color: #1e593c !important;
 }
 
+.icon-footer .elementor-widget-image {
+	display: flex;
+    align-items: center;
+}
+
 @media screen and (max-width: 768px) {
 	.mobile-menu .nav-logo {
 		padding: 10px 25px;
