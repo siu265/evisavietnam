@@ -607,6 +607,10 @@ span.page-numbers.current {
 	font-weight: 600 !important;
 }
 
+.banner-section .banner-carousel .owl-nav {
+	display: none !important;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
