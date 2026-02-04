@@ -611,6 +611,10 @@ span.page-numbers.current {
 	display: none !important;
 }
 
+.mobile-menu .menu-box {
+	background-color: #1e593c !important;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
