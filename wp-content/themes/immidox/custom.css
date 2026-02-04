@@ -589,6 +589,24 @@ span.page-numbers.current {
 	display: block !important;
 } */
 
+.pricing-table {
+	margin: 10px 0;
+}
+
+.pricing-table th {
+    background-color: #1e593c;
+    color: #fff;
+    text-align: center;
+}
+
+.pricing-table td {
+	text-align: center;
+}
+
+.pricing-table tbody tr td:first-child {
+	font-weight: 600;
+}
+
 @media screen and (max-width: 768px) {
 	.header-top {
 		display: none;
