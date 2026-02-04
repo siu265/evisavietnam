@@ -590,21 +590,21 @@ span.page-numbers.current {
 } */
 
 .pricing-table {
-	margin: 10px 0;
+	margin: 10px 0 !important;
 }
 
 .pricing-table th {
-    background-color: #1e593c;
-    color: #fff;
-    text-align: center;
+    background-color: #1e593c !important;
+    color: #fff !important;
+    text-align: center !important;
 }
 
 .pricing-table td {
-	text-align: center;
+	text-align: center !important;
 }
 
 .pricing-table tbody tr td:first-child {
-	font-weight: 600;
+	font-weight: 600 !important;
 }
 
 @media screen and (max-width: 768px) {
