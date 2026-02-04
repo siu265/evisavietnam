@@ -620,6 +620,12 @@ span.page-numbers.current {
     align-items: center;
 }
 
+@media screen and (max-width: 1399px) {
+	.header-style-one .header-lower .menu-area .btn-box a {
+		background: unset !important;
+	}
+}
+
 @media screen and (max-width: 768px) {
 	.mobile-menu .nav-logo {
 		padding: 10px 25px;
