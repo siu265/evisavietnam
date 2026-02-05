@@ -402,7 +402,7 @@
 /* Main Menu */
 
 .main-menu .navigation>li>a {
-	text-transform: uppercase;
+	text-transform: none;
 	font-size: 18px;
 }
 

