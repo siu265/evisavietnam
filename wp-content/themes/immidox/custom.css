@@ -86,10 +86,40 @@
 	}
 }
 
+.sticky-header .nav-right {
+	display: flex;
+    align-items: center;
+}
+
 /* Luôn hiển thị nút Apply Now kể cả trên mobile */
-.header-style-one .header-lower .menu-area .btn-box {
+.header-style-one .header-lower .menu-area .btn-box,
+.sticky-header .nav-right .btn-box-li .btn-box {
 	display: flex !important;
 	align-items: center;
+}
+
+/* Sticky header: nút Apply Now trong nav-right (trước icon search) */
+.sticky-header .nav-right .btn-box-li {
+	display: inline-flex;
+	align-items: center;
+	width: 100% !important;
+	border-radius: 10px;
+    padding: 10px;
+	background: #bc9c22;
+    color: #fff;
+}
+
+.sticky-header .nav-right .btn-box-li:hover {
+	background: #1e593c;
+	color: #fff;
+}
+
+.sticky-header .nav-right .btn-box-li .btn-box a {
+	white-space: nowrap;
+	font-size: 16px;
+	font-weight: 600;
+	border-radius: unset;
+	color: #fff;
 }
 
 .header-style-one .header-lower .menu-area .btn-box a {
@@ -104,13 +134,21 @@
 }
 
 @media only screen and (max-width: 767px) {
-	.header-style-one .header-lower .menu-area .btn-box a {
+	.header-style-one .header-lower .menu-area .btn-box a,
+	.sticky-header .nav-right .btn-box-li .btn-box a {
 		padding: 8px 14px;
 		font-size: 13px;
 	}
 
 	.navSidebar-button {
 		display: none !important;
+	}
+}
+
+/* Sticky header mobile: nút Apply Now luôn hiển thị */
+@media only screen and (max-width: 1399px) {
+	.sticky-header .nav-right .btn-box-li .btn-box {
+		display: flex !important;
 	}
 }
 
@@ -169,11 +207,48 @@
    4. BANNER / SLIDER (Banner With Left Text)
    ========================================================================== */
 
-/* Banner: ảnh không méo, layout ổn định (dùng cover giữ tỉ lệ) */
+/* Banner full screen: không bị đẩy xuống/sang phải, ảnh không scale và không animation */
+.banner-section {
+	overflow: hidden;
+	width: 100vw;
+	max-width: 100vw;
+	margin-left: calc(50% - 50vw);
+	margin-right: calc(50% - 50vw);
+}
+
 .banner-section .banner-carousel .slide-item .image-layer {
-	background-size: cover;
-	background-position: center right;
-	background-repeat: no-repeat;
+	left: 0 !important;
+	top: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	background-size: cover !important;
+	background-position: top right !important;
+	background-repeat: no-repeat !important;
+	background-attachment: scroll !important;
+	transform: none !important;
+	transition: none !important;
+	-webkit-transform: none !important;
+	-webkit-transition: none !important;
+}
+
+.banner-section .banner-carousel .active .slide-item .image-layer {
+	transform: none !important;
+	-webkit-transform: none !important;
+}
+
+.banner-carousel .active .slide-item .image-layer {
+	transform: scale(1) !important;
+	-webkit-transform: scale(1) !important;
+}
+
+.blog-details-content .news-block-one .inner-box .image-box img {
+	width: 100%;
+}
+
+.sidebar-page-container {
+    padding: 50px 0px;
 }
 
 /* Fix hiển thị trên tablet/mobile */
@@ -184,15 +259,9 @@
 	}
 
 	.banner-section .banner-carousel .slide-item .image-layer {
-		background-size: cover;
-		background-position: center right;
-		-webkit-backface-visibility: hidden;
-		backface-visibility: hidden;
-		transform: none;
-	}
-
-	.banner-section .banner-carousel .active .slide-item .image-layer {
-		transform: none;
+		background-size: cover !important;
+		background-position: top right !important;
+		transform: none !important;
 	}
 }
 
@@ -203,8 +272,7 @@
 	}
 
 	.banner-section .banner-carousel .slide-item .image-layer {
-		background-size: cover;
-		background-position: 60% center;
+		background-position: 60% top !important;
 	}
 }
 
@@ -296,6 +364,7 @@
 	/* Scroll to top – không bị cắt trên Thank You */
 	.scroll-to-top {
 		right: 10px !important;
+		display: none !important;
 	}
 
 	.woocommerce table.shop_table tbody th,
@@ -701,4 +770,239 @@ span.page-numbers.current {
 	.woocommerce .woocommerce-customer-details .woocommerce-customer-details--email, .woocommerce .woocommerce-customer-details .woocommerce-customer-details--phone {
 		margin-bottom: 0px !important;
 	}
+}
+
+/* ==========================================================================
+   6. MỤC LỤC TỰ ĐỘNG (BÀI VIẾT)
+   ========================================================================== */
+
+.immigro-post-toc {
+	margin: 0 0 32px 0;
+	padding: 24px 28px 20px;
+	background: linear-gradient(135deg, #fafbfc 0%, #f1f3f5 100%);
+	border: 1px solid #dee2e6;
+	border-left: 5px solid #bc9c22;
+	border-radius: 10px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+	position: relative;
+	overflow: hidden;
+}
+
+.immigro-post-toc::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 3px;
+	background: linear-gradient(90deg, #bc9c22 0%, #d4af37 50%, #bc9c22 100%);
+	opacity: 0.6;
+}
+
+.immigro-post-toc .toc-title {
+	margin: 0 0 16px 0;
+	padding-bottom: 12px;
+	font-size: 19px;
+	font-weight: 700;
+	color: #1a1a1a;
+	letter-spacing: 0.3px;
+	border-bottom: 2px solid #e9ecef;
+}
+
+.immigro-post-toc .toc-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.immigro-post-toc .toc-item {
+	margin: 0;
+	padding: 10px 0 10px 12px;
+	border-bottom: 1px dashed #e2e6ea;
+	position: relative;
+}
+
+.immigro-post-toc .toc-item::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 4px;
+	height: 4px;
+	background: #bc9c22;
+	border-radius: 50%;
+	opacity: 0.7;
+}
+
+.immigro-post-toc .toc-item:last-child {
+	border-bottom: none;
+}
+
+.immigro-post-toc .toc-level-3 {
+	padding-left: 24px;
+}
+
+.immigro-post-toc .toc-level-3::before {
+	left: 12px;
+	background: #8b7355;
+	width: 3px;
+	height: 3px;
+}
+
+.immigro-post-toc .toc-level-4 {
+	padding-left: 36px;
+}
+
+.immigro-post-toc .toc-level-4::before {
+	left: 24px;
+	background: #6b5b4a;
+	width: 3px;
+	height: 3px;
+}
+
+.immigro-post-toc .toc-item a {
+	color: #374151;
+	text-decoration: none;
+	transition: color 0.2s ease, padding-left 0.2s ease;
+	display: inline-block;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.immigro-post-toc .toc-item a:hover {
+	color: #bc9c22;
+	padding-left: 4px;
+}
+
+/* Căn chỉnh khi scroll tới heading (tránh bị che bởi sticky header) */
+.single-post .blog-details-content h2[id],
+.single-post .blog-details-content h3[id],
+.single-post .blog-details-content h4[id],
+.single .entry-content h2[id],
+.single .entry-content h3[id],
+.single .entry-content h4[id] {
+	scroll-margin-top: 120px;
+}
+
+/* ==========================================================================
+   7. BÀI VIẾT LIÊN QUAN (Related Posts – Slide 4 cột, tối đa 10)
+   ========================================================================== */
+
+.immigro-related-posts {
+	margin-top: 50px;
+	padding-top: 40px;
+	border-top: 1px solid #e9ecef;
+}
+
+.immigro-related-posts .related-posts-title {
+	font-family: "Poppins", Sans-serif;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 48px;
+	color: #222222;
+	margin-bottom: 20px;
+}
+
+.immigro-related-posts .related-posts-carousel.owl-carousel .owl-nav {
+	display: none !important;
+}
+
+.immigro-related-posts .related-posts-carousel.owl-carousel {
+	position: relative;
+}
+
+.immigro-related-posts .related-posts-item {
+	padding: 0 5px;
+}
+
+.immigro-related-posts .news-block-one {
+	margin-bottom: 0;
+	height: 100%;
+}
+
+.immigro-related-posts .news-block-one .inner-box {
+	background: #fff;
+	border: 1px solid #eee;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: box-shadow 0.3s ease;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.immigro-related-posts .news-block-one .inner-box:hover {
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.immigro-related-posts .news-block-one .image-box {
+	margin: 0;
+	overflow: hidden;
+	border-radius: 8px 8px 0 0;
+}
+
+.immigro-related-posts .news-block-one .image-box img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+	border-radius: 8px 8px 0 0;
+}
+
+.immigro-related-posts .news-block-one .inner-box:hover .image-box img {
+	transform: scale(1.05);
+}
+
+.immigro-related-posts .news-block-one .lower-content {
+	padding: 18px !important;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.immigro-related-posts .news-block-one .lower-content h4 {
+	margin: 0 0 10px 0;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.4;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.immigro-related-posts .news-block-one .lower-content h4 a {
+	color: #222;
+	text-decoration: none;
+}
+
+.immigro-related-posts .news-block-one .lower-content h4 a:hover {
+	color: #bc9c22;
+}
+
+.immigro-related-posts .news-block-one .lower-content .post-info {
+	margin-bottom: 10px;
+	font-size: 13px;
+	color: #bc9c22;
+	font-weight: 500;
+}
+
+.immigro-related-posts .news-block-one .lower-content .post-info li {
+	color: inherit;
+}
+
+.immigro-related-posts .news-block-one .lower-content .related-excerpt {
+	font-size: 14px;
+	line-height: 1.5;
+	color: #676767;
+	margin: 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.immigro-related-posts .owl-nav button {
+	top: 35%;
 }

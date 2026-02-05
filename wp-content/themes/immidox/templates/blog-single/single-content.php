@@ -65,6 +65,8 @@ $audio_type = get_post_meta( $page_id, 'immigro_audio_type', true );
 	
 	<?php immigro_template_load( 'templates/blog-single/social_share.php', compact( 'options', 'data' ) ); ?>
     
-    <?php comments_template(); ?> 
+    <?php comments_template(); ?>
+
+	<?php immigro_template_load( 'templates/blog-single/related-posts.php' ); ?>
 	
 </div>

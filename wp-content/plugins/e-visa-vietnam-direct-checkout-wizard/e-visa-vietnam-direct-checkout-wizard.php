@@ -691,13 +691,13 @@ class Visa_Wizard_V2_5 {
                         </div>
                         
                         <div class="form-group visa-terms-wrap" style="margin:24px 0;">
-                            <label class="visa-terms-label">
-                                <input type="checkbox" id="agree_terms" class="required-field">
-                                <span id="terms_checkbox_text"><?php echo esc_html( $terms_checkbox_text ); ?></span>
-                            </label>
-                            <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="display:none; max-height:280px; overflow-y:auto; margin-top:12px; padding:12px; border:1px solid #ddd; border-radius:6px; background:#f9f9f9;">
+                            <div class="visa-terms-scroll-box" id="visa_terms_scroll" style="max-height:280px; overflow-y:auto; margin-bottom:16px; padding:12px; border:1px solid #ddd; border-radius:6px; background:#f9f9f9;">
                                 <div id="terms_content_display"></div>
                             </div>
+                            <label class="visa-terms-label" style="display:flex; align-items:flex-start; gap:10px; cursor:pointer;">
+                                <input type="checkbox" id="agree_terms" class="required-field" style="margin-top:4px;">
+                                <span id="terms_checkbox_text"><?php echo esc_html( $terms_checkbox_text ); ?></span>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -736,14 +736,14 @@ class Visa_Wizard_V2_5 {
             }, 500); // Đợi 500ms để chắc chắn Select2 đã load xong
 
             // Modal
-            $(document).on("click", ".visa-link", function(e){
-                e.preventDefault(); e.stopPropagation();
-                let target = "#" + $(this).data("target");
-                $(target).css("display", "flex").hide().fadeIn();
-            });
-            $(document).on("click", ".visa-close, .visa-modal", function(e){
-                if(e.target === this || $(this).hasClass("visa-close")) $(".visa-modal").fadeOut();
-            });
+            // $(document).on("click", ".visa-link", function(e){
+            //     e.preventDefault(); e.stopPropagation();
+            //     let target = "#" + $(this).data("target");
+            //     $(target).css("display", "flex").hide().fadeIn();
+            // });
+            // $(document).on("click", ".visa-close, .visa-modal", function(e){
+            //     if(e.target === this || $(this).hasClass("visa-close")) $(".visa-modal").fadeOut();
+            // });
 
             // Generate upload và contact fields dựa trên số người
             function generateTravelersUpload(num) {
@@ -926,14 +926,7 @@ class Visa_Wizard_V2_5 {
             termsText = termsText.replace(/Privacy Policy/gi, '<span class="visa-link" data-target="modal_privacy">Privacy Policy</span>');
             termsText = termsText.replace(/Refund Policy/gi, '<span class="visa-link" data-target="modal_refund">Refund Policy</span>');
             $("#terms_checkbox_text").html(termsText);
-            
-            $(document).on("change", "#agree_terms", function(){
-                if($(this).is(":checked")) {
-                    $("#visa_terms_scroll").slideDown();
-                } else {
-                    $("#visa_terms_scroll").slideUp();
-                }
-            });
+            // Scroll box hiển thị luôn, không cần toggle
 
             // Khởi tạo với số người mặc định
             var defaultTravelers = parseInt($("#number_of_travelers").val()) || 1;
@@ -1308,7 +1301,7 @@ class Visa_Wizard_V2_5 {
                                 
                                 // Hiển thị giá
                                 if(numTravelers > 1) {
-                                    $("#header_price_display").html(currency + formattedPrice + " <small style='color:#888; font-size:0.85em;'>(<?php echo esc_js(__('for', 'woocommerce')); ?> " + numTravelers + " <?php echo esc_js(__('traveler(s)', 'woocommerce')); ?>)</small>");
+                                    $("#header_price_display").html(currency + formattedPrice + " <small style='color:#888; font-size:0.85em;'><?php echo esc_js(__('for', 'woocommerce')); ?> " + numTravelers + " <?php echo esc_js(__('traveler(s)', 'woocommerce')); ?></small>");
                                 } else {
                                     $("#header_price_display").html(currency + formattedPrice);
                                 }
@@ -1413,7 +1406,6 @@ class Visa_Wizard_V2_5 {
                 $("#variation_id").val("");
                 $("#number_of_travelers").val("1");
                 $("#agree_terms").prop("checked", false);
-                $("#visa_terms_scroll").hide();
                 $("#rev_nation, #rev_type, #rev_time, #rev_date, #rev_name, #rev_email, #rev_phone, #rev_passport, #rev_photo").text("--");
                 $("#rev_price").html("--");
                 $("#review_exchange_rate_row, #review_vnd_row").hide();

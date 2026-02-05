@@ -517,3 +517,56 @@ function immigro_hide_dev_user_from_list( $query ) {
 // Debug order-received: bật khi cần gỡ lỗi (đã tắt để tránh can thiệp output)
 // add_action( 'woocommerce_thankyou', function( $order_id ) { ... }, 10, 1 );
 // add_action( 'init', function() { ... });
+
+/**
+ * Mục lục tự động cho bài viết (single post)
+ * Trích headings H2, H3, H4 từ nội dung, thêm ID và hiển thị TOC phía trên
+ */
+add_filter( 'the_content', 'immigro_single_post_toc', 12 );
+function immigro_single_post_toc( $content ) {
+	if ( ! is_singular( 'post' ) || ! in_the_loop() || ! is_main_query() ) {
+		return $content;
+	}
+	$toc_items = array();
+	$used_ids  = array();
+	$pattern   = '/<h([234])(\s[^>]*)?>(.*?)<\/h\1>/is';
+
+	$content = preg_replace_callback( $pattern, function( $m ) use ( &$toc_items, &$used_ids ) {
+		$level = (int) $m[1];
+		$attrs = isset( $m[2] ) ? $m[2] : '';
+		$text  = trim( strip_tags( $m[3] ) );
+		if ( empty( $text ) ) {
+			return $m[0];
+		}
+		$base_slug = sanitize_title( $text );
+		$id        = $base_slug;
+		$n         = 1;
+		while ( isset( $used_ids[ $id ] ) ) {
+			$id = $base_slug . '-' . ( ++$n );
+		}
+		$used_ids[ $id ] = true;
+		$toc_items[]     = array( 'level' => $level, 'text' => $text, 'id' => $id );
+
+		if ( stripos( $attrs, 'id=' ) !== false ) {
+			return $m[0];
+		}
+		$new_attrs = rtrim( $attrs ) . ' id="' . esc_attr( $id ) . '"';
+		return '<h' . $level . $new_attrs . '>' . $m[3] . '</h' . $level . '>';
+	}, $content );
+
+	if ( empty( $toc_items ) ) {
+		return $content;
+	}
+
+	$toc_html  = '<nav class="immigro-post-toc" aria-label="' . esc_attr__( 'Mục lục', 'immigro' ) . '">';
+	$toc_html .= '<h3 class="toc-title">' . esc_html__( 'Mục lục', 'immigro' ) . '</h3>';
+	$toc_html .= '<ul class="toc-list">';
+	foreach ( $toc_items as $item ) {
+		$toc_html .= '<li class="toc-item toc-level-' . $item['level'] . '">';
+		$toc_html .= '<a href="#' . esc_attr( $item['id'] ) . '">' . esc_html( $item['text'] ) . '</a>';
+		$toc_html .= '</li>';
+	}
+	$toc_html .= '</ul></nav>';
+
+	return $toc_html . $content;
+}

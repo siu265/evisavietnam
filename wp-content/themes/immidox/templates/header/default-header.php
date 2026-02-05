@@ -125,16 +125,23 @@ $logo_typography = '';
 						<!--Keep This Empty / Menu will come through Javascript-->
 					</nav>
 				</div>
-				<?php if( $options->get( 'header_search_show_v1' ) ):?>
+				<?php if( $options->get( 'button_show_v1' ) && $options->get( 'button_v1' ) || $options->get( 'header_search_show_v1' ) ):?>
 				<ul class="nav-right">
-					
+					<?php if( $options->get( 'button_show_v1' ) && $options->get( 'button_v1' ) ):?>
+					<li class="btn-box-li">
+						<div class="btn-box">
+							<a href="<?php echo wp_kses( $options->get( 'button_link_v1'), $allowed_html ); ?>"><?php echo wp_kses( $options->get( 'button_v1'), $allowed_html ); ?> <i class="icon-7"></i></a>
+						</div>
+					</li>
+					<?php endif; ?>
+					<?php if( $options->get( 'header_search_show_v1' ) ):?>
 					<li class="search-box-outer search-toggler">
 						<i class="icon-6"></i>
 					</li>
-					
 					<li class="nav-btn nav-toggler navSidebar-button clearfix">
 						<i class="icon-5"></i>
 					</li>
+					<?php endif; ?>
 				</ul>
 				<?php endif; ?>
 			</div>

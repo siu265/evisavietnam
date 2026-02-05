@@ -431,7 +431,6 @@
     font-size: 14px;
     color: #555;
     text-align: left;
-    max-width: 420px;
     margin: 0 auto;
 }
 
@@ -678,12 +677,12 @@
     color: #333;
 }
 
-.visa-link {
+/* .visa-link {
     color: #bc9c22;
     text-decoration: underline;
     cursor: pointer;
     font-weight: 600;
-}
+} */
 
 /* ========== Checkout – ẩn Contact / Billing ========== */
 #billing_postcode_field,
